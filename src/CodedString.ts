@@ -12,7 +12,7 @@ type CodedString = string | {
 	encoding: "base64";
 } | {
 	data: Buffer;
-	charset?: "native" | string;
+	charset: "native" | string;
 	encoding?: "base64";
 };
 
