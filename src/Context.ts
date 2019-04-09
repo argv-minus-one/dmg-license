@@ -19,7 +19,7 @@ export default class Context {
 			try {
 				ret =
 					lang.labels
-					? Labels.pack(lang.labels, lang, this).data
+					? Labels.pack(lang.labels, lang, this)
 					: new Error(`There are no default labels for ${lang.englishName}. You must provide your own labels for this language.`);
 			}
 			catch (e) {
