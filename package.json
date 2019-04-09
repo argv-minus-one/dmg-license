@@ -12,8 +12,8 @@
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"scripts": {
-		"build": "tsc",
-		"prepublishOnly": "npm run build"
+		"clean": "rimraf lib",
+		"prepare": "tslint --project . && tsc"
 	},
 	"files": [
 		"lib/**.js",
@@ -37,6 +37,7 @@
 		"@types/verror": "^1.10.3",
 		"map-obj": "^3.0.0",
 		"resourceforkjs": "^0.1.0",
+		"rimraf": "^2.6.3",
 		"tslint": "^5.15.0",
 		"typescript": "^3.3.4000"
 	},
