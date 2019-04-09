@@ -1,10 +1,10 @@
-/// <reference path="./error-cause.d.ts" />
 /// <reference path="./iconv.d.ts" />
 
 import { Iconv } from "iconv";
 import mapObj = require("map-obj");
 import * as ResourceForkLib from "resourceforkjs";
 import { SmartBuffer } from "smart-buffer";
+import { Info as VErrorInfo, Options as VErrorOptions, VError } from "verror";
 const { freeze } = Object;
 
 export interface ResourcePos {
@@ -24,29 +24,58 @@ function ResourcePos(file: string, r: ResourceForkLib.Resource): ResourcePos {
 	};
 }
 
-export class InvalidResourceError extends Error {
-	constructor(message: string, public pos: ResourcePos) {
-		// tslint:disable-next-line: max-line-length
-		super(`[file “${pos.file}”, ${pos.resType} resource ${pos.resID}${pos.resName ? " " + pos.resName : ""}${pos.byte === undefined ? "" : " byte " + pos.byte}]: ${message}`);
-	}
-}
-
-export class ResourceFileNotFoundError extends Error {
-	constructor(message: string, public cause?: Error) {
-		super(message);
-	}
-}
-
-export class ResourceDecodingError extends Error {
+export class InvalidResourceError extends VError {
 	constructor(
-		public context: Readonly<{
-			regionCode: number;
-			resourceID: number;
-			encoding: string | ReadonlyArray<string>;
-		}>,
-		public cause?: Error
+		options: VErrorOptions & {
+			info: VErrorInfo & {
+				pos: ResourcePos;
+			}
+		},
+		message: string,
+		...params: any[]
 	) {
-		super(`Can't decode resource ${context.resourceID} (for region ${context.regionCode}) from ${context.encoding}${cause ? `: ${cause.message}` : "."}`);
+		const {pos} = options.info;
+		super(
+			options,
+			"[file “%s”, %s resource %d%s%s]: " + message,
+			pos.file,
+			pos.resType,
+			pos.resID,
+			pos.resName ? ` ${pos.resName}` : "",
+			pos.byte === undefined ? "" : ` byte ${pos.byte}`,
+			...params
+		);
+	}
+}
+
+export class ResourceFileNotFoundError extends VError {}
+
+export class ResourceDecodingError extends VError {
+	constructor(
+		options: {
+			cause?: Error | null;
+			info: VErrorInfo & {
+				regionCode: number;
+				resourceID: number;
+				encoding: string | ReadonlyArray<string>;
+			};
+		},
+		message?: string,
+		...params: any[]
+	) {
+		super(
+			options,
+			"Can't decode resource %d (for region %d) from %s" + (message ? ": " + message : "%s"),
+			options.info.resourceID,
+			options.info.regionCode,
+			options.info.encoding,
+			...(
+				message ? params : [
+					options.cause ? `: ${options.cause.message}` : ".",
+					...params
+				]
+			)
+		);
 	}
 }
 
@@ -55,8 +84,12 @@ function splitSTR(buf: Buffer, pos: Readonly<ResourcePos>) {
 
 	if (sbuf.readUInt16BE() !== 6) {
 		throw new InvalidResourceError(
-			"Resource data does does not start with the proper STR# signature, 00 06.",
-			{ ...pos, byte: 0 }
+			{
+				info: {
+					pos: { ...pos, byte: 0 }
+				}
+			},
+			"Resource data does does not start with the proper STR# signature, 00 06."
 		);
 	}
 
@@ -68,8 +101,14 @@ function splitSTR(buf: Buffer, pos: Readonly<ResourcePos>) {
 
 		if (length > remaining) {
 			throw new InvalidResourceError(
-				`String length marker indicates that there should be ${length} more bytes, but only ${remaining} bytes remain.`,
-				{ ...pos, byte: sbuf.readOffset - 1 }
+				{
+					info: {
+						pos: { ...pos, byte: sbuf.readOffset - 1 }
+					}
+				},
+				"String length marker indicates that there should be %d more bytes, but only %d bytes remain.",
+				length,
+				remaining
 			);
 		}
 
@@ -84,12 +123,12 @@ export type LicenseLabelMap = Map<number, LicenseLabels>;
 async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabelMap> {
 	const rmap = await ResourceForkLib.readResourceFork(config.resourcesFile, !config.fromDataFork).catch(e => {
 		if (e instanceof Error && (e as NodeJS.ErrnoException).code === "ENOENT") {
-			throw new ResourceFileNotFoundError(`SLAResources file not found at: ${config.resourcesFile}
+			throw new ResourceFileNotFoundError(e, `SLAResources file not found at: %s
 Generated language data will not contain any predefined label sets!
 
 To fix this error, you need to obtain the SLAResources file from Apple. See language-info-generator/README.md for more information.
 
-If you have the SLAResources file but it's not at the usual path, set the $SLAResources environment variable to the correct path.`, e);
+If you have the SLAResources file but it's not at the usual path, set the $SLAResources environment variable to the correct path.`, config.resourcesFile);
 		}
 		else
 			throw e;
@@ -111,8 +150,13 @@ If you have the SLAResources file but it's not at the usual path, set the $SLARe
 
 				if (rawStrings.length !== 6) {
 					throw new InvalidResourceError(
-						`There should be 6 strings in this resource, but instead there are ${rawStrings.length}.`,
-						pos
+						{
+							info: {
+								pos
+							}
+						},
+						`There should be 6 strings in this resource, but instead there are %d.`,
+						rawStrings.length
 					);
 				}
 			} catch (e) {
@@ -151,10 +195,13 @@ If you have the SLAResources file but it's not at the usual path, set the $SLARe
 					// Errors thrown from the Iconv constructor don't indicate whether it's because an encoding was not supported (other than in the message, but there's no guarantee that it won't change), so we have to assume that anything thrown from there means that encoding isn't supported.
 					if (config.onWrongEncoding) config.onWrongEncoding(
 						new ResourceDecodingError({
-							encoding,
-							regionCode,
-							resourceID: r.id
-						}, e),
+							cause: e,
+							info: {
+								encoding,
+								regionCode,
+								resourceID: r.id
+							}
+						}),
 						rawLabels
 					);
 					continue;
@@ -165,21 +212,38 @@ If you have the SLAResources file but it's not at the usual path, set the $SLARe
 				} catch (e) {
 					if (e instanceof Error && (e as any).code === "EILSEQ") {
 						// This encoding doesn't match the string. Try another.
-						const e2 = new Error(`Can't decode resource ${r.id} (for region ${regionCode}) using ${encoding}: ${e}`);
-						e2.cause = e;
-
 						if (config.onWrongEncoding) config.onWrongEncoding(
-							new ResourceDecodingError({
-								encoding,
+							new ResourceDecodingError(
+								{
+									cause: e,
+									info: {
+										encoding,
+										regionCode,
+										resourceID: r.id
+									}
+								},
+								"Can't decode resource %d (for region %d) using %s: %s",
+								r.id,
 								regionCode,
-								resourceID: r.id
-							}, e),
+								encoding,
+								e.message
+							),
 							rawLabels
 						);
 						continue;
 					}
-					else
-						throw e;
+					else {
+						throw new ResourceDecodingError(
+							{
+								cause: e,
+								info: {
+									encoding,
+									regionCode,
+									resourceID: r.id
+								}
+							}
+						);
+					}
 				}
 
 				// If that didn't throw, then iconv has successfully transcoded all of the strings, so break out of the encoding search.
@@ -192,9 +256,11 @@ If you have the SLAResources file but it's not at the usual path, set the $SLARe
 			// If no encoding was found, then notify.
 			labels = config.onDecodingFailure(
 				new ResourceDecodingError({
-					encoding: encodings,
-					regionCode,
-					resourceID: r.id
+					info: {
+						encoding: encodings,
+						regionCode,
+						resourceID: r.id
+					}
 				}),
 				rawLabels
 			);
