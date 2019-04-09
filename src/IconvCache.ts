@@ -6,9 +6,7 @@ import { Language } from "./languages";
 
 const cacheStore = Symbol();
 
-export default class IconvCache {
-	static readonly NoSuitableCharsetError = class NoSuitableCharsetError extends VError {};
-
+class IconvCache {
 	private [cacheStore]: {
 		[from: string]: undefined | {
 			[to: string]: Iconv | Error | undefined;
@@ -116,3 +114,9 @@ export default class IconvCache {
 		);
 	}
 }
+
+namespace IconvCache {
+	export class NoSuitableCharsetError extends VError {}
+}
+
+export default IconvCache;
