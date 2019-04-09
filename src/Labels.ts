@@ -148,9 +148,9 @@ const LabelLoader: {
 
 		for (const labelKey of Labels.keys) {
 			labelsCoded[labelKey] = {
-				charset: spec.charset,
+				charset: spec.charset!,
 				data: spec[labelKey],
-				encoding: spec.encoding
+				encoding: spec.encoding!
 			};
 		}
 
