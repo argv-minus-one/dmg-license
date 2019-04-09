@@ -1,0 +1,11 @@
+{
+"extends": "../tsconfig.json",
+"compilerOptions": {
+	"target": "esnext",
+	"lib": ["esnext.array"],
+	"noEmit": true,
+	"allowJs": true,
+	"maxNodeModuleJsDepth": 5
+},
+"include": ["src/**.ts"]
+}

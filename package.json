@@ -1,0 +1,48 @@
+{
+	"name": "dmg-license",
+	"version": "0.0.0",
+	"description": "Generate license agreements for macOS .dmg files",
+	"author": "argvminusone",
+	"license": "MIT",
+	"repository": "argvminusone/dmg-license",
+	"keywords": [
+		"dmg",
+		"license"
+	],
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build"
+	},
+	"files": [
+		"lib/**.js",
+		"lib/**.json",
+		"lib/**.d.ts"
+	],
+	"dependencies": {
+		"buffer-from": "^1.1.1",
+		"core-js": "^3.0.0",
+		"iconv": "^2.3.3",
+		"plist": "^3.0.1",
+		"smart-buffer": "^4.0.2",
+		"verror": "^1.10.0"
+	},
+	"devDependencies": {
+		"@types/buffer-from": "^1.1.0",
+		"@types/core-js": "^2.5.0",
+		"@types/map-obj": "^2.0.0",
+		"@types/node": "^11.12.0",
+		"@types/plist": "^3.0.1",
+		"@types/verror": "^1.10.3",
+		"map-obj": "^3.0.0",
+		"resourceforkjs": "^0.1.0",
+		"typescript": "^3.3.4000"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"os": [
+		"darwin"
+	]
+}

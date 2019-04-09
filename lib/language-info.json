@@ -1,0 +1,1096 @@
+{
+  "labels": {
+    "en-US": {
+      "regionName": "English",
+      "agree": "Agree",
+      "disagree": "Disagree",
+      "print": "Print",
+      "save": "Save...",
+      "message": "If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\"."
+    },
+    "fr": {
+      "regionName": "Français",
+      "agree": "Accepter",
+      "disagree": "Refuser",
+      "print": "Imprimer",
+      "save": "Enregistrer...",
+      "message": "Si vous acceptez les termes de la présente licence, cliquez sur \"Accepter\" afin d'installer le logiciel. Si vous n'êtes pas d'accord avec les termes de la licence, cliquez sur \"Refuser\"."
+    },
+    "de": {
+      "regionName": "Deutsch",
+      "agree": "Akzeptieren",
+      "disagree": "Ablehnen",
+      "print": "Drucken",
+      "save": "Sichern...",
+      "message": "Klicken Sie in “Akzeptieren”, wenn Sie mit den Bestimmungen des Software-Lizenzvertrags einverstanden sind. Falls nicht, bitte “Ablehnen” anklicken. Sie können die Software nur installieren, wenn Sie “Akzeptieren” angeklickt haben."
+    },
+    "it": {
+      "regionName": "Italiano",
+      "agree": "Accetto",
+      "disagree": "Rifiuto",
+      "print": "Stampa",
+      "save": "Registra...",
+      "message": "Se accetti le condizioni di questa licenza, fai clic su \"Accetto\" per installare il software. Altrimenti fai clic su \"Rifiuto\"."
+    },
+    "nl": {
+      "regionName": "Nederlands",
+      "agree": "Ja",
+      "disagree": "Nee",
+      "print": "Print",
+      "save": "Bewaar...",
+      "message": "Indien u akkoord gaat met de voorwaarden van deze licentie, kunt u op 'Ja' klikken om de programmatuur te installeren. Indien u niet akkoord gaat, klikt u op 'Nee'."
+    },
+    "sv": {
+      "regionName": "Svensk",
+      "agree": "Godkänns",
+      "disagree": "Avböjs",
+      "print": "Skriv ut",
+      "save": "Spara...",
+      "message": "Om Du godkänner licensvillkoren klicka på \"Godkänns\" för att installera programprodukten. Om Du inte godkänner licensvillkoren, klicka på \"Avböjs\"."
+    },
+    "es": {
+      "regionName": "Español",
+      "agree": "Aceptar",
+      "disagree": "No aceptar",
+      "print": "Imprimir",
+      "save": "Guardar...",
+      "message": "Si está de acuerdo con los términos de esta licencia, pulse \"Aceptar\" para instalar el software. En el supuesto de que no esté de acuerdo con los términos de esta licencia, pulse \"No aceptar.\""
+    },
+    "da": {
+      "regionName": "Dansk",
+      "agree": "Enig",
+      "disagree": "Uenig",
+      "print": "Udskriv",
+      "save": "Arkiver...",
+      "message": "Hvis du accepterer betingelserne i licensaftalen, skal du klikke på “Enig” for at installere softwaren. Klik på “Uenig” for at annullere installeringen."
+    },
+    "fr-CA": {
+      "regionName": "Français canadien",
+      "agree": "Accepter",
+      "disagree": "Refuser",
+      "print": "Imprimer",
+      "save": "Enregistrer...",
+      "message": "Si vous acceptez les termes de la présente licence, cliquez sur \"Accepter\" afin d'installer le logiciel. Si vous n'êtes pas d'accord avec les termes de la licence, cliquez sur \"Refuser\"."
+    },
+    "nb": {
+      "regionName": "Norsk",
+      "agree": "Enig",
+      "disagree": "Ikke enig",
+      "print": "Skriv ut",
+      "save": "Arkiver...",
+      "message": "Hvis De er enig i bestemmelsene i denne lisensavtalen, klikker De på \"Enig\"-knappen for å installere programvaren. Hvis De ikke er enig, klikker De på \"Ikke enig\"."
+    },
+    "ja": {
+      "encoding": "native;base64",
+      "regionName": "SmFwYW5lc2U=",
+      "agree": "k6+I04K1gtyCtw==",
+      "disagree": "k6+I04K1gtyCuYLx",
+      "print": "iPON/IK3guk=",
+      "save": "lduRti4uLg==",
+      "message": "lnuDXIN0g2eDRYNHg0GOZ5dwi5aR+IxflvGCzI/wjI+CyZOviNOCs4LqgumP6o2HgsmCzYFBg1yDdINng0WDR4NBgvCDQ4OTg1iDZ4Fbg4uCt4Lpgr2C34LJgXWTr4jTgrWC3IK3gXaC8ImfgrWCxIKtgr6Cs4KigUKBQJOviNOCs4LqgsiCoo/qjYeCyYLNgUGBdZOviNOCtYLcgrmC8YF2gvCJn4K1gsSCrYK+grOCooFC"
+    },
+    "fi": {
+      "regionName": "Suomi",
+      "agree": "Hyväksyn",
+      "disagree": "En hyväksy",
+      "print": "Tulosta",
+      "save": "Tallenna…",
+      "message": "Hyväksy lisenssisopimuksen ehdot osoittamalla ’Hyväksy’. Jos et hyväksy sopimuksen ehtoja, osoita ’En hyväksy’."
+    },
+    "ko": {
+      "encoding": "native;base64",
+      "regionName": "S29yZWFu",
+      "agree": "tb/Axw==",
+      "disagree": "tb/AxyC+yMfU",
+      "print": "x8G4sMau",
+      "save": "wPrA5S4uLg==",
+      "message": "u+e/6yCw6L7gvK3AxyCzu7/rv6Egtb/Ax8fPuOksICK1v8DHIiC03MPfuKYgtK23ryC80sfBxq6//r7uuKYgvLPEocfPvcq9w7/ALiC1v8DHx8/B9iC+yrTCtNm46SwgIrW/wMcgvsjH1CIgtNzD37imILSpuKO9yr3Dv8Au"
+    },
+    "zh-Hans": {
+      "encoding": "native;base64",
+      "regionName": "U2ltcGxpZmllZCBDaGluZXNl",
+      "agree": "zazS4g==",
+      "disagree": "srvNrNLi",
+      "print": "tPLToQ==",
+      "save": "tOa0oqGt",
+      "message": "yOe5+8T6zazS4rG+0O2/ydCt0um1xMz1v+6jrMfrsLShsM2s0uKhscC0sLLXsLTLyO28/qGjyOe5+8T6srvNrNLio6zH67C0obCyu82s0uKhsaGj"
+    },
+    "zh-Hant": {
+      "encoding": "native;base64",
+      "regionName": "VHJhZGl0aW9uYWwgQ2hpbmVzZQ==",
+      "agree": "plC3Tg==",
+      "disagree": "pKOmULdO",
+      "print": "pkOmTA==",
+      "save": "wHimc6FL",
+      "message": "pnCqR7F6plC3TqW7s1ylacPSuMyqurH4tNqhQb3Qq/ahp6ZQt06hqKVIpne4y7NuxemhQ6Zwqkeko6ZQt06hQb3Qq/ahp6SjplC3TqGooUM="
+    },
+    "pt-BR": {
+      "regionName": "Português, Brasil",
+      "agree": "Concordar",
+      "disagree": "Discordar",
+      "print": "Imprimir",
+      "save": "Salvar...",
+      "message": "Se está de acordo com os termos desta licença, pressione \"Concordar\" para instalar o software. Se não está de acordo, pressione \"Discordar\"."
+    }
+  },
+  "locales": {
+    "0": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "en-US",
+      "langTags": [
+        "en-US"
+      ],
+      "englishName": "English (United States)",
+      "localizedName": "English (United States)"
+    },
+    "1": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "fr",
+      "langTags": [
+        "fr-FR"
+      ],
+      "englishName": "French",
+      "localizedName": "français"
+    },
+    "2": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "en-GB"
+      ],
+      "englishName": "English (United Kingdom)",
+      "localizedName": "English (United Kingdom)"
+    },
+    "3": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "de",
+      "langTags": [
+        "de-DE"
+      ],
+      "englishName": "German",
+      "localizedName": "Deutsch"
+    },
+    "4": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "it",
+      "langTags": [
+        "it-IT"
+      ],
+      "englishName": "Italian",
+      "localizedName": "italiano"
+    },
+    "5": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "nl",
+      "langTags": [
+        "nl-NL"
+      ],
+      "englishName": "Dutch",
+      "localizedName": "Nederlands"
+    },
+    "6": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "nl-BE"
+      ],
+      "englishName": "Dutch (Belgium)",
+      "localizedName": "Nederlands (België)"
+    },
+    "7": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "sv",
+      "langTags": [
+        "sv-SE"
+      ],
+      "englishName": "Swedish",
+      "localizedName": "svenska"
+    },
+    "8": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "es",
+      "langTags": [
+        "es-ES"
+      ],
+      "englishName": "Spanish",
+      "localizedName": "español"
+    },
+    "9": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "da",
+      "langTags": [
+        "da-DK"
+      ],
+      "englishName": "Danish",
+      "localizedName": "dansk"
+    },
+    "10": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "pt-PT"
+      ],
+      "englishName": "Portuguese",
+      "localizedName": "português"
+    },
+    "11": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "fr-CA",
+      "langTags": [
+        "fr-CA"
+      ],
+      "englishName": "French (Canada)",
+      "localizedName": "français (Canada)"
+    },
+    "12": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "nb",
+      "langTags": [
+        "nb-NO"
+      ],
+      "englishName": "Norwegian Bokmål",
+      "localizedName": "norsk bokmål"
+    },
+    "13": {
+      "encodings": [
+        "MacHebrew",
+        "ASCII"
+      ],
+      "langTags": [
+        "he-IL"
+      ],
+      "englishName": "Hebrew",
+      "localizedName": "עברית"
+    },
+    "14": {
+      "encodings": [
+        "MacJapanese"
+      ],
+      "labels": "ja",
+      "langTags": [
+        "ja-JP"
+      ],
+      "englishName": "Japanese",
+      "localizedName": "日本語"
+    },
+    "15": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "en-AU"
+      ],
+      "englishName": "English (Australia)",
+      "localizedName": "English (Australia)"
+    },
+    "16": {
+      "encodings": [
+        "MacArabic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ar"
+      ],
+      "englishName": "Arabic",
+      "localizedName": "العربية"
+    },
+    "17": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "fi",
+      "langTags": [
+        "fi-FI"
+      ],
+      "englishName": "Finnish",
+      "localizedName": "suomi"
+    },
+    "18": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "fr-CH"
+      ],
+      "englishName": "French (Switzerland)",
+      "localizedName": "français (Suisse)"
+    },
+    "19": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "de-CH"
+      ],
+      "englishName": "German (Switzerland)",
+      "localizedName": "Deutsch (Schweiz)"
+    },
+    "20": {
+      "encodings": [
+        "MacGreek",
+        "ASCII"
+      ],
+      "langTags": [
+        "el-GR"
+      ],
+      "englishName": "Greek",
+      "localizedName": "Ελληνικά"
+    },
+    "21": {
+      "encodings": [
+        "MacIceland",
+        "ASCII"
+      ],
+      "langTags": [
+        "is-IS"
+      ],
+      "englishName": "Icelandic",
+      "localizedName": "íslenska"
+    },
+    "22": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "mt-MT"
+      ],
+      "englishName": "Maltese",
+      "localizedName": "Malti"
+    },
+    "23": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "el-CY"
+      ],
+      "englishName": "Greek (Cyprus)",
+      "localizedName": "Ελληνικά (Κύπρος)"
+    },
+    "24": {
+      "encodings": [
+        "MacTurkish",
+        "ASCII"
+      ],
+      "langTags": [
+        "tr-TR"
+      ],
+      "englishName": "Turkish",
+      "localizedName": "Türkçe"
+    },
+    "33": {
+      "encodings": [
+        "MacDevanagari",
+        "ASCII"
+      ],
+      "langTags": [
+        "hi-IN"
+      ],
+      "englishName": "Hindi",
+      "localizedName": "हिन्दी"
+    },
+    "34": {
+      "encodings": [
+        "MacArabic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ur-PK"
+      ],
+      "englishName": "Urdu (Pakistan)",
+      "localizedName": "اردو (پاکستان)"
+    },
+    "35": {
+      "encodings": [
+        "MacTurkish",
+        "ASCII"
+      ],
+      "langTags": [
+        "tr-TR"
+      ],
+      "englishName": "Turkish",
+      "localizedName": "Türkçe"
+    },
+    "36": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "it-CH"
+      ],
+      "englishName": "Italian (Switzerland)",
+      "localizedName": "italiano (Svizzera)"
+    },
+    "37": {
+      "encodings": [
+        "ASCII"
+      ],
+      "langTags": [
+        "en-001"
+      ],
+      "englishName": "English (World)",
+      "localizedName": "English (World)"
+    },
+    "39": {
+      "encodings": [
+        "MacRomania",
+        "ASCII"
+      ],
+      "langTags": [
+        "ro-RO"
+      ],
+      "englishName": "Romanian",
+      "localizedName": "română"
+    },
+    "41": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "lt-LT"
+      ],
+      "englishName": "Lithuanian",
+      "localizedName": "lietuvių"
+    },
+    "42": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "pl-PL"
+      ],
+      "englishName": "Polish",
+      "localizedName": "polski"
+    },
+    "43": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "hu-HU"
+      ],
+      "englishName": "Hungarian",
+      "localizedName": "magyar"
+    },
+    "44": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "et-EE"
+      ],
+      "englishName": "Estonian",
+      "localizedName": "eesti"
+    },
+    "45": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "lv-LV"
+      ],
+      "englishName": "Latvian",
+      "localizedName": "latviešu"
+    },
+    "46": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "se"
+      ],
+      "englishName": "Northern Sami",
+      "localizedName": "davvisámegiella"
+    },
+    "47": {
+      "encodings": [
+        "MacIceland",
+        "ASCII"
+      ],
+      "langTags": [
+        "fo-FO"
+      ],
+      "englishName": "Faroese",
+      "localizedName": "føroyskt"
+    },
+    "48": {
+      "encodings": [
+        "MacFarsi",
+        "ASCII"
+      ],
+      "langTags": [
+        "fa-IR"
+      ],
+      "englishName": "Persian",
+      "localizedName": "فارسی"
+    },
+    "49": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ru-RU"
+      ],
+      "englishName": "Russian",
+      "localizedName": "русский"
+    },
+    "50": {
+      "encodings": [
+        "MacCeltic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ga-IE"
+      ],
+      "englishName": "Irish (Ireland)",
+      "localizedName": "Gaeilge (Éire)"
+    },
+    "51": {
+      "encodings": [
+        "MacKorean",
+        "ASCII"
+      ],
+      "labels": "ko",
+      "langTags": [
+        "ko-KR"
+      ],
+      "englishName": "Korean",
+      "localizedName": "한국어"
+    },
+    "52": {
+      "encodings": [
+        "MacSimpChinese",
+        "MacChineseSimp",
+        "ASCII"
+      ],
+      "labels": "zh-Hans",
+      "langTags": [
+        "zh-CN",
+        "zh-Hans"
+      ],
+      "englishName": "Chinese (Simplified)",
+      "localizedName": "中文 (简体)"
+    },
+    "53": {
+      "encodings": [
+        "MacTradChinese",
+        "MacChineseTrad",
+        "ASCII"
+      ],
+      "labels": "zh-Hant",
+      "langTags": [
+        "zh-TW",
+        "zh-Hant"
+      ],
+      "englishName": "Chinese (Traditional)",
+      "localizedName": "中文 (繁體)"
+    },
+    "54": {
+      "encodings": [
+        "MacThai",
+        "ASCII"
+      ],
+      "langTags": [
+        "th-TH"
+      ],
+      "englishName": "Thai",
+      "localizedName": "ไทย"
+    },
+    "56": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "cs-CZ"
+      ],
+      "englishName": "Czech",
+      "localizedName": "čeština"
+    },
+    "57": {
+      "encodings": [
+        "MacCentralEurope",
+        "ASCII"
+      ],
+      "langTags": [
+        "sk-SK"
+      ],
+      "englishName": "Slovak",
+      "localizedName": "slovenčina"
+    },
+    "60": {
+      "encodings": [
+        "MacBengali"
+      ],
+      "langTags": [
+        "bn"
+      ],
+      "englishName": "Bengali",
+      "localizedName": "বাংলা"
+    },
+    "61": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "be-BY"
+      ],
+      "englishName": "Belarusian",
+      "localizedName": "беларуская"
+    },
+    "62": {
+      "encodings": [
+        "MacUkraine",
+        "ASCII"
+      ],
+      "langTags": [
+        "uk-UA"
+      ],
+      "englishName": "Ukrainian",
+      "localizedName": "українська"
+    },
+    "65": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "sr-CS"
+      ],
+      "englishName": "Serbian",
+      "localizedName": "српски"
+    },
+    "66": {
+      "encodings": [
+        "MacCroatian",
+        "ASCII"
+      ],
+      "langTags": [
+        "sl-SI"
+      ],
+      "englishName": "Slovenian",
+      "localizedName": "slovenščina"
+    },
+    "67": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "mk-MK"
+      ],
+      "englishName": "Macedonian",
+      "localizedName": "македонски"
+    },
+    "68": {
+      "encodings": [
+        "MacCroatian",
+        "ASCII"
+      ],
+      "langTags": [
+        "hr-HR"
+      ],
+      "englishName": "Croatian",
+      "localizedName": "hrvatski"
+    },
+    "71": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "labels": "pt-BR",
+      "langTags": [
+        "pt-BR"
+      ],
+      "englishName": "Portuguese (Brazil)",
+      "localizedName": "português (Brasil)"
+    },
+    "72": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "bg-BG"
+      ],
+      "englishName": "Bulgarian",
+      "localizedName": "български"
+    },
+    "73": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "ca-ES"
+      ],
+      "englishName": "Catalan (Spain)",
+      "localizedName": "català (Espanya)"
+    },
+    "75": {
+      "encodings": [
+        "MacCeltic",
+        "ASCII"
+      ],
+      "langTags": [
+        "gd"
+      ],
+      "englishName": "Scottish Gaelic",
+      "localizedName": "Gàidhlig"
+    },
+    "76": {
+      "encodings": [
+        "MacCeltic",
+        "ASCII"
+      ],
+      "langTags": [
+        "gv"
+      ],
+      "englishName": "Manx",
+      "localizedName": "Gaelg"
+    },
+    "77": {
+      "encodings": [
+        "MacCeltic",
+        "ASCII"
+      ],
+      "langTags": [
+        "br"
+      ],
+      "englishName": "Breton",
+      "localizedName": "brezhoneg"
+    },
+    "78": {
+      "encodings": [
+        "MacInuit",
+        "ASCII"
+      ],
+      "langTags": [
+        "iu-CA"
+      ],
+      "englishName": "Inuktitut",
+      "localizedName": "Inuktitut"
+    },
+    "79": {
+      "encodings": [
+        "MacCeltic",
+        "ASCII"
+      ],
+      "langTags": [
+        "cy"
+      ],
+      "englishName": "Welsh",
+      "localizedName": "Cymraeg"
+    },
+    "81": {
+      "encodings": [
+        "MacGaelic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ga-Latg-IE"
+      ],
+      "englishName": "Irish (Gaelic Latin, Ireland)",
+      "localizedName": "Gaeilge (Cló Gaelach, Éire)"
+    },
+    "82": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "en-CA"
+      ],
+      "englishName": "English (Canada)",
+      "localizedName": "English (Canada)"
+    },
+    "83": {
+      "encodings": [
+        "MacTibetan"
+      ],
+      "langTags": [
+        "dz-BT"
+      ],
+      "englishName": "Dzongkha",
+      "localizedName": "རྫོང་ཁ"
+    },
+    "84": {
+      "encodings": [
+        "MacArmenian"
+      ],
+      "langTags": [
+        "hy-AM"
+      ],
+      "englishName": "Armenian",
+      "localizedName": "հայերեն"
+    },
+    "85": {
+      "encodings": [
+        "MacGeorgian"
+      ],
+      "langTags": [
+        "ka-GE"
+      ],
+      "englishName": "Georgian",
+      "localizedName": "ქართული"
+    },
+    "86": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "es-419"
+      ],
+      "englishName": "Spanish (Latin America)",
+      "localizedName": "español (Latinoamérica)"
+    },
+    "88": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "to-TO"
+      ],
+      "englishName": "Tongan",
+      "localizedName": "lea fakatonga"
+    },
+    "91": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "fr-001"
+      ],
+      "englishName": "French (World)",
+      "localizedName": "français (Monde)"
+    },
+    "92": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "de-AT"
+      ],
+      "englishName": "German (Austria)",
+      "localizedName": "Deutsch (Österreich)"
+    },
+    "94": {
+      "encodings": [
+        "MacGujarati",
+        "ASCII"
+      ],
+      "langTags": [
+        "gu-IN"
+      ],
+      "englishName": "Gujarati (India)",
+      "localizedName": "ગુજરાતી (ભારત)"
+    },
+    "95": {
+      "encodings": [
+        "MacGurmukhi",
+        "ASCII"
+      ],
+      "langTags": [
+        "pa"
+      ],
+      "englishName": "Punjabi",
+      "localizedName": "ਪੰਜਾਬੀ"
+    },
+    "96": {
+      "encodings": [
+        "MacArabic",
+        "ASCII"
+      ],
+      "langTags": [
+        "ur-IN"
+      ],
+      "englishName": "Urdu (India)",
+      "localizedName": "اردو (بھارت)"
+    },
+    "97": {
+      "encodings": [
+        "MacVietnamese"
+      ],
+      "langTags": [
+        "vi-VN"
+      ],
+      "englishName": "Vietnamese",
+      "localizedName": "Tiếng Việt"
+    },
+    "98": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "fr-BE"
+      ],
+      "englishName": "French (Belgium)",
+      "localizedName": "français (Belgique)"
+    },
+    "99": {
+      "encodings": [
+        "MacCyrillic",
+        "ASCII"
+      ],
+      "langTags": [
+        "uz-UZ"
+      ],
+      "englishName": "Uzbek",
+      "localizedName": "o‘zbek"
+    },
+    "100": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "en-SG"
+      ],
+      "englishName": "English (Singapore)",
+      "localizedName": "English (Singapore)"
+    },
+    "101": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "nn-NO"
+      ],
+      "englishName": "Norwegian Nynorsk",
+      "localizedName": "nynorsk"
+    },
+    "102": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "af-ZA"
+      ],
+      "englishName": "Afrikaans (South Africa)",
+      "localizedName": "Afrikaans (Suid-Afrika)"
+    },
+    "103": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "eo"
+      ],
+      "englishName": "Esperanto",
+      "localizedName": "esperanto"
+    },
+    "104": {
+      "encodings": [
+        "MacDevanagari",
+        "ASCII"
+      ],
+      "langTags": [
+        "mr-IN"
+      ],
+      "englishName": "Marathi (India)",
+      "localizedName": "मराठी (भारत)"
+    },
+    "105": {
+      "encodings": [
+        "MacTibetan"
+      ],
+      "langTags": [
+        "bo"
+      ],
+      "englishName": "Tibetan",
+      "localizedName": "བོད་སྐད་"
+    },
+    "106": {
+      "encodings": [
+        "MacDevanagari",
+        "ASCII"
+      ],
+      "langTags": [
+        "ne-NP"
+      ],
+      "englishName": "Nepali",
+      "localizedName": "नेपाली"
+    },
+    "107": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "kl"
+      ],
+      "englishName": "Kalaallisut",
+      "localizedName": "kalaallisut"
+    },
+    "108": {
+      "encodings": [
+        "MacRoman",
+        "ASCII"
+      ],
+      "langTags": [
+        "en-IE"
+      ],
+      "englishName": "English (Ireland)",
+      "localizedName": "English (Ireland)"
+    }
+  }
+}

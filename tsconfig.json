@@ -1,0 +1,14 @@
+{
+"compilerOptions": {
+	"target": "es5",
+	"module": "commonjs",
+	"moduleResolution": "node",
+	"resolveJsonModule": true,
+	"strict": true,
+	"downlevelIteration": true,
+	"plugins": [
+		{"name": "typescript-tslint-plugin"}
+	]
+},
+"include": ["src/**.ts", "src/util/Tuple.d.ts", "src/util/throwAll.ts", "src/util/PromiseEach.ts", "src/util/buffer-split.ts", "src/util/util.ts"]
+}

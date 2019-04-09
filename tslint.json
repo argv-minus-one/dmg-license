@@ -1,0 +1,32 @@
+{
+	"defaultSeverity": "error",
+	"extends": [
+		"tslint:recommended"
+	],
+	"jsRules": {},
+	"rules": {
+		"arrow-parens": false,
+		"curly": false,
+		"forin": false,
+		"indent": [true, "tabs"],
+		"interface-name": false,
+		"max-classes-per-file": false,
+		"max-line-length": {
+			"options": {
+				"ignore-pattern": "// "
+			}
+		},
+		"member-access": false,
+		"no-namespace": false,
+		"no-reference": false,
+		"one-line": false,
+		"trailing-comma": {
+			"options": {
+				"esSpecCompliant": true,
+				"multiline": "never",
+				"singleline": "never"
+			}
+		}
+	},
+	"rulesDirectory": []
+}
