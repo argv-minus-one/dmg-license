@@ -8,20 +8,22 @@ import { readFileP } from "./util";
 import { ErrorBuffer } from "./util/errors";
 import PromiseEach from "./util/PromiseEach";
 
-interface LicenseContent extends Map<number, {
+export interface LicenseContentItem {
 	body: {
 		data: Buffer;
-		type: LicenseContent.BodyType;
+		type: "RTF " | "TEXT";
 	};
 	labels: Buffer;
 	regionCodes: number[];
-}> {
+}
+
+interface LicenseContent {
+	inOrder: LicenseContentItem[];
+	byRegionCode: Map<number, LicenseContentItem>;
 	defaultRegionCode: number;
 }
 
 namespace LicenseContent {
-	export type BodyType = "RTF " | "TEXT";
-
 	/**
 	 * Loads the license body text for the given `LicenseSpec`.
 	 *
@@ -31,7 +33,7 @@ namespace LicenseContent {
 		spec: LicenseSpec,
 		langs: Language[],
 		context: Context
-	): Promise<{ data: Buffer, type: BodyType }> {
+	): Promise<LicenseContentItem["body"]> {
 		const fpath = spec.body.file && context.resolvePath(spec.body.file);
 
 		return {
@@ -91,7 +93,12 @@ namespace LicenseContent {
 		if (!contents.length)
 			throw new Error("No license specifications were provided.");
 
-		const ret: LicenseContent = Object.assign(new Map(), { defaultRegionCode: NaN });
+		const ret: LicenseContent = {
+			byRegionCode: new Map(),
+			defaultRegionCode: NaN,
+			inOrder: contents
+		};
+
 		const langCollisions = new Set<Language>();
 		const defaultLangs = new Set<Language>();
 
@@ -99,10 +106,10 @@ namespace LicenseContent {
 			for (const lang of content.langs) {
 				const {regionCode} = lang;
 
-				if (ret.has(regionCode))
+				if (ret.byRegionCode.has(regionCode))
 					langCollisions.add(lang);
 				else
-					ret.set(regionCode, content);
+					ret.byRegionCode.set(regionCode, content);
 			}
 
 			if (content.spec.default) {
@@ -111,6 +118,9 @@ namespace LicenseContent {
 				if (isNaN(ret.defaultRegionCode))
 					ret.defaultRegionCode = content.langs[0].regionCode;
 			}
+
+			delete content.langs;
+			delete content.spec;
 		}
 
 		const errors = new ErrorBuffer();
