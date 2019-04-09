@@ -1,7 +1,3 @@
-/// <reference lib="esnext.array" />
-import bufferFrom = require("buffer-from");
-import "core-js/features/array/flat";
-import { VError } from "verror";
 import { Labels, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
@@ -12,7 +8,7 @@ import { readFileP } from "./util";
 import { ErrorBuffer } from "./util/errors";
 import PromiseEach from "./util/PromiseEach";
 
-interface LicenseContent extends Array<{
+interface LicenseContent extends Map<number, {
 	body: {
 		data: Buffer;
 		type: LicenseContent.BodyType;
@@ -20,64 +16,58 @@ interface LicenseContent extends Array<{
 	labels: Buffer;
 	regionCodes: number[];
 }> {
-	defaultRegion: number;
+	defaultRegionCode: number;
 }
 
 namespace LicenseContent {
 	export type BodyType = "RTF " | "TEXT";
 
-	function describeSpec(spec: LicenseSpec): string {
-		return `LicenseSpec for ${spec.lang}`;
-	}
-
 	/**
 	 * Loads the license body text for the given `LicenseSpec`.
 	 *
-	 * @param slangs - Languages that `spec` applies to.
+	 * @param langs - Languages that `spec` applies to.
 	 */
 	async function loadBody(
 		spec: LicenseSpec,
-		slangs: languages.Language[],
+		langs: Language[],
 		context: Context
 	): Promise<{ data: Buffer, type: BodyType }> {
 		return {
 			data: CodedString.encode(
-				spec.body.text != null
-				? {
-					...spec.body,
-					data: spec.body.text
-				}
-				: {
-					...spec.body,
-					data: await readFileP(spec.body.file)
+				spec.body.file ?
+				{
+					charset: spec.body.charset || "UTF-8",
+					data: await readFileP(spec.body.file),
+					encoding: spec.body.encoding
+				} :
+				{
+					charset: spec.body.charset!,
+					data: spec.body.text!,
+					encoding: spec.body.encoding!
 				},
-				slangs,
+				langs,
 				context
 			),
-			type: (() => {
-				if (spec.body.type) {
-					if (spec.body.type === "rtf")
-						return "RTF ";
-					else
-						return "TEXT";
-				}
-				else if (spec.body.file) {
-					if (spec.body.file.endsWith(".rtf"))
-						return "RTF ";
-					else
-						return "TEXT";
-				}
-				else
-					return "TEXT";
-			})()
+			type:
+				spec.body.type ? (
+					spec.body.type === "rtf" ?
+					"RTF " :
+					"TEXT"
+				) :
+				spec.body.file ? (
+					spec.body.file.endsWith(".rtf") ?
+					"RTF " :
+					"TEXT"
+				) :
+				"TEXT"
 		};
 	}
 
 	export async function load(
 		specs: LicenseSpec[],
-		options: Options | Context
+		optionsOrContext: Options | Context
 	): Promise<LicenseContent> {
-		const context = options instanceof Context ? options : new Context(options);
+		const context = optionsOrContext instanceof Context ? optionsOrContext : new Context(optionsOrContext);
 
 		const contents = await PromiseEach(specs.map(async spec => {
 			const langs = Language.forSpec(spec);
@@ -87,89 +77,66 @@ namespace LicenseContent {
 				Labels.load(spec, context, langs)
 			]);
 
-			return { spec, body, labels, langs };
+			return {
+				body,
+				labels,
+				langs,
+				regionCodes: langs.map(lang => lang.regionCode),
+				spec
+			};
 		}));
 
-		const errors = new ErrorBuffer();
-		const ret: LicenseContent = Object.assign(
-			[],
-			{ defaultRegion: NaN }
-		);
+		if (!contents.length)
+			throw new Error("No license specifications were provided.");
 
-		for (const content of contents) {
-			const noLabelsFor: Language[] = [];
+		const ret: LicenseContent = Object.assign(new Map(), { defaultRegionCode: NaN });
+		const langCollisions = new Set<Language>();
+		const defaultLangs = new Set<Language>();
 
+		for (const [index, content] of contents.entries()) {
 			for (const lang of content.langs) {
-				const labels = content.labels.find(label => label.regionCode === lang.regionCode);
+				const {regionCode} = lang;
 
-				if (!labels) {
-					/*
-					errors.add(new VError(
-						{
-							info: {
-								language: lang.langTags[0],
-								regionCode: lang.regionCode
-							}
-						},
-						"No labels found for language %d (%s, %s). The “labels” property must be present for this language.",
-						lang.regionCode,
-						lang.langTags[0],
-						lang.englishName
-					));
-					*/
-					noLabelsFor.push(lang);
-					continue;
-				}
+				if (ret.has(regionCode))
+					langCollisions.add(lang);
+				else
+					ret.set(regionCode, content);
+			}
 
-				ret.push({
-					body: content.body,
-					labels: labels.data,
-					regionCodes: lang.regionCode
-				});
+			if (content.spec.default) {
+				content.langs.forEach(defaultLangs.add.bind(defaultLangs));
+
+				if (isNaN(ret.defaultRegionCode))
+					ret.defaultRegionCode = content.langs[0].regionCode;
 			}
 		}
 
-		// ...
+		const errors = new ErrorBuffer();
 
-		errors.check();
-
-		if (isNaN(ret.defaultRegion)) {
-
+		if (langCollisions.size) {
+			context.warning(
+				new Error(`More than one license body was assigned to the language(s) ${
+					Array.from(langCollisions).join(", ")
+				}.`),
+				errors
+			);
 		}
 
-		/*
-		const file = context.resolvePath(spec.path);
+		if (isNaN(ret.defaultRegionCode))
+			ret.defaultRegionCode = contents[0].langs[0].regionCode;
+		else if (defaultLangs.size > 1) {
+			context.warning(
+				new Error(`More than one language was designated as the default. Choosing ${
+					languages.byRegionCode[ret.defaultRegionCode]
+				}. Choices were ${
+					Array.from(defaultLangs).join(", ")
+				}.`),
+				errors
+			);
+		}
 
-		return new Promise((resolve, reject) => {
-			FS.readFile(file, function(err, data) {
-				if (err) {
-					return reject(err);
-				}
-
-				const isRTF = spec.path.endsWith(".rtf");
-
-				function useASCII() {
-					return localeAllowsASCII && data.every(function(b) {
-						return b <= 127;
-					});
-				}
-
-				const type: LicenseTextType =
-					isRTF ? "RTF "
-					: useASCII() ? "TEXT"
-					: "utxt";
-
-				if (type === "utxt") {
-					data = Buffer.concat([
-						utf16Bom,
-						transcode(data, "utf8", "utf16le")
-					]);
-				}
-
-				resolve({type, data, localeIDs: langIDs, file});
-			});
-		});
-		*/
+		errors.check();
+		return ret;
 	}
 }
 
