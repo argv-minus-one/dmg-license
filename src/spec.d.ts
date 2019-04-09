@@ -1,30 +1,36 @@
 import { Labels, NoLabels } from "./Labels";
 
-export type BodySpec = {
-	type?: "rtf" | "plain";
-} & (
-	{
-		text: string;
+export type BodySpec =
+	BodySpec.BodyInline |
+	BodySpec.BodyInlineBase64 |
+	BodySpec.BodyInFile;
+
+export namespace BodySpec {
+	interface BaseBodySpec {
+		type?: "rtf" | "plain";
+	}
+
+	export interface BodyInline extends BaseBodySpec {
 		charset?: never;
 		encoding?: never;
 		file?: never;
-	} | {
 		text: string;
+	}
+
+	export interface BodyInlineBase64 extends BaseBodySpec {
 		charset: "native" | string;
 		encoding: "base64";
 		file?: never;
-	} | {
+		text: string;
+	}
+
+	export interface BodyInFile extends BaseBodySpec {
+		charset?: "UTF-8" | "native" | string;
+		encoding?: "base64";
 		file: string;
-		charset: "native" | string;
-		encoding: "base64";
-		text?: never;
-	} | {
-		file: string;
-		charset?: "native" | string;
-		encoding?: never;
 		text?: never;
 	}
-);
+}
 
 export type LabelsSpec =
 	LabelsSpec.LabelsInline |
