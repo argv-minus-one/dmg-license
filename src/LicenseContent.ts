@@ -102,15 +102,22 @@ namespace LicenseContent {
 		const langCollisions = new Set<Language>();
 		const defaultLangs = new Set<Language>();
 
-		for (const [index, content] of contents.entries()) {
+		for (const content of contents) {
+			let contentWasUsed = false;
+
 			for (const lang of content.langs) {
 				const {regionCode} = lang;
 
 				if (ret.byRegionCode.has(regionCode))
 					langCollisions.add(lang);
-				else
+				else {
 					ret.byRegionCode.set(regionCode, content);
+					contentWasUsed = true;
+				}
 			}
+
+			if (!contentWasUsed)
+				continue;
 
 			if (content.spec.default) {
 				content.langs.forEach(defaultLangs.add.bind(defaultLangs));
