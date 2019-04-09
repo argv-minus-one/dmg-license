@@ -32,12 +32,14 @@ namespace LicenseContent {
 		langs: Language[],
 		context: Context
 	): Promise<{ data: Buffer, type: BodyType }> {
+		const fpath = spec.body.file && context.resolvePath(spec.body.file);
+
 		return {
 			data: CodedString.encode(
-				spec.body.file ?
+				fpath ?
 				{
 					charset: spec.body.charset || "UTF-8",
-					data: await readFileP(spec.body.file),
+					data: await readFileP(fpath),
 					encoding: spec.body.encoding
 				} :
 				{
@@ -54,8 +56,8 @@ namespace LicenseContent {
 					"RTF " :
 					"TEXT"
 				) :
-				spec.body.file ? (
-					spec.body.file.endsWith(".rtf") ?
+				fpath ? (
+					fpath.endsWith(".rtf") ?
 					"RTF " :
 					"TEXT"
 				) :

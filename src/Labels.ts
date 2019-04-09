@@ -172,12 +172,13 @@ const LabelLoader: {
 	},
 
 	async "json"(spec, langs, context) {
-		const json = JSON.parse((await readFileP(spec.file)).toString("UTF-8"));
+		const fpath = context.resolvePath(spec.file);
+		const json = JSON.parse((await readFileP(fpath)).toString("UTF-8"));
 
 		if (typeof json !== "object") throw new VError(
 			{
 				info: {
-					path: spec.file
+					path: fpath
 				}
 			},
 			"Root value of JSON file is not an object."
@@ -193,7 +194,7 @@ const LabelLoader: {
 				errors.add(new VError(
 					{
 						info: {
-							path: spec.file
+							path: fpath
 						}
 					},
 					"Root object of JSON file's ‘%s’ property has type %s, but should be string.",
@@ -216,11 +217,12 @@ const LabelLoader: {
 
 	async "raw"(spec, langs, context) {
 		// Simplest case. The STR# resource is already fully assembled; it just needs to be returned.
-		return await readFileP(spec.file);
+		return await readFileP(context.resolvePath(spec.file));
 	},
 
 	async "delimited"(spec, langs, context) {
-		const data = await readFileP(spec.file);
+		const fpath = context.resolvePath(spec.file);
+		const data = await readFileP(fpath);
 		const pieces = bufferSplitMulti(data, spec.delimiters);
 		const labelsCoded = {} as Labels<CodedString>;
 
@@ -228,7 +230,7 @@ const LabelLoader: {
 			throw new VError(
 				{
 					info: {
-						path: spec.file
+						path: fpath
 					}
 				},
 				"Delimited labels file should have contained 5 parts, but instead contains %d.",
