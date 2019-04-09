@@ -4,13 +4,34 @@ import Context from "./Context";
 import { LicenseSpec } from "./spec";
 import { arrayify } from "./util";
 
-export interface Language {
+interface LabelsByName {
+	[langTag: string]: Labels<string | Buffer> | undefined;
+}
+
+export class Language {
 	langTags: string[];
 	encodings: string[];
 	englishName: string;
 	localizedName: string;
 	labels?: Labels<string | Buffer>;
 	regionCode: number;
+
+	constructor(
+		regionCode: number,
+		rawLocale: any,
+		labelsByName: LabelsByName
+	) {
+		this.encodings = rawLocale.encodings;
+		this.englishName = rawLocale.englishName;
+		this.labels = labelsByName[rawLocale.labels];
+		this.langTags = rawLocale.langTags;
+		this.localizedName = rawLocale.localizedName;
+		this.regionCode = regionCode;
+	}
+
+	toString() {
+		return `${this.englishName} (region ${this.regionCode}; ${this.langTags.join(", ")})`;
+	}
 }
 
 export namespace Language {
@@ -51,9 +72,7 @@ export const byRegionCode: Array<Language | undefined> = [];
 	// tslint:disable-next-line: no-var-requires
 	const langJSON: any = require("./languages.json");
 
-	const labelsByName: {
-		[langTag: string]: Labels<string | Buffer> | undefined;
-	} = {};
+	const labelsByName: LabelsByName = {};
 
 	for (const labelsName in langJSON.labels) {
 		const rawLabels = langJSON.labels[labelsName];
@@ -73,18 +92,11 @@ export const byRegionCode: Array<Language | undefined> = [];
 	}
 
 	for (const regionCodeStr in langJSON.locales) {
-		const regionCode = Number(regionCodeStr);
-		const rawLocale = langJSON.locales[regionCodeStr];
-		const labels = labelsByName[rawLocale.labels];
-
-		const entry: Language = {
-			encodings: rawLocale.encodings,
-			englishName: rawLocale.englishName,
-			labels,
-			langTags: rawLocale.langTags,
-			localizedName: rawLocale.localizedName,
-			regionCode
-		};
+		const entry = new Language(
+			Number(regionCodeStr),
+			langJSON.locales[regionCodeStr],
+			labelsByName
+		);
 
 		byRegionCode[entry.regionCode] = entry;
 		for (const locale of entry.langTags)
