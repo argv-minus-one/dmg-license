@@ -106,7 +106,7 @@ export namespace LabelsSpec {
 	}
 
 	export interface LabelsOnePerFile extends Labels {
-		charset?: "native" | string;
+		charset?: "UTF-8" | "native" | string;
 		delimiters?: never;
 		encoding?: "base64";
 		file?: never;
@@ -138,7 +138,7 @@ export namespace LabelsSpec {
 	}
 
 	export interface LabelsInDelimitedFile extends NoLabels {
-		charset: "native" | string;
+		charset: "UTF-8" | "native" | string;
 		delimiters: Array<"tab" | "lf" | "cr" | "crlf" | "nul" | "eol" | Uint8Array>;
 		encoding?: "base64";
 		file: string;
