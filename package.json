@@ -37,6 +37,7 @@
 		"@types/verror": "^1.10.3",
 		"map-obj": "^3.0.0",
 		"resourceforkjs": "^0.1.0",
+		"tslint": "^5.15.0",
 		"typescript": "^3.3.4000"
 	},
 	"engines": {
