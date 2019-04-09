@@ -1,6 +1,5 @@
-import throwAll from "./throwAll";
-import Tuple from "./Tuple";
 import { ErrorBuffer } from "./errors";
+import Tuple from "./Tuple";
 
 /**
  * Same as `Promise.all`, except:
