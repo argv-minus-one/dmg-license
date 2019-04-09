@@ -1,14 +1,14 @@
 import { SmartBuffer } from "smart-buffer";
+import { VError } from "verror";
 import { Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
 import { Language } from "./languages";
-import RCData from "./RCData";
 import { LabelsSpec, LicenseSpec } from "./spec";
-import { readFileP, unarrayify, arrayify } from "./util";
+import { arrayify, readFileP, unarrayify } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
-import { VError } from "verror";
-const {freeze} = Object;
+import { ErrorBuffer } from "./util/errors";
+const { freeze } = Object;
 
 export interface Labels<T = string> {
 	agree: T;
@@ -162,8 +162,9 @@ const LabelLoader: {
 
 		for (const labelKey of Labels.keys) {
 			labelsCoded[labelKey] = {
-				...spec,
-				data: await readFileP(spec[labelKey])
+				charset: spec.charset || "UTF-8",
+				data: await readFileP(spec[labelKey]),
+				encoding: spec.encoding
 			};
 		}
 
@@ -171,66 +172,74 @@ const LabelLoader: {
 	},
 
 	async "json"(spec, langs, context) {
-		const json = JSON.parse((await readFileP(spec.labels.file)).toString("UTF-8"));
+		const json = JSON.parse((await readFileP(spec.file)).toString("UTF-8"));
 
-		if (typeof json !== "object") throw Object.assign(
-			new Error(`Root value of JSON file is not an object.`),
+		if (typeof json !== "object") throw new VError(
 			{
-				path: spec.labels.file
-			}
+				info: {
+					path: spec.file
+				}
+			},
+			"Root value of JSON file is not an object."
 		);
 
 		const labelsCoded = {} as Labels<CodedString>;
-		const errors: Error[] = [];
+		const errors = new ErrorBuffer();
 
 		for (const labelKey of Labels.keys) {
 			const data = json[labelKey];
 
-			if (typeof data !== "string") errors.push(Object.assign(
-				new Error(`Root object of JSON file's ‘${labelKey}’ property has type ${data === null ? "null" : typeof data}, but should be string.`),
-				{
-					path: spec.labels.file
-				}
-			));
+			if (typeof data !== "string") {
+				errors.add(new VError(
+					{
+						info: {
+							path: spec.file
+						}
+					},
+					"Root object of JSON file's ‘%s’ property has type %s, but should be string.",
+					labelKey,
+					data === null ? "null" : typeof data
+				));
+				continue;
+			}
 
 			labelsCoded[labelKey] = {
-				...spec.labels,
-				data
+				charset: spec.charset!,
+				data,
+				encoding: spec.encoding!
 			};
 		}
 
-		if (errors.length)
-			throw errors;
-		else
-			return Labels.pack(labelsCoded, langs, context);
+		errors.check();
+		return Labels.pack(labelsCoded, langs, context);
 	},
 
 	async "raw"(spec, langs, context) {
 		// Simplest case. The STR# resource is already fully assembled; it just needs to be returned.
-		const data = await readFileP(spec.labels.file);
-		return langs.map(lang => ({
-			data,
-			regionCode: lang.regionCode
-		}));
+		return await readFileP(spec.file);
 	},
 
 	async "delimited"(spec, langs, context) {
-		const data = await readFileP(spec.labels.file);
-		const pieces = bufferSplitMulti(data, spec.labels.delimiters);
+		const data = await readFileP(spec.file);
+		const pieces = bufferSplitMulti(data, spec.delimiters);
 		const labelsCoded = {} as Labels<CodedString>;
 
 		if (pieces.length !== 5) {
-			throw Object.assign(
-				new Error(`Delimited labels file should have contained 5 parts, but instead contains ${pieces.length}.`),
+			throw new VError(
 				{
-					path: spec.labels.file
-				}
+					info: {
+						path: spec.file
+					}
+				},
+				"Delimited labels file should have contained 5 parts, but instead contains %d.",
+				pieces.length
 			);
 		}
 		else {
 			Labels.keys.forEach((key, index) => labelsCoded[key] = {
-				...spec.labels,
-				data: pieces[index]
+				charset: spec.charset,
+				data: pieces[index],
+				encoding: spec.encoding
 			});
 		}
 
