@@ -1,4 +1,4 @@
-This stuff is used to generate `../lib/languages.json`. You don't need it in order to use dmg-license; it's only of use if you want to regenerate that JSON file.
+This stuff is used to generate `../language-info.json`. You don't need it in order to use dmg-license; it's only of use if you want to regenerate that JSON file.
 
 ## `SLAResources`
 
