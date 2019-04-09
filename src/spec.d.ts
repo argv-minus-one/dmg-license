@@ -26,49 +26,6 @@ export type BodySpec = {
 	}
 );
 
-/*export type LabelsSpec = (Labels & (
-	{
-		type?: "inline";
-		charset?: never;
-		encoding?: never;
-		delimiters?: never;
-	} | {
-		type?: "inline";
-		charset: "native" | string;
-		encoding: "base64";
-		delimiters?: never;
-	} | {
-		type: "one-per-file";
-		charset?: "native" | string;
-		encoding?: "base64";
-		delimiters?: never;
-	}
-)) | (NoLabels & {
-	file: string;
-} & (
-	{
-		type: "json";
-		charset?: never;
-		encoding?: never;
-		delimiters?: never;
-	} | {
-		type: "json";
-		charset: "native" | string;
-		encoding: "base64";
-		delimiters?: never;
-	} | {
-		type: "raw";
-		charset?: never;
-		encoding?: never;
-		delimiters?: never;
-	} | {
-		type: "delimited";
-		charset: "native" | string;
-		encoding?: "base64";
-		delimiters: Array<"tab" | "lf" | "cr" | "crlf" | "nul" | "eol" | Uint8Array>;
-	}
-));*/
-
 export type LabelsSpec =
 	LabelsSpec.LabelsInline |
 	LabelsSpec.LabelsInlineBase64 |
