@@ -1,5 +1,4 @@
 node_modules
-lib/**.js
-lib/**.js.map
+lib
 *.class
 language-info-generator/Language names.tsv
