@@ -82,11 +82,12 @@ export namespace LabelsSpec {
 	export type Type = Exclude<LabelsSpec["type"], undefined>;
 
 	export type ForType<T extends LabelsSpec["type"]> =
-		LabelsSpec & (
-			T extends "inline" ?
-			{ type?: T } :
-			{ type: T }
-		);
+		T extends (undefined | null | "" | "inline") ? (LabelsInline | LabelsInlineBase64) :
+		T extends "one-per-file" ? LabelsOnePerFile :
+		T extends "json" ? (LabelsInJSON | LabelsInJSONBase64) :
+		T extends "raw" ? LabelsInRawFile :
+		T extends "delimited" ? LabelsInDelimitedFile :
+		never;
 
 	export interface LabelsInline extends Labels {
 		charset?: never;
