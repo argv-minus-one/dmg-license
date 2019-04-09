@@ -14,6 +14,7 @@ export interface LicenseContentItem {
 		type: "RTF " | "TEXT";
 	};
 	labels: Buffer;
+	langs: Language[];
 	regionCodes: number[];
 }
 
@@ -126,7 +127,6 @@ namespace LicenseContent {
 					ret.defaultRegionCode = content.langs[0].regionCode;
 			}
 
-			delete content.langs;
 			delete content.spec;
 		}
 
