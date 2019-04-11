@@ -307,7 +307,8 @@
         "ja-JP"
       ],
       "englishName": "Japanese",
-      "localizedName": "日本語"
+      "localizedName": "日本語",
+      "doubleByteCharset": true
     },
     "15": {
       "encodings": [
@@ -605,7 +606,8 @@
         "ko-KR"
       ],
       "englishName": "Korean",
-      "localizedName": "한국어"
+      "localizedName": "한국어",
+      "doubleByteCharset": true
     },
     "52": {
       "encodings": [
@@ -619,7 +621,8 @@
         "zh-Hans"
       ],
       "englishName": "Chinese (Simplified)",
-      "localizedName": "中文 (简体)"
+      "localizedName": "中文 (简体)",
+      "doubleByteCharset": true
     },
     "53": {
       "encodings": [
@@ -633,7 +636,8 @@
         "zh-Hant"
       ],
       "englishName": "Chinese (Traditional)",
-      "localizedName": "中文 (繁體)"
+      "localizedName": "中文 (繁體)",
+      "doubleByteCharset": true
     },
     "54": {
       "encodings": [

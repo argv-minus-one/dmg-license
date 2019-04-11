@@ -10,6 +10,7 @@ interface LicenseLocale {
 	encodings: string[];
 	englishName: string;
 	localizedName: string;
+	doubleByteCharset?: boolean;
 }
 
 interface LicenseLanguageData {
@@ -131,7 +132,8 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 			encodings,
 			labels: labelRef,
 			langTags,
-			...name
+			...name,
+			doubleByteCharset: locale.doubleByteCharset || undefined
 		};
 	}
 
