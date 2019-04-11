@@ -5,7 +5,7 @@ import Tuple from "./Tuple";
  * Same as `Promise.all`, except:
  *
  * 1. The returned `Promise` resolves or rejects only after *all* of the provided `Promise`s resolve or reject.
- * 2. If more than one of the provided `Promise`s reject, the returned promise rejects with an array containing *all* of the rejection reasons.
+ * 2. If more than one of the provided `Promise`s reject, the returned promise rejects with a `MultiError` containing *all* of the rejection reasons.
  *
  * @param ctor - Which `Promise` implementation to use. Defaults to the native implementation.
  */
