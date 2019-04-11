@@ -72,16 +72,11 @@ export class ResourceDecodingError extends VError {
 	) {
 		super(
 			options,
-			"Can't decode resource %d (for region %d) from %s" + (message ? ": " + message : "%s"),
+			"Can't decode resource %d (for region %d) from %s" + (message ? ": " + message : (options.cause && options.cause.message) ? "" : "."),
 			options.info.resourceID,
 			options.info.regionCode,
 			options.info.encoding,
-			...(
-				message ? params : [
-					options.cause ? `: ${options.cause.message}` : ".",
-					...params
-				]
-			)
+			...params
 		);
 	}
 }
@@ -222,12 +217,7 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 										regionCode,
 										resourceID: r.id
 									}
-								},
-								"Can't decode resource %d (for region %d) using %s: %s",
-								r.id,
-								regionCode,
-								encoding,
-								e.message
+								}
 							),
 							rawLabels
 						);
