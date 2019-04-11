@@ -10,6 +10,7 @@ interface LabelsByName {
 
 export class Language {
 	langTags: string[];
+	doubleByteCharset: boolean;
 	encodings: string[];
 	englishName: string;
 	localizedName: string;
@@ -21,6 +22,7 @@ export class Language {
 		rawLocale: any,
 		labelsByName: LabelsByName
 	) {
+		this.doubleByteCharset = rawLocale.doubleByteCharset || false;
 		this.encodings = rawLocale.encodings;
 		this.englishName = rawLocale.englishName;
 		this.labels = labelsByName[rawLocale.labels];

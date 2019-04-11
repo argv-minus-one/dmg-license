@@ -60,7 +60,7 @@ export default function makeLicensePlist(
 
 			// Mapping field 3: 2-byte language?
 			// TODO: Figure out how modern macOS interprets this flag.
-			buf.writeInt16BE(0);
+			buf.writeInt16BE(item.langs.some(lang => lang.doubleByteCharset) ? 1 : 0);
 		}
 
 		ret.LPic.push({
