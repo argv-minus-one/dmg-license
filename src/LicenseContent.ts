@@ -1,9 +1,9 @@
 import { LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
-import { Labels } from "./Labels";
 import * as languages from "./languages";
 import { Language } from "./languages";
+import loadLabels from "./loadLabels";
 import { readFileP } from "./util";
 import { ErrorBuffer } from "./util/errors";
 import PromiseEach from "./util/PromiseEach";
@@ -79,7 +79,7 @@ namespace LicenseContent {
 
 			const [body, labels] = await PromiseEach([
 				loadBody(spec, langs, context),
-				Labels.load(spec, context, langs)
+				loadLabels(spec, context, langs)
 			]);
 
 			return {
