@@ -12,5 +12,5 @@
 	"outDir": "lib",
 	"declaration": true
 },
-"include": ["src/**.ts", "src/util/Tuple.d.ts", "src/util/throwAll.ts", "src/util/PromiseEach.ts", "src/util/buffer-split.ts", "src/util/util.ts"]
+"include": ["src/**.ts"]
 }
