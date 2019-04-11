@@ -46,7 +46,16 @@ export class InvalidResourceError extends VError {
 	}
 }
 
-export class ResourceFileNotFoundError extends VError {}
+export class ResourceFileNotFoundError extends Error {
+	constructor(resourcesFilePath: string) {
+		super(`SLAResources file not found at: ${resourcesFilePath}
+Generated language data will not contain any predefined label sets!
+
+To fix this error, you need to obtain the SLAResources file from Apple. See language-info-generator/README.md for more information.
+
+If you have the SLAResources file but it's not at the usual path, set the $SLAResources environment variable to the correct path.`);
+	}
+}
 
 export class ResourceDecodingError extends VError {
 	constructor(
@@ -120,14 +129,8 @@ export type LicenseLabelMap = Map<number, LicenseLabels>;
 
 async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabelMap> {
 	const rmap = await ResourceForkLib.readResourceFork(config.resourcesFile, !config.fromDataFork).catch(e => {
-		if (e instanceof Error && (e as NodeJS.ErrnoException).code === "ENOENT") {
-			throw new ResourceFileNotFoundError(e, `SLAResources file not found at: %s
-Generated language data will not contain any predefined label sets!
-
-To fix this error, you need to obtain the SLAResources file from Apple. See language-info-generator/README.md for more information.
-
-If you have the SLAResources file but it's not at the usual path, set the $SLAResources environment variable to the correct path.`, config.resourcesFile);
-		}
+		if (e instanceof Error && (e as NodeJS.ErrnoException).code === "ENOENT")
+			throw new ResourceFileNotFoundError(config.resourcesFile);
 		else
 			throw e;
 	});
