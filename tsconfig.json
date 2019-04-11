@@ -10,7 +10,8 @@
 		{"name": "typescript-tslint-plugin"}
 	],
 	"outDir": "lib",
-	"declaration": true
+	"declaration": true,
+	"typeRoots": ["typings"]
 },
 "include": ["src/**.ts"]
 }

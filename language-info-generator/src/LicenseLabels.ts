@@ -1,5 +1,3 @@
-/// <reference path="./iconv.d.ts" />
-
 import { Iconv } from "iconv";
 import mapObj = require("map-obj");
 import * as ResourceForkLib from "resourceforkjs";
