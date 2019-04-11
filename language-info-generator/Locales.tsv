@@ -1,87 +1,87 @@
 # Mac OS region name	Region code	Applicable languages	Display name language	Character encodings	Comment	STR# Resource ID
 verUS	0	en-US	en-US	MacRoman,ASCII		5002
 verFrance	1	fr-FR	fr	MacRoman,ASCII		5004
-verBritain	2	en-GB	en-GB	MacRoman,ASCII
+verBritain	2	en-GB	en-GB	MacRoman,ASCII		
 verGermany	3	de-DE	de	MacRoman,ASCII		5001
 verItaly	4	it-IT	it	MacRoman,ASCII		5005
 verNetherlands	5	nl-NL	nl	MacRoman,ASCII		5007
-verFlemish	6	nl-BE	nl-BE	MacRoman,ASCII	Flemish (Dutch) for Belgium
+verFlemish	6	nl-BE	nl-BE	MacRoman,ASCII	Flemish (Dutch) for Belgium	
 verSweden	7	sv-SE	sv	MacRoman,ASCII		5008
 verSpain	8	es-ES	es	MacRoman,ASCII	Spanish for Spain	5003
 verDenmark	9	da-DK	da	MacRoman,ASCII		5012
-verPortugal	10	pt-PT	pt	MacRoman,ASCII	Portuguese for Portugal
+verPortugal	10	pt-PT	pt	MacRoman,ASCII	Portuguese for Portugal	
 verFrCanada	11	fr-CA	fr-CA	MacRoman,ASCII	French for Canada	5014
 verNorway	12	nb-NO	nb	MacRoman,ASCII	Bokmål	5016
-verIsrael	13	he-IL	he	MacHebrew,ASCII	Hebrew
+verIsrael	13	he-IL	he	MacHebrew,ASCII	Hebrew	
 verJapan	14	ja-JP	ja	MacJapanese		5006
-verAustralia	15	en-AU	en-AU	MacRoman,ASCII	English for Australia
-verArabic	16	ar	ar	MacArabic,ASCII	Arabic for N Africa, Arabian peninsula, Levant
+verAustralia	15	en-AU	en-AU	MacRoman,ASCII	English for Australia	
+verArabic	16	ar	ar	MacArabic,ASCII	Arabic for N Africa, Arabian peninsula, Levant	
 verFinland	17	fi-FI	fi	MacRoman,ASCII		5013
-verFrSwiss	18	fr-CH	fr-CH	MacRoman,ASCII	French Swiss
-verGrSwiss	19	de-CH	de-CH	MacRoman,ASCII	German Swiss
-verGreece	20	el-GR	el	MacGreek,ASCII	Monotonic Greek (modern)
-verIceland	21	is-IS	is	MacIceland,ASCII
-verMalta	22	mt-MT	mt	MacRoman,ASCII
-verCyprus	23	el-CY	el-CY	MacRoman,ASCII
-verTurkey	24	tr-TR	tr	MacTurkish,ASCII
-verIndiaHindi	33	hi-IN	hi	MacDevanagari,ASCII	Hindi for India
-verPakistanUrdu	34	ur-PK	ur-PK	MacArabic,ASCII	Urdu for Pakistan
-verTurkishModified	35	tr-TR	tr	MacTurkish,ASCII
-verItalianSwiss	36	it-CH	it-CH	MacRoman,ASCII	Italian Swiss
-verInternational	37	en-001	en-001	ASCII	English for international use; ASCII chars only
-verRomania	39	ro-RO	ro	MacRomania,ASCII
-verLithuania	41	lt-LT	lt	MacCentralEurope,ASCII
-verPoland	42	pl-PL	pl	MacCentralEurope,ASCII
-verHungary	43	hu-HU	hu	MacCentralEurope,ASCII
-verEstonia	44	et-EE	et	MacCentralEurope,ASCII
-verLatvia	45	lv-LV	lv	MacCentralEurope,ASCII
-verSami	46	se	se	MacRoman,ASCII
-verFaroeIsl	47	fo-FO	fo	MacIceland,ASCII
-verIran	48	fa-IR	fa	MacFarsi,ASCII	Persian/Farsi
-verRussia	49	ru-RU	ru	MacCyrillic,ASCII	Russian
-verIreland	50	ga-IE	ga-IE	MacCeltic,ASCII	Irish Gaelic for Ireland (without dot above)
+verFrSwiss	18	fr-CH	fr-CH	MacRoman,ASCII	French Swiss	
+verGrSwiss	19	de-CH	de-CH	MacRoman,ASCII	German Swiss	
+verGreece	20	el-GR	el	MacGreek,ASCII	Monotonic Greek (modern)	
+verIceland	21	is-IS	is	MacIceland,ASCII		
+verMalta	22	mt-MT	mt	MacRoman,ASCII		
+verCyprus	23	el-CY	el-CY	MacRoman,ASCII		
+verTurkey	24	tr-TR	tr	MacTurkish,ASCII		
+verIndiaHindi	33	hi-IN	hi	MacDevanagari,ASCII	Hindi for India	
+verPakistanUrdu	34	ur-PK	ur-PK	MacArabic,ASCII	Urdu for Pakistan	
+verTurkishModified	35	tr-TR	tr	MacTurkish,ASCII		
+verItalianSwiss	36	it-CH	it-CH	MacRoman,ASCII	Italian Swiss	
+verInternational	37	en-001	en-001	ASCII	English for international use; ASCII chars only	
+verRomania	39	ro-RO	ro	MacRomania,ASCII		
+verLithuania	41	lt-LT	lt	MacCentralEurope,ASCII		
+verPoland	42	pl-PL	pl	MacCentralEurope,ASCII		
+verHungary	43	hu-HU	hu	MacCentralEurope,ASCII		
+verEstonia	44	et-EE	et	MacCentralEurope,ASCII		
+verLatvia	45	lv-LV	lv	MacCentralEurope,ASCII		
+verSami	46	se	se	MacRoman,ASCII		
+verFaroeIsl	47	fo-FO	fo	MacIceland,ASCII		
+verIran	48	fa-IR	fa	MacFarsi,ASCII	Persian/Farsi	
+verRussia	49	ru-RU	ru	MacCyrillic,ASCII	Russian	
+verIreland	50	ga-IE	ga-IE	MacCeltic,ASCII	Irish Gaelic for Ireland (without dot above)	
 verKorea	51	ko-KR	ko	MacKorean,ASCII		5015
 verChina	52	zh-CN,zh-Hans	zh-Hans	MacSimpChinese,MacChineseSimp,ASCII	Simplified Chinese	5010
 verTaiwan	53	zh-TW,zh-Hant	zh-Hant	MacTradChinese,MacChineseTrad,ASCII	Traditional Chinese	5011
-verThailand	54	th-TH	th	MacThai,ASCII
-verCzech	56	cs-CZ	cs	MacCentralEurope,ASCII
-verSlovak	57	sk-SK	sk	MacCentralEurope,ASCII
-verBengali	60	bn	bn	MacBengali	Bangladesh or India
-verBelarus	61	be-BY	be	MacCyrillic,ASCII
-verUkraine	62	uk-UA	uk	MacUkraine,ASCII
-verSerbian	65	sr-CS	sr	MacCyrillic,ASCII
-verSlovenian	66	sl-SI	sl	MacCroatian,ASCII
-verMacedonian	67	mk-MK	mk	MacCyrillic,ASCII
-verCroatia	68	hr-HR	hr	MacCroatian,ASCII
+verThailand	54	th-TH	th	MacThai,ASCII		
+verCzech	56	cs-CZ	cs	MacCentralEurope,ASCII		
+verSlovak	57	sk-SK	sk	MacCentralEurope,ASCII		
+verBengali	60	bn	bn	MacBengali	Bangladesh or India	
+verBelarus	61	be-BY	be	MacCyrillic,ASCII		
+verUkraine	62	uk-UA	uk	MacUkraine,ASCII		
+verSerbian	65	sr-CS	sr	MacCyrillic,ASCII		
+verSlovenian	66	sl-SI	sl	MacCroatian,ASCII		
+verMacedonian	67	mk-MK	mk	MacCyrillic,ASCII		
+verCroatia	68	hr-HR	hr	MacCroatian,ASCII		
 verBrazil	71	pt-BR	pt-BR	MacRoman,ASCII	Portuguese for Brazil	5009
-verBulgaria	72	bg-BG	bg	MacCyrillic,ASCII
-verCatalonia	73	ca-ES	ca-ES	MacRoman,ASCII	Catalan for Spain
-verScottishGaelic	75	gd	gd	MacCeltic,ASCII
-verManxGaelic	76	gv	gv	MacCeltic,ASCII	Isle of Man
-verBreton	77	br	br	MacCeltic,ASCII
-verNunavut	78	iu-CA	iu	MacInuit,ASCII	Inuktitut for Canada
-verWelsh	79	cy	cy	MacCeltic,ASCII
-verIrishGaelicScript	81	ga-Latg-IE	ga-Latg-IE	MacGaelic,ASCII	Irish Gaelic for Ireland (using dot above)
-verEngCanada	82	en-CA	en-CA	MacRoman,ASCII	English for Canada
-verBhutan	83	dz-BT	dz	MacTibetan	Dzongkha for Bhutan
-verArmenian	84	hy-AM	hy	MacArmenian
-verGeorgian	85	ka-GE	ka	MacGeorgian
-verSpLatinAmerica	86	es-419	es-419	MacRoman,ASCII	Spanish for Latin America (private ISO 3166 code)
-verTonga	88	to-TO	to	MacRoman,ASCII
-verFrenchUniversal	91	fr-001	fr-001	MacRoman,ASCII	French generic
-verAustria	92	de-AT	de-AT	MacRoman,ASCII	German for Austria
-verGujarati	94	gu-IN	gu-IN	MacGujarati,ASCII
-verPunjabi	95	pa	pa	MacGurmukhi,ASCII	Pakistan or India
-verIndiaUrdu	96	ur-IN	ur-IN	MacArabic,ASCII	Urdu for India
-verVietnam	97	vi-VN	vi	MacVietnamese
-verFrBelgium	98	fr-BE	fr-BE	MacRoman,ASCII	French for Belgium
-verUzbek	99	uz-UZ	uz	MacCyrillic,ASCII
-verSingapore	100	en-SG	en-SG	MacRoman,ASCII	(Assume English, not Chinese or Malay)
-verNynorsk	101	nn-NO	nn	MacRoman,ASCII	Norwegian Nynorsk
-verAfrikaans	102	af-ZA	af-ZA	MacRoman,ASCII
-verEsperanto	103	eo	eo	MacRoman,ASCII
-verMarathi	104	mr-IN	mr-IN	MacDevanagari,ASCII
-verTibetan	105	bo	bo	MacTibetan
-verNepal	106	ne-NP	ne	MacDevanagari,ASCII
-verGreenland	107	kl	kl	MacRoman,ASCII
-verIrelandEnglish	108	en-IE	en-IE	MacRoman,ASCII	English for Ireland, with Euro for currency
+verBulgaria	72	bg-BG	bg	MacCyrillic,ASCII		
+verCatalonia	73	ca-ES	ca-ES	MacRoman,ASCII	Catalan for Spain	
+verScottishGaelic	75	gd	gd	MacCeltic,ASCII		
+verManxGaelic	76	gv	gv	MacCeltic,ASCII	Isle of Man	
+verBreton	77	br	br	MacCeltic,ASCII		
+verNunavut	78	iu-CA	iu	MacInuit,ASCII	Inuktitut for Canada	
+verWelsh	79	cy	cy	MacCeltic,ASCII		
+verIrishGaelicScript	81	ga-Latg-IE	ga-Latg-IE	MacGaelic,ASCII	Irish Gaelic for Ireland (using dot above)	
+verEngCanada	82	en-CA	en-CA	MacRoman,ASCII	English for Canada	
+verBhutan	83	dz-BT	dz	MacTibetan	Dzongkha for Bhutan	
+verArmenian	84	hy-AM	hy	MacArmenian		
+verGeorgian	85	ka-GE	ka	MacGeorgian		
+verSpLatinAmerica	86	es-419	es-419	MacRoman,ASCII	Spanish for Latin America (private ISO 3166 code)	
+verTonga	88	to-TO	to	MacRoman,ASCII		
+verFrenchUniversal	91	fr-001	fr-001	MacRoman,ASCII	French generic	
+verAustria	92	de-AT	de-AT	MacRoman,ASCII	German for Austria	
+verGujarati	94	gu-IN	gu-IN	MacGujarati,ASCII		
+verPunjabi	95	pa	pa	MacGurmukhi,ASCII	Pakistan or India	
+verIndiaUrdu	96	ur-IN	ur-IN	MacArabic,ASCII	Urdu for India	
+verVietnam	97	vi-VN	vi	MacVietnamese		
+verFrBelgium	98	fr-BE	fr-BE	MacRoman,ASCII	French for Belgium	
+verUzbek	99	uz-UZ	uz	MacCyrillic,ASCII		
+verSingapore	100	en-SG	en-SG	MacRoman,ASCII	(Assume English, not Chinese or Malay)	
+verNynorsk	101	nn-NO	nn	MacRoman,ASCII	Norwegian Nynorsk	
+verAfrikaans	102	af-ZA	af-ZA	MacRoman,ASCII		
+verEsperanto	103	eo	eo	MacRoman,ASCII		
+verMarathi	104	mr-IN	mr-IN	MacDevanagari,ASCII		
+verTibetan	105	bo	bo	MacTibetan		
+verNepal	106	ne-NP	ne	MacDevanagari,ASCII		
+verGreenland	107	kl	kl	MacRoman,ASCII		
+verIrelandEnglish	108	en-IE	en-IE	MacRoman,ASCII	English for Ireland, with Euro for currency	
