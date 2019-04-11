@@ -70,7 +70,7 @@ export const byRegionCode: Array<Language | undefined> = [];
 
 {
 	// tslint:disable-next-line: no-var-requires
-	const langJSON: any = require("../languages.json");
+	const langJSON: any = require("../language-info.json");
 
 	const labelsByName: LabelsByName = {};
 
