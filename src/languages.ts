@@ -1,7 +1,7 @@
 import bufferFrom = require("buffer-from");
-import { Labels } from ".";
+import { LicenseSpec } from ".";
 import Context from "./Context";
-import { LicenseSpec } from "./spec";
+import { Labels } from "./Labels";
 import { arrayify } from "./util";
 
 interface LabelsByName {

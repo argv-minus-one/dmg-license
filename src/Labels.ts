@@ -1,10 +1,9 @@
 import { SmartBuffer } from "smart-buffer";
 import { VError } from "verror";
-import { Options } from ".";
+import { LabelsSpec, LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
 import { Language } from "./languages";
-import { LabelsSpec, LicenseSpec } from "./spec";
 import { arrayify, readFileP, unarrayify } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
 import { ErrorBuffer } from "./util/errors";
