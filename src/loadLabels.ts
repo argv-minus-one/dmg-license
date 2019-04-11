@@ -4,7 +4,7 @@ import { Labels, LabelsSpec, LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
 import { Language } from "./languages";
-import { arrayify, readFileP, unarrayify } from "./util";
+import { arrayify, readFileP } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
 import { ErrorBuffer } from "./util/errors";
 
@@ -97,17 +97,7 @@ function loadDefault(
 			return Promise.resolve(data);
 	}
 
-	return Promise.reject(new VError(
-		{
-			cause: VError.errorFromList(errors) || undefined,
-			info: {
-				lang: spec.lang,
-				regionCode: unarrayify(langs.map(lang => lang.regionCode))
-			}
-		},
-		"No default labels found for language(s) %s. The “labels” property must be present for these language(s).",
-		arrayify(spec.lang).map((langTag, index) => `${langTag} (${langs[index].englishName})`).join(", ")
-	));
+	return Promise.reject(VError.errorFromList(errors));
 }
 
 type LabelLoader<T extends LabelsSpec.Type | undefined> = (

@@ -108,7 +108,7 @@ class IconvCache {
 					targetLanguage: langs
 				}
 			},
-			"None of the suitable character set(s) can represent the text to be encoded."
+			"None of the suitable character set(s) can represent the text to be encoded"
 		);
 	}
 }
