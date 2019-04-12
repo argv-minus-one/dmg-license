@@ -45,6 +45,10 @@ class IconvCache {
 		chars: string | { data: Buffer, charset: string },
 		langs: Language[]
 	): Buffer {
+		function langList() {
+			return langs.map(lang => lang.englishName).join(", ");
+		}
+
 		if (langs.length < 1)
 			throw new RangeError("tryCharEncode called with an empty array for langs.");
 
@@ -77,8 +81,8 @@ class IconvCache {
 						targetLanguage: langs
 					}
 				},
-				"There are no character sets in common for the languages %s.",
-				langs.map(lang => lang.englishName).join(", ")
+				"The language(s) %s have no character sets in common. It is impossible to encode text in a way that's valid for all of them.",
+				langList()
 			);
 		}
 
@@ -108,7 +112,9 @@ class IconvCache {
 					targetLanguage: langs
 				}
 			},
-			"None of the suitable character set(s) can represent the text to be encoded"
+			"None of the character set(s) for the language(s) %s can fully represent the text to be encoded%s",
+			langList(),
+			errors.length ? "" : "."
 		);
 	}
 }
