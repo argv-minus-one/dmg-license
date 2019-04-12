@@ -1,8 +1,8 @@
 import { promisify } from "util";
+import PromiseEach from "../src/util/PromiseEach";
 import LanguageNames from "./LanguageNames";
 import LicenseLabels, { LicenseLabelMap, ResourceFileNotFoundError } from "./LicenseLabels";
 import MacLocale from "./MacLocale";
-import PromiseEach from "./util/PromiseEach";
 
 interface LicenseLocale {
 	labels?: keyof LicenseLanguageData["labels"];
@@ -24,9 +24,9 @@ interface LicenseLanguageData {
 
 async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonFatalError: (error: Error) => void): Promise<void> {
 	// Load everything in parallel.
-	const languageNamesPromise = LanguageNames(require.resolve("../Language names.tsv"));
+	const languageNamesPromise = LanguageNames(require.resolve("./Language names.tsv"));
 
-	const localesPromise = MacLocale(require.resolve("../Locales.tsv"));
+	const localesPromise = MacLocale(require.resolve("./Locales.tsv"));
 
 	const labelMapPromise: Promise<LicenseLabelMap> = (async () => {
 		if (!resourcesFile)
