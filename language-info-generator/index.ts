@@ -1,8 +1,8 @@
 import { promisify } from "util";
 import { LanguageInfoLabels } from "../src/Labels";
 import PromiseEach from "../src/util/PromiseEach";
+import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageNames from "./LanguageNames";
-import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./LicenseLabels";
 import MacLocale from "./MacLocale";
 
 interface LicenseLocale {
