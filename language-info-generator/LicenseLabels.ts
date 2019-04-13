@@ -64,7 +64,7 @@ export class ResourceDecodingError extends VError {
 			info: VErrorInfo & {
 				regionCode: number;
 				resourceID: number;
-				encoding: string | ReadonlyArray<string>;
+				charset: string | ReadonlyArray<string>;
 			};
 		},
 		message?: string,
@@ -75,7 +75,7 @@ export class ResourceDecodingError extends VError {
 			"Can't decode resource %d (for region %d) from %s" + (message ? ": " + message : (options.cause && options.cause.message) ? "" : "."),
 			options.info.resourceID,
 			options.info.regionCode,
-			options.info.encoding,
+			options.info.charset,
 			...params
 		);
 	}
@@ -179,21 +179,21 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 		let labels: LicenseLabels = rawLabels;
 		let labelsWereDecoded = false;
 
-		const encodings = config.lookupEncodings && config.lookupEncodings(regionCode) || [];
-		if (encodings.length) {
-			for (const encoding of encodings) {
+		const charsets = config.lookupCharsets && config.lookupCharsets(regionCode) || [];
+		if (charsets.length) {
+			for (const charset of charsets) {
 				let iconv: Iconv;
 
 				try {
-					iconv = new Iconv(encoding, "UTF8");
+					iconv = new Iconv(charset, "UTF8");
 				}
 				catch (e) {
-					// Errors thrown from the Iconv constructor don't indicate whether it's because an encoding was not supported (other than in the message, but there's no guarantee that it won't change), so we have to assume that anything thrown from there means that encoding isn't supported.
-					if (config.onWrongEncoding) config.onWrongEncoding(
+					// Errors thrown from the Iconv constructor don't indicate whether it's because a charset was not supported (other than in the message, but there's no guarantee that it won't change), so we have to assume that anything thrown from there means that charset isn't supported.
+					if (config.onWrongCharset) config.onWrongCharset(
 						new ResourceDecodingError({
 							cause: e,
 							info: {
-								encoding,
+								charset,
 								regionCode,
 								resourceID: r.id
 							}
@@ -207,13 +207,13 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 					labels = mapObj(rawLabels, (field, rawLabel) => [field, iconv.convert(rawLabel).toString("UTF8")]);
 				} catch (e) {
 					if (e instanceof Error && (e as any).code === "EILSEQ") {
-						// This encoding doesn't match the string. Try another.
-						if (config.onWrongEncoding) config.onWrongEncoding(
+						// This charset doesn't match the string. Try another.
+						if (config.onWrongCharset) config.onWrongCharset(
 							new ResourceDecodingError(
 								{
 									cause: e,
 									info: {
-										encoding,
+										charset,
 										regionCode,
 										resourceID: r.id
 									}
@@ -228,7 +228,7 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 							{
 								cause: e,
 								info: {
-									encoding,
+									charset,
 									regionCode,
 									resourceID: r.id
 								}
@@ -237,18 +237,18 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 					}
 				}
 
-				// If that didn't throw, then iconv has successfully transcoded all of the strings, so break out of the encoding search.
+				// If that didn't throw, then iconv has successfully transcoded all of the strings, so break out of the charset search.
 				labelsWereDecoded = true;
 				break;
 			}
 		}
 
 		if (!labelsWereDecoded && config.onDecodingFailure) {
-			// If no encoding was found, then notify.
+			// If no charset was found, then notify.
 			labels = config.onDecodingFailure(
 				new ResourceDecodingError({
 					info: {
-						encoding: encodings,
+						charset: charsets,
 						regionCode,
 						resourceID: r.id
 					}
@@ -276,7 +276,7 @@ namespace LicenseLabels {
 	}
 
 	export interface Stringified extends AsStrings {
-		encoding?: "native;base64";
+		charset?: "native;base64";
 	}
 
 	export interface AsBinary {
@@ -305,7 +305,7 @@ namespace LicenseLabels {
 	export function stringify(labels: LicenseLabels): Stringified {
 		if (isBinary(labels)) {
 			return {
-				encoding: "native;base64",
+				charset: "native;base64",
 				...mapObj(labels, (field, buffer: Buffer) => [field, buffer.toString("base64")])
 			};
 		}
@@ -317,21 +317,21 @@ namespace LicenseLabels {
 		resourcesFile: string;
 		fromDataFork?: boolean;
 		lookupRegionCode(resourceID: number): number | null;
-		lookupEncodings?(regionCode: number): string[];
+		lookupCharsets?(regionCode: number): string[];
 
 		/**
-		 * This method is called if one of the provided character encodings was unsuitable for decoding an `STR#` resource. This is only a notification; `onDecodingFailure` will be called if all attempts at decoding a resource fail.
+		 * This method is called if one of the provided character charsets was unsuitable for decoding an `STR#` resource. This is only a notification; `onDecodingFailure` will be called if all attempts at decoding a resource fail.
 		 *
 		 * @param error - Details about the failure.
 		 * @param encodedLabels - The undecoded label strings.
 		 */
-		onWrongEncoding?(
+		onWrongCharset?(
 			error: ResourceDecodingError,
 			encodedLabels: LicenseLabels.AsBinary
 		): void;
 
 		/**
-		 * This method is called if none of the provided character encodings were suitable for decoding an `STR#` resource.
+		 * This method is called if none of the provided character charsets were suitable for decoding an `STR#` resource.
 		 *
 		 * @param error - Details about the failure.
 		 * @param encodedLabels - The undecoded label strings.

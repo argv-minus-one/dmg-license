@@ -11,7 +11,7 @@ interface LabelsByName {
 export class Language {
 	langTags: string[];
 	doubleByteCharset: boolean;
-	encodings: string[];
+	charsets: string[];
 	englishName: string;
 	localizedName: string;
 	labels?: Labels<string | Buffer>;
@@ -23,7 +23,7 @@ export class Language {
 		labelsByName: LabelsByName
 	) {
 		this.doubleByteCharset = rawLocale.doubleByteCharset || false;
-		this.encodings = rawLocale.encodings;
+		this.charsets = rawLocale.charsets;
 		this.englishName = rawLocale.englishName;
 		this.labels = labelsByName[rawLocale.labels];
 		this.langTags = rawLocale.langTags;
@@ -81,7 +81,7 @@ export const byRegionCode: Array<Language | undefined> = [];
 
 		const labels = {} as Labels<string | Buffer>;
 
-		const isBase64 = rawLabels.encoding === "native;base64";
+		const isBase64 = rawLabels.charset === "native;base64";
 
 		for (const labelName of Labels.keys) {
 			labels[labelName] =

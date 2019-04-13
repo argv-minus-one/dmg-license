@@ -33,13 +33,13 @@ class IconvCache {
 	}
 
 	/**
-	 * Encodes `chars` into a character encoding supported by all of the `langs`.
+	 * Encodes `chars` into a character set supported by all of the `langs`.
 	 *
 	 * @param chars - The text to convert. Either a plain string, or a `Buffer` and the name of its character set.
 	 * @param langs - Applicable classic Mac OS localizations. The `chars` will, if possible, be encoded such that all of them can correctly decode the `chars`.
 	 * @return The encoded bytes.
 	 * @throws {RangeError} If `langs` is empty.
-	 * @throws {NoSuitableCharsetError} If there is no common character encoding that can completely represent the `chars`.
+	 * @throws {NoSuitableCharsetError} If there is no common character set that can completely represent the `chars`.
 	 */
 	tryCharEncode(
 		chars: string | { data: Buffer, charset: string },
@@ -61,13 +61,13 @@ class IconvCache {
 
 		// Build up a set of all charsets supported by all of the Mac OS localizations.
 		for (const lang of langs)
-		for (const charset of lang.encodings)
+		for (const charset of lang.charsets)
 			suitableTargetCharsets.add(charset);
 
 		// Take away charsets that aren't supported by some of the Mac OS localizations. We need a *common* charset that *all* of them can decode.
 		for (const charset of suitableTargetCharsets) {
 			for (const lang of langs)
-			if (!lang.encodings.includes(charset)) {
+			if (!lang.charsets.includes(charset)) {
 				suitableTargetCharsets.delete(charset);
 				break;
 			}

@@ -7,7 +7,7 @@ import MacLocale from "./MacLocale";
 interface LicenseLocale {
 	labels?: keyof LicenseLanguageData["labels"];
 	langTags: string[];
-	encodings: string[];
+	charsets: string[];
 	englishName: string;
 	localizedName: string;
 	doubleByteCharset?: boolean;
@@ -48,11 +48,11 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 					const regionCode = regionCodesByResourceID[resourceID];
 					return regionCode === undefined ? null : regionCode;
 				},
-				lookupEncodings(regionCode) {
+				lookupCharsets(regionCode) {
 					const locale = localesByRegionCode[regionCode];
-					return locale ? locale.encodings : [];
+					return locale ? locale.charsets : [];
 				},
-				onWrongEncoding(error) {
+				onWrongCharset(error) {
 					onNonFatalError(error);
 				},
 				onDecodingFailure(error, rawLabels) {
@@ -126,10 +126,10 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 			throw new Error(`No entry in Language names.tsv for locale ${locale.displayLangTag}.`);
 		}
 
-		const { id, langTags, encodings } = locale;
+		const { id, langTags, charsets } = locale;
 
 		data.locales[id] = {
-			encodings,
+			charsets,
 			labels: labelRef,
 			langTags,
 			...name,

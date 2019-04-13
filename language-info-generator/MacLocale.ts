@@ -6,7 +6,7 @@ interface MacLocale {
 	langTags: string[];
 	displayLangTag: string;
 	doubleByteCharset: boolean;
-	encodings: string[];
+	charsets: string[];
 	labelsResourceID?: number;
 }
 
@@ -15,9 +15,9 @@ async function MacLocale(file: FS.PathLike): Promise<MacLocale[]> {
 	const errors: Error[] = [];
 
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
-		const [, idStr, langTagList, displayLangTag, encodingList, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
+		const [, idStr, langTagList, displayLangTag, charsetList, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
 
-		if (!idStr || !langTagList || !displayLangTag || !encodingList) {
+		if (!idStr || !langTagList || !displayLangTag || !charsetList) {
 			errors.push(new Error(`[${file}:${lineNum}] This line is incomplete.`));
 			continue;
 		}
@@ -36,9 +36,9 @@ async function MacLocale(file: FS.PathLike): Promise<MacLocale[]> {
 		}
 
 		locales.push({
+			charsets: charsetList.split(","),
 			displayLangTag,
 			doubleByteCharset: doubleByteCharsetYN === "Y",
-			encodings: encodingList.split(","),
 			id,
 			labelsResourceID,
 			langTags: langTagList.split(",")

@@ -5,8 +5,8 @@
 declare module "iconv" {
 	interface Iconv extends NodeJS.WritableStream {}
 	class Iconv {
-		constructor(fromEncoding: string, toEncoding: string);
-		convert(input: string | Buffer, encoding?: string): Buffer;
+		constructor(fromCharset: string, toCharset: string);
+		convert(input: string | Buffer, charset?: string): Buffer;
 	}
 	export {Iconv};
 }
