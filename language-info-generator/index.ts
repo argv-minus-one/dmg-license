@@ -3,21 +3,21 @@ import { LanguageInfoLabels } from "../src/Labels";
 import { RawLanguageInfo } from "../src/Language";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
+import LanguageBasics from "./LanguageBasics";
 import LanguageNames from "./LanguageNames";
-import MacLanguage from "./MacLanguage";
 
 async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonFatalError: (error: Error) => void): Promise<void> {
 	// Load everything in parallel.
 	const languageNamesPromise = LanguageNames(require.resolve("./Language names.tsv"));
 
-	const languagesPromise = MacLanguage(require.resolve("./Languages.tsv"));
+	const languagesPromise = LanguageBasics(require.resolve("./Languages.tsv"));
 
 	const labelMapPromise: Promise<LanguageLabelsMap> = (async () => {
 		if (!resourcesFile)
 			return new Map();
 
 		const languageIDsByResourceID: Array<number | undefined> = [];
-		const languagesByLanguageID: Array<MacLanguage | undefined> = [];
+		const languagesByLanguageID: Array<LanguageBasics | undefined> = [];
 
 		for (const language of await languagesPromise) {
 			languagesByLanguageID[language.id] = language;
@@ -71,7 +71,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 
 	const labelKeys = new Map<LanguageInfoLabels, string>();
 
-	function putLabels(labels: LanguageInfoLabels, forLanguage: MacLanguage): string {
+	function putLabels(labels: LanguageInfoLabels, forLanguage: LanguageBasics): string {
 		{
 			const key = labelKeys.get(labels);
 			if (key !== undefined) {

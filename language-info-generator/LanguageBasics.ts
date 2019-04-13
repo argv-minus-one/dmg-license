@@ -1,7 +1,7 @@
 import * as FS from "fs";
 import readTSV from "./readTSV";
 
-interface MacLanguage {
+interface LanguageBasics {
 	id: number;
 	langTags: string[];
 	displayLangTag: string;
@@ -10,8 +10,8 @@ interface MacLanguage {
 	labelsResourceID?: number;
 }
 
-async function MacLanguage(file: FS.PathLike): Promise<MacLanguage[]> {
-	const languages: MacLanguage[] = [];
+async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
+	const languages: LanguageBasics[] = [];
 	const errors: Error[] = [];
 
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
@@ -51,4 +51,4 @@ async function MacLanguage(file: FS.PathLike): Promise<MacLanguage[]> {
 	return languages;
 }
 
-export default MacLanguage;
+export default LanguageBasics;
