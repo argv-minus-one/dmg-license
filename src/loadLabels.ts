@@ -51,7 +51,7 @@ export function packLabels(
 		const label = labels[labelKey];
 		const data = Buffer.isBuffer(label) ? label : CodedString.encode(label, langs, context);
 		writeStr(data, Labels.descriptions[labelKey]);
-	}
+			}
 
 	return sbuf.toBuffer();
 }
@@ -110,36 +110,33 @@ const LabelLoader: {
 	[T in LabelsSpec.Type]: LabelLoader<T>;
 } = {
 	"inline"(spec, langs, context) {
-		const labelsCoded = {} as Labels<CodedString>;
-
-		for (const labelKey of Labels.keys) {
-			labelsCoded[labelKey] = {
+		return Promise.resolve(packLabels(
+			Labels.map(spec, label => ({
 				charset: spec.charset!,
-				data: spec[labelKey],
+				data: label,
 				encoding: spec.encoding!
-			};
-		}
-
-		return Promise.resolve(packLabels(labelsCoded, langs, context));
+			})),
+			langs, context
+		));
 	},
 
 	async "one-per-file"(spec, langs, context) {
-		const labelsCoded = {} as Labels<CodedString>;
-
-		for (const labelKey of Labels.keys) {
-			labelsCoded[labelKey] = {
-				charset: spec.charset || "UTF-8",
-				data: await readFileP(spec[labelKey]),
-				encoding: spec.encoding
-			};
-		}
-
-		return packLabels(labelsCoded, langs, context);
+		return packLabels(
+			await Labels.mapAsync(
+				spec,
+				async label => ({
+					charset: spec.charset || "UTF-8",
+					data: await readFileP(label),
+					encoding: spec.encoding
+				})
+			),
+			langs, context
+		);
 	},
 
 	async "json"(spec, langs, context) {
 		const fpath = context.resolvePath(spec.file);
-		const json = JSON.parse((await readFileP(fpath)).toString("UTF-8"));
+		const json: Labels<unknown> = JSON.parse((await readFileP(fpath)).toString("UTF-8"));
 
 		if (typeof json !== "object") throw new VError(
 			{
@@ -150,35 +147,34 @@ const LabelLoader: {
 			"Root value of JSON file is not an object."
 		);
 
-		const labelsCoded = {} as Labels<CodedString>;
 		const errors = new ErrorBuffer();
 
-		for (const labelKey of Labels.keys) {
-			const data = json[labelKey];
-
-			if (typeof data !== "string") {
-				errors.add(new VError(
-					{
-						info: {
-							path: fpath
-						}
-					},
-					"Root object of JSON file's ‘%s’ property has type %s, but should be string.",
-					labelKey,
-					data === null ? "null" : typeof data
-				));
-				continue;
+		const labels = Labels.map<unknown, CodedString>(
+			json,
+			(data, labelKey) => {
+				if (typeof data !== "string") {
+					errors.add(new VError(
+						{
+							info: {
+								path: fpath
+							}
+						},
+						"Root object of JSON file's ‘%s’ property has type %s, but should be string.",
+						labelKey,
+						data === null ? "null" : typeof data
+					));
+					return null as unknown as CodedString;
+				}
+				else return {
+					charset: spec.charset!,
+					data,
+					encoding: spec.encoding!
+				};
 			}
-
-			labelsCoded[labelKey] = {
-				charset: spec.charset!,
-				data,
-				encoding: spec.encoding!
-			};
-		}
+		);
 
 		errors.check();
-		return packLabels(labelsCoded, langs, context);
+		return packLabels(labels, langs, context);
 	},
 
 	async "raw"(spec, langs, context) {
@@ -190,7 +186,6 @@ const LabelLoader: {
 		const fpath = context.resolvePath(spec.file);
 		const data = await readFileP(fpath);
 		const pieces = bufferSplitMulti(data, spec.delimiters);
-		const labelsCoded = {} as Labels<CodedString>;
 
 		if (pieces.length !== 5) {
 			throw new VError(
@@ -204,13 +199,13 @@ const LabelLoader: {
 			);
 		}
 		else {
-			Labels.keys.forEach((key, index) => labelsCoded[key] = {
+			const labels = Labels.create<CodedString>((key, index) => ({
 				charset: spec.charset,
 				data: pieces[index],
 				encoding: spec.encoding
-			});
-		}
+			}));
 
-		return packLabels(labelsCoded, langs, context);
+			return packLabels(labels, langs, context);
+		}
 	}
 };

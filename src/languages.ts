@@ -1,7 +1,7 @@
 import bufferFrom = require("buffer-from");
 import { LicenseSpec } from ".";
 import Context from "./Context";
-import { Labels } from "./Labels";
+import { Labels, LanguageInfoLabels, NativeEncodedLabels } from "./Labels";
 import { arrayify } from "./util";
 
 interface LabelsByName {
@@ -77,20 +77,14 @@ export const byRegionCode: Array<Language | undefined> = [];
 	const labelsByName: LabelsByName = {};
 
 	for (const labelsName in langJSON.labels) {
-		const rawLabels = langJSON.labels[labelsName];
+		const rawLabels: LanguageInfoLabels = langJSON.labels[labelsName];
+		const isBase64 = (rawLabels as NativeEncodedLabels).charset === "native;base64";
 
-		const labels = {} as Labels<string | Buffer>;
-
-		const isBase64 = rawLabels.charset === "native;base64";
-
-		for (const labelName of Labels.keys) {
-			labels[labelName] =
-				isBase64
-				? bufferFrom(rawLabels[labelName], "base64")
-				: rawLabels[labelName];
-		}
-
-		labelsByName[labelsName] = labels;
+		labelsByName[labelsName] = Labels.map(rawLabels, label =>
+			isBase64
+			? bufferFrom(label, "base64")
+			: label
+		);
 	}
 
 	for (const regionCodeStr in langJSON.locales) {
