@@ -1,6 +1,6 @@
 import { Iconv } from "iconv";
 import { VError } from "verror";
-import { Language } from "./languages";
+import Language from "./Language";
 
 const cacheStore = Symbol();
 

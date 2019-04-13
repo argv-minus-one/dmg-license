@@ -1,27 +1,10 @@
 import { promisify } from "util";
 import { LanguageInfoLabels } from "../src/Labels";
+import { RawLanguageInfo } from "../src/Language";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageNames from "./LanguageNames";
 import MacLanguage from "./MacLanguage";
-
-interface LicenseLanguage {
-	labels?: keyof LicenseLanguageData["labels"];
-	langTags: string[];
-	charsets: string[];
-	englishName: string;
-	localizedName: string;
-	doubleByteCharset?: boolean;
-}
-
-interface LicenseLanguageData {
-	languages: {
-		[id: number]: LicenseLanguage | undefined;
-	};
-	labels: {
-		[name: string]: LanguageInfoLabels | undefined;
-	};
-}
 
 async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonFatalError: (error: Error) => void): Promise<void> {
 	// Load everything in parallel.
@@ -81,16 +64,14 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	]);
 
 	// Assemble the output.
-	const data: LicenseLanguageData = {
+	const data: RawLanguageInfo = {
 		labels: {},
 		languages: {}
 	};
 
-	type LabelKey = keyof typeof data.labels;
+	const labelKeys = new Map<LanguageInfoLabels, string>();
 
-	const labelKeys = new Map<LanguageInfoLabels, LabelKey>();
-
-	function putLabels(labels: LanguageInfoLabels, forLanguage: MacLanguage): LabelKey {
+	function putLabels(labels: LanguageInfoLabels, forLanguage: MacLanguage): string {
 		{
 			const key = labelKeys.get(labels);
 			if (key !== undefined) {
@@ -98,7 +79,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 			}
 		}
 
-		function setKeyTo(key: LabelKey): typeof key {
+		function setKeyTo(key: string): typeof key {
 			data.labels[key] = labels;
 			labelKeys.set(labels, key);
 			return key;

@@ -1,6 +1,6 @@
 import { Options } from ".";
 import IconvCache from "./IconvCache";
-import { Language } from "./languages";
+import Language from "./Language";
 import { packLabels } from "./loadLabels";
 import { ErrorBuffer } from "./util/errors";
 

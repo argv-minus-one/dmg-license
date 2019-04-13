@@ -1,6 +1,6 @@
 import bufferFrom = require("buffer-from");
 import Context from "./Context";
-import { Language } from "./languages";
+import Language from "./Language";
 
 type CodedString = string | {
 	data: string;

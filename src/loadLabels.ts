@@ -3,7 +3,8 @@ import { VError } from "verror";
 import { Labels, LabelsSpec, LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
-import { Language } from "./languages";
+import Language from "./Language";
+import * as languages from "./languages";
 import { arrayify, readFileP } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
 import { ErrorBuffer } from "./util/errors";
@@ -64,7 +65,7 @@ export function packLabels(
 export default function loadLabels(
 	spec: LicenseSpec,
 	contextOrOptions: Context | Options,
-	langs: Language[] = Language.forSpec(spec)
+	langs: Language[] = languages.bySpec(spec)
 ): Promise<Buffer> {
 	const context =
 		contextOrOptions instanceof Context ?

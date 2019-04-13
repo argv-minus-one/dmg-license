@@ -1,8 +1,8 @@
 import { LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
+import Language from "./Language";
 import * as languages from "./languages";
-import { Language } from "./languages";
 import loadLabels from "./loadLabels";
 import { readFileP } from "./util";
 import { ErrorBuffer } from "./util/errors";
@@ -75,7 +75,7 @@ namespace LicenseContent {
 		const context = optionsOrContext instanceof Context ? optionsOrContext : new Context(optionsOrContext);
 
 		const contents = await PromiseEach(specs.map(async spec => {
-			const langs = Language.forSpec(spec);
+			const langs = languages.bySpec(spec);
 
 			const [body, labels] = await PromiseEach([
 				loadBody(spec, langs, context),
