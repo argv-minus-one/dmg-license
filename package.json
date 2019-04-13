@@ -31,11 +31,9 @@
 	"devDependencies": {
 		"@types/buffer-from": "^1.1.0",
 		"@types/core-js": "^2.5.0",
-		"@types/map-obj": "^2.0.0",
 		"@types/node": "^11.12.0",
 		"@types/plist": "^3.0.1",
 		"@types/verror": "^1.10.3",
-		"map-obj": "^3.0.0",
 		"resourceforkjs": "^0.1.0",
 		"rimraf": "^2.6.3",
 		"tslint": "^5.15.0",

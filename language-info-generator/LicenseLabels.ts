@@ -1,8 +1,8 @@
 import { Iconv } from "iconv";
-import mapObj = require("map-obj");
 import * as ResourceForkLib from "resourceforkjs";
 import { SmartBuffer } from "smart-buffer";
 import { Info as VErrorInfo, Options as VErrorOptions, VError } from "verror";
+import { Labels, LanguageInfoLabels } from "../src/Labels";
 const { freeze } = Object;
 
 export interface ResourcePos {
@@ -59,14 +59,7 @@ If you have the SLAResources file but it's not at the usual path, set the $SLARe
 
 export class ResourceDecodingError extends VError {
 	constructor(
-		options: {
-			cause?: Error | null;
-			info: VErrorInfo & {
-				regionCode: number;
-				resourceID: number;
-				charset: string | ReadonlyArray<string>;
-			};
-		},
+		options: ResourceDecodingError.Options,
 		message?: string,
 		...params: any[]
 	) {
@@ -78,6 +71,17 @@ export class ResourceDecodingError extends VError {
 			options.info.charset,
 			...params
 		);
+	}
+}
+
+export namespace ResourceDecodingError {
+	export interface Options {
+		cause?: Error | null;
+		info: VErrorInfo & {
+			regionCode: number;
+			resourceID: number;
+			charset: string | ReadonlyArray<string>;
+		};
 	}
 }
 
@@ -120,9 +124,122 @@ function splitSTR(buf: Buffer, pos: Readonly<ResourcePos>) {
 	return rawStrings;
 }
 
-export type LicenseLabelMap = Map<number, LicenseLabels>;
+function readRawLabels(
+	r: ResourceForkLib.Resource,
+	pos: ResourcePos
+): Labels<Buffer> | {
+	error: InvalidResourceError,
+	data: Buffer
+} {
+	const buf = Buffer.from(r.data.buffer, r.data.byteOffset, r.data.byteLength);
+	const rawStrings = splitSTR(buf, pos);
 
-async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabelMap> {
+	if (rawStrings.length !== 6) {
+		return {
+			data: buf,
+			error: new InvalidResourceError(
+				{
+					info: {
+						pos
+					}
+				},
+				"There should be 6 strings in this resource, but instead there are %d.",
+				rawStrings.length
+			)
+		};
+	}
+
+	// TODO: Include the language name.
+	return Labels.create((_, index) => rawStrings[index + 1]);
+}
+
+function decodeLabels(
+	rawLabels: Labels<Buffer>,
+	regionCode: number,
+	pos: ResourcePos,
+	config: extractLabels.Config
+): LanguageInfoLabels {
+	const charsets = config.lookupCharsets && config.lookupCharsets(regionCode) || [];
+
+	for (const charset of charsets) {
+		const info: ResourceDecodingError.Options["info"] = {
+			charset,
+			regionCode,
+			resourceID: pos.resID
+		};
+
+		let iconv: Iconv;
+
+		try {
+			iconv = new Iconv(charset, "UTF8");
+		}
+		catch (e) {
+			// Errors thrown from the Iconv constructor don't indicate whether it's because a charset was not supported (other than in the message, but there's no guarantee that it won't change), so we have to assume that anything thrown from there means that charset isn't supported.
+			if (config.onWrongCharset) config.onWrongCharset(
+				new ResourceDecodingError({
+					cause: e,
+					info
+				}),
+				rawLabels
+			);
+			continue;
+		}
+
+		try {
+			return Labels.map(rawLabels, label => iconv.convert(label).toString("UTF8"));
+		}
+		catch (e) {
+			if (e instanceof Error && (e as any).code === "EILSEQ") {
+				// This charset doesn't match the string. Try another.
+				if (config.onWrongCharset) config.onWrongCharset(
+					new ResourceDecodingError({
+						cause: e,
+						info
+					}),
+					rawLabels
+				);
+			}
+			else {
+				throw new ResourceDecodingError({
+					cause: e,
+					info
+				});
+			}
+		}
+	}
+
+	// If no charset was found, then notify and fall back.
+	const fallbackLabels = (
+		config.onDecodingFailure
+		&& config.onDecodingFailure(
+			new ResourceDecodingError({
+				info: {
+					charset: charsets,
+					regionCode,
+					resourceID: pos.resID
+				}
+			}),
+			rawLabels
+		)
+		|| rawLabels
+	);
+
+	if (Buffer.isBuffer(fallbackLabels.agree)) {
+		return {
+			charset: "native;base64",
+			...Labels.map(
+				fallbackLabels as Labels<Buffer>,
+				label => label.toString("base64")
+			)
+		};
+	}
+	else
+		return fallbackLabels as Labels<string>;
+}
+
+export type LanguageLabelsMap = Map<number, LanguageInfoLabels>;
+
+async function extractLabels(config: extractLabels.Config): Promise<LanguageLabelsMap> {
 	const rmap = await ResourceForkLib.readResourceFork(config.resourcesFile, !config.fromDataFork).catch(e => {
 		if (e instanceof Error && (e as NodeJS.ErrnoException).code === "ENOENT")
 			throw new ResourceFileNotFoundError(config.resourcesFile);
@@ -130,189 +247,42 @@ async function LicenseLabels(config: LicenseLabels.Config): Promise<LicenseLabel
 			throw e;
 	});
 
-	const result = new Map<number, LicenseLabels>();
+	const result: LanguageLabelsMap = new Map();
 
 	for (const r of Object.values(rmap["STR#"])) {
 		const regionCode = config.lookupRegionCode(r.id);
 		if (regionCode === null) continue;
 
-		const rawLabels = (() => {
-			const buf = Buffer.from(r.data.buffer, r.data.byteOffset, r.data.byteLength);
-			const pos = freeze(ResourcePos(config.resourcesFile, r));
-			let rawStrings: Buffer[];
+		const pos = freeze(ResourcePos(config.resourcesFile, r));
 
-			try {
-				rawStrings = splitSTR(buf, pos);
+		let rawLabels = readRawLabels(r, pos);
 
-				if (rawStrings.length !== 6) {
-					throw new InvalidResourceError(
-						{
-							info: {
-								pos
-							}
-						},
-						`There should be 6 strings in this resource, but instead there are %d.`,
-						rawStrings.length
-					);
-				}
-			} catch (e) {
-				if (e instanceof InvalidResourceError && config.onInvalidResource) {
-					const fallback = config.onInvalidResource(e, buf);
-					if (fallback !== null)
-						result.set(regionCode, fallback);
-					return null;
-				}
-				else
-					throw e;
-			}
+		if ("error" in rawLabels) {
+			if (config.onInvalidResource) {
+				const fallback = config.onInvalidResource(rawLabels.error, rawLabels.data);
 
-			const rawLabelsPart: Partial<LicenseLabels.AsBinary> = {};
-
-			LicenseLabels.Fields.forEach((field, index) => {
-				rawLabelsPart[field] = rawStrings[index];
-			});
-
-			return rawLabelsPart as LicenseLabels.AsBinary;
-		})();
-		if (rawLabels === null) continue;
-
-		let labels: LicenseLabels = rawLabels;
-		let labelsWereDecoded = false;
-
-		const charsets = config.lookupCharsets && config.lookupCharsets(regionCode) || [];
-		if (charsets.length) {
-			for (const charset of charsets) {
-				let iconv: Iconv;
-
-				try {
-					iconv = new Iconv(charset, "UTF8");
-				}
-				catch (e) {
-					// Errors thrown from the Iconv constructor don't indicate whether it's because a charset was not supported (other than in the message, but there's no guarantee that it won't change), so we have to assume that anything thrown from there means that charset isn't supported.
-					if (config.onWrongCharset) config.onWrongCharset(
-						new ResourceDecodingError({
-							cause: e,
-							info: {
-								charset,
-								regionCode,
-								resourceID: r.id
-							}
-						}),
-						rawLabels
-					);
-					continue;
-				}
-
-				try {
-					labels = mapObj(rawLabels, (field, rawLabel) => [field, iconv.convert(rawLabel).toString("UTF8")]);
-				} catch (e) {
-					if (e instanceof Error && (e as any).code === "EILSEQ") {
-						// This charset doesn't match the string. Try another.
-						if (config.onWrongCharset) config.onWrongCharset(
-							new ResourceDecodingError(
-								{
-									cause: e,
-									info: {
-										charset,
-										regionCode,
-										resourceID: r.id
-									}
-								}
-							),
-							rawLabels
-						);
+				if (fallback) {
+					if (Buffer.isBuffer(fallback.agree))
+						rawLabels = fallback as Labels<Buffer>;
+					else {
+						result.set(regionCode, fallback as Labels<string>);
 						continue;
 					}
-					else {
-						throw new ResourceDecodingError(
-							{
-								cause: e,
-								info: {
-									charset,
-									regionCode,
-									resourceID: r.id
-								}
-							}
-						);
-					}
 				}
-
-				// If that didn't throw, then iconv has successfully transcoded all of the strings, so break out of the charset search.
-				labelsWereDecoded = true;
-				break;
+				else
+					continue;
 			}
+			else
+				throw rawLabels.error;
 		}
 
-		if (!labelsWereDecoded && config.onDecodingFailure) {
-			// If no charset was found, then notify.
-			labels = config.onDecodingFailure(
-				new ResourceDecodingError({
-					info: {
-						charset: charsets,
-						regionCode,
-						resourceID: r.id
-					}
-				}),
-				rawLabels
-			);
-		}
-
-		result.set(regionCode, labels);
+		result.set(regionCode, decodeLabels(rawLabels, regionCode, pos, config));
 	}
 
 	return result;
 }
 
-type LicenseLabels = LicenseLabels.AsStrings | LicenseLabels.AsBinary;
-
-namespace LicenseLabels {
-	export interface AsStrings {
-		regionName: string;
-		agree: string;
-		disagree: string;
-		print: string;
-		save: string;
-		message: string;
-	}
-
-	export interface Stringified extends AsStrings {
-		charset?: "native;base64";
-	}
-
-	export interface AsBinary {
-		regionName: Buffer;
-		agree: Buffer;
-		disagree: Buffer;
-		print: Buffer;
-		save: Buffer;
-		message: Buffer;
-	}
-
-	export function isBinary(labels: LicenseLabels): labels is AsBinary {
-		return Buffer.isBuffer(labels.regionName);
-	}
-
-	export const Fields: ReadonlyArray<keyof LicenseLabels> = [
-		"regionName",
-		"agree",
-		"disagree",
-		"print",
-		"save",
-		"message"
-	];
-	freeze(Fields);
-
-	export function stringify(labels: LicenseLabels): Stringified {
-		if (isBinary(labels)) {
-			return {
-				charset: "native;base64",
-				...mapObj(labels, (field, buffer: Buffer) => [field, buffer.toString("base64")])
-			};
-		}
-		else
-			return labels;
-	}
-
+namespace extractLabels {
 	export interface Config {
 		resourcesFile: string;
 		fromDataFork?: boolean;
@@ -327,7 +297,7 @@ namespace LicenseLabels {
 		 */
 		onWrongCharset?(
 			error: ResourceDecodingError,
-			encodedLabels: LicenseLabels.AsBinary
+			encodedLabels: Labels<Buffer>
 		): void;
 
 		/**
@@ -339,21 +309,21 @@ namespace LicenseLabels {
 		 */
 		onDecodingFailure?(
 			error: ResourceDecodingError,
-			encodedLabels: LicenseLabels.AsBinary
-		): LicenseLabels;
+			encodedLabels: Labels<Buffer>
+		): Labels | Labels<Buffer>;
 
 		/**
 		 * This method is called if an invalid `STR#` resource is found. It may do several things:
 		 *
 		 * * Return `null`. This causes the invalid `STR#` resource to be silently skipped.
-		 * * Return `data` (or some other value conforming to the `LicenseLabels` type). That returned value will be used as the result of processing the `STR#` resource, and further processing will be skipped.
+		 * * Return `Labels` or `Labels<Buffer>`. That returned value will be used as the result of processing the `STR#` resource, and further processing will be skipped.
 		 * * Throw. This will abort processing immediately.
 		 *
 		 * @param error - An error object describing the problem.
 		 * @param data - The raw bytes of the resource.
 		 */
-		onInvalidResource?(error: InvalidResourceError, data: Buffer): LicenseLabels | null;
+		onInvalidResource?(error: InvalidResourceError, data: Buffer): Labels | Labels<Buffer> | null;
 	}
 }
 
-export default LicenseLabels;
+export default extractLabels;

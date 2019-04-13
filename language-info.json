@@ -1,7 +1,6 @@
 {
   "labels": {
     "en-US": {
-      "regionName": "English",
       "agree": "Agree",
       "disagree": "Disagree",
       "print": "Print",
@@ -9,7 +8,6 @@
       "message": "If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\"."
     },
     "fr": {
-      "regionName": "Français",
       "agree": "Accepter",
       "disagree": "Refuser",
       "print": "Imprimer",
@@ -17,7 +15,6 @@
       "message": "Si vous acceptez les termes de la présente licence, cliquez sur \"Accepter\" afin d'installer le logiciel. Si vous n'êtes pas d'accord avec les termes de la licence, cliquez sur \"Refuser\"."
     },
     "de": {
-      "regionName": "Deutsch",
       "agree": "Akzeptieren",
       "disagree": "Ablehnen",
       "print": "Drucken",
@@ -25,7 +22,6 @@
       "message": "Klicken Sie in “Akzeptieren”, wenn Sie mit den Bestimmungen des Software-Lizenzvertrags einverstanden sind. Falls nicht, bitte “Ablehnen” anklicken. Sie können die Software nur installieren, wenn Sie “Akzeptieren” angeklickt haben."
     },
     "it": {
-      "regionName": "Italiano",
       "agree": "Accetto",
       "disagree": "Rifiuto",
       "print": "Stampa",
@@ -33,7 +29,6 @@
       "message": "Se accetti le condizioni di questa licenza, fai clic su \"Accetto\" per installare il software. Altrimenti fai clic su \"Rifiuto\"."
     },
     "nl": {
-      "regionName": "Nederlands",
       "agree": "Ja",
       "disagree": "Nee",
       "print": "Print",
@@ -41,7 +36,6 @@
       "message": "Indien u akkoord gaat met de voorwaarden van deze licentie, kunt u op 'Ja' klikken om de programmatuur te installeren. Indien u niet akkoord gaat, klikt u op 'Nee'."
     },
     "sv": {
-      "regionName": "Svensk",
       "agree": "Godkänns",
       "disagree": "Avböjs",
       "print": "Skriv ut",
@@ -49,7 +43,6 @@
       "message": "Om Du godkänner licensvillkoren klicka på \"Godkänns\" för att installera programprodukten. Om Du inte godkänner licensvillkoren, klicka på \"Avböjs\"."
     },
     "es": {
-      "regionName": "Español",
       "agree": "Aceptar",
       "disagree": "No aceptar",
       "print": "Imprimir",
@@ -57,7 +50,6 @@
       "message": "Si está de acuerdo con los términos de esta licencia, pulse \"Aceptar\" para instalar el software. En el supuesto de que no esté de acuerdo con los términos de esta licencia, pulse \"No aceptar.\""
     },
     "da": {
-      "regionName": "Dansk",
       "agree": "Enig",
       "disagree": "Uenig",
       "print": "Udskriv",
@@ -65,7 +57,6 @@
       "message": "Hvis du accepterer betingelserne i licensaftalen, skal du klikke på “Enig” for at installere softwaren. Klik på “Uenig” for at annullere installeringen."
     },
     "fr-CA": {
-      "regionName": "Français canadien",
       "agree": "Accepter",
       "disagree": "Refuser",
       "print": "Imprimer",
@@ -73,7 +64,6 @@
       "message": "Si vous acceptez les termes de la présente licence, cliquez sur \"Accepter\" afin d'installer le logiciel. Si vous n'êtes pas d'accord avec les termes de la licence, cliquez sur \"Refuser\"."
     },
     "nb": {
-      "regionName": "Norsk",
       "agree": "Enig",
       "disagree": "Ikke enig",
       "print": "Skriv ut",
@@ -82,7 +72,6 @@
     },
     "ja": {
       "charset": "native;base64",
-      "regionName": "SmFwYW5lc2U=",
       "agree": "k6+I04K1gtyCtw==",
       "disagree": "k6+I04K1gtyCuYLx",
       "print": "iPON/IK3guk=",
@@ -90,7 +79,6 @@
       "message": "lnuDXIN0g2eDRYNHg0GOZ5dwi5aR+IxflvGCzI/wjI+CyZOviNOCs4LqgumP6o2HgsmCzYFBg1yDdINng0WDR4NBgvCDQ4OTg1iDZ4Fbg4uCt4Lpgr2C34LJgXWTr4jTgrWC3IK3gXaC8ImfgrWCxIKtgr6Cs4KigUKBQJOviNOCs4LqgsiCoo/qjYeCyYLNgUGBdZOviNOCtYLcgrmC8YF2gvCJn4K1gsSCrYK+grOCooFC"
     },
     "fi": {
-      "regionName": "Suomi",
       "agree": "Hyväksyn",
       "disagree": "En hyväksy",
       "print": "Tulosta",
@@ -99,7 +87,6 @@
     },
     "ko": {
       "charset": "native;base64",
-      "regionName": "S29yZWFu",
       "agree": "tb/Axw==",
       "disagree": "tb/AxyC+yMfU",
       "print": "x8G4sMau",
@@ -108,7 +95,6 @@
     },
     "zh-Hans": {
       "charset": "native;base64",
-      "regionName": "U2ltcGxpZmllZCBDaGluZXNl",
       "agree": "zazS4g==",
       "disagree": "srvNrNLi",
       "print": "tPLToQ==",
@@ -117,7 +103,6 @@
     },
     "zh-Hant": {
       "charset": "native;base64",
-      "regionName": "VHJhZGl0aW9uYWwgQ2hpbmVzZQ==",
       "agree": "plC3Tg==",
       "disagree": "pKOmULdO",
       "print": "pkOmTA==",
@@ -125,7 +110,6 @@
       "message": "pnCqR7F6plC3TqW7s1ylacPSuMyqurH4tNqhQb3Qq/ahp6ZQt06hqKVIpne4y7NuxemhQ6Zwqkeko6ZQt06hQb3Qq/ahp6SjplC3TqGooUM="
     },
     "pt-BR": {
-      "regionName": "Português, Brasil",
       "agree": "Concordar",
       "disagree": "Discordar",
       "print": "Imprimir",

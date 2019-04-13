@@ -1,7 +1,8 @@
 import { promisify } from "util";
+import { LanguageInfoLabels } from "../src/Labels";
 import PromiseEach from "../src/util/PromiseEach";
 import LanguageNames from "./LanguageNames";
-import LicenseLabels, { LicenseLabelMap, ResourceFileNotFoundError } from "./LicenseLabels";
+import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./LicenseLabels";
 import MacLocale from "./MacLocale";
 
 interface LicenseLocale {
@@ -18,7 +19,7 @@ interface LicenseLanguageData {
 		[id: number]: LicenseLocale | undefined;
 	};
 	labels: {
-		[name: string]: LicenseLabels.Stringified | undefined;
+		[name: string]: LanguageInfoLabels | undefined;
 	};
 }
 
@@ -28,7 +29,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 
 	const localesPromise = MacLocale(require.resolve("./Locales.tsv"));
 
-	const labelMapPromise: Promise<LicenseLabelMap> = (async () => {
+	const labelMapPromise: Promise<LanguageLabelsMap> = (async () => {
 		if (!resourcesFile)
 			return new Map();
 
@@ -43,7 +44,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 		}
 
 		try {
-			return await LicenseLabels({
+			return await extractLabels({
 				lookupRegionCode(resourceID) {
 					const regionCode = regionCodesByResourceID[resourceID];
 					return regionCode === undefined ? null : regionCode;
@@ -87,9 +88,9 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 
 	type LabelKey = keyof typeof data.labels;
 
-	const labelKeys = new Map<LicenseLabels, LabelKey>();
+	const labelKeys = new Map<LanguageInfoLabels, LabelKey>();
 
-	function putLabels(labels: LicenseLabels, forLocale: MacLocale): LabelKey {
+	function putLabels(labels: LanguageInfoLabels, forLocale: MacLocale): LabelKey {
 		{
 			const key = labelKeys.get(labels);
 			if (key !== undefined) {
@@ -97,10 +98,8 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 			}
 		}
 
-		const labelsRepr = LicenseLabels.stringify(labels);
-
 		function setKeyTo(key: LabelKey): typeof key {
-			data.labels[key] = labelsRepr;
+			data.labels[key] = labels;
 			labelKeys.set(labels, key);
 			return key;
 		}
