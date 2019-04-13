@@ -19,15 +19,15 @@ export class Language {
 
 	constructor(
 		languageID: number,
-		rawLocale: any,
+		rawLanguage: any,
 		labelsByName: LabelsByName
 	) {
-		this.doubleByteCharset = rawLocale.doubleByteCharset || false;
-		this.charsets = rawLocale.charsets;
-		this.englishName = rawLocale.englishName;
-		this.labels = labelsByName[rawLocale.labels];
-		this.langTags = rawLocale.langTags;
-		this.localizedName = rawLocale.localizedName;
+		this.doubleByteCharset = rawLanguage.doubleByteCharset || false;
+		this.charsets = rawLanguage.charsets;
+		this.englishName = rawLanguage.englishName;
+		this.labels = labelsByName[rawLanguage.labels];
+		this.langTags = rawLanguage.langTags;
+		this.localizedName = rawLanguage.localizedName;
 		this.languageID = languageID;
 	}
 
@@ -44,7 +44,7 @@ export namespace Language {
 			const lang =
 				typeof specLang === "number"
 				? byLanguageID[specLang]
-				: byLocale[specLang.toLowerCase()];
+				: byLanguage[specLang.toLowerCase()];
 
 			if (lang)
 				langs.push(lang);
@@ -63,7 +63,7 @@ export namespace Language {
 }
 
 /** Known `Language`s, indexed by language tag. Indices are all lowercase. */
-export const byLocale: {
+export const byLanguage: {
 	[langTag: string]: Language | undefined;
 } = {};
 
@@ -87,15 +87,15 @@ export const byLanguageID: Array<Language | undefined> = [];
 		);
 	}
 
-	for (const languageIDStr in langJSON.locales) {
+	for (const languageIDStr in langJSON.languages) {
 		const entry = new Language(
 			Number(languageIDStr),
-			langJSON.locales[languageIDStr],
+			langJSON.languages[languageIDStr],
 			labelsByName
 		);
 
 		byLanguageID[entry.languageID] = entry;
-		for (const locale of entry.langTags)
-			byLocale[locale.toLowerCase()] = entry;
+		for (const language of entry.langTags)
+			byLanguage[language.toLowerCase()] = entry;
 	}
 }

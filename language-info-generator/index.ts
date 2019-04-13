@@ -3,9 +3,9 @@ import { LanguageInfoLabels } from "../src/Labels";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageNames from "./LanguageNames";
-import MacLocale from "./MacLocale";
+import MacLanguage from "./MacLocale";
 
-interface LicenseLocale {
+interface LicenseLanguage {
 	labels?: keyof LicenseLanguageData["labels"];
 	langTags: string[];
 	charsets: string[];
@@ -15,8 +15,8 @@ interface LicenseLocale {
 }
 
 interface LicenseLanguageData {
-	locales: {
-		[id: number]: LicenseLocale | undefined;
+	languages: {
+		[id: number]: LicenseLanguage | undefined;
 	};
 	labels: {
 		[name: string]: LanguageInfoLabels | undefined;
@@ -27,19 +27,19 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	// Load everything in parallel.
 	const languageNamesPromise = LanguageNames(require.resolve("./Language names.tsv"));
 
-	const localesPromise = MacLocale(require.resolve("./Languages.tsv"));
+	const languagesPromise = MacLanguage(require.resolve("./Languages.tsv"));
 
 	const labelMapPromise: Promise<LanguageLabelsMap> = (async () => {
 		if (!resourcesFile)
 			return new Map();
 
 		const languageIDsByResourceID: Array<number | undefined> = [];
-		const localesByLanguageID: Array<MacLocale | undefined> = [];
+		const languagesByLanguageID: Array<MacLanguage | undefined> = [];
 
-		for (const locale of await localesPromise) {
-			localesByLanguageID[locale.id] = locale;
-			if (locale.labelsResourceID !== undefined) {
-				languageIDsByResourceID[locale.labelsResourceID] = locale.id;
+		for (const language of await languagesPromise) {
+			languagesByLanguageID[language.id] = language;
+			if (language.labelsResourceID !== undefined) {
+				languageIDsByResourceID[language.labelsResourceID] = language.id;
 			}
 		}
 
@@ -50,8 +50,8 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 					return languageID === undefined ? null : languageID;
 				},
 				lookupCharsets(languageID) {
-					const locale = localesByLanguageID[languageID];
-					return locale ? locale.charsets : [];
+					const language = languagesByLanguageID[languageID];
+					return language ? language.charsets : [];
 				},
 				onWrongCharset(error) {
 					onNonFatalError(error);
@@ -74,23 +74,23 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	})();
 
 	// Now wait for everything to get loaded.
-	const [languageNames, locales, labelMap] = await PromiseEach([
+	const [languageNames, languages, labelMap] = await PromiseEach([
 		languageNamesPromise,
-		localesPromise,
+		languagesPromise,
 		labelMapPromise
 	]);
 
 	// Assemble the output.
 	const data: LicenseLanguageData = {
 		labels: {},
-		locales: {}
+		languages: {}
 	};
 
 	type LabelKey = keyof typeof data.labels;
 
 	const labelKeys = new Map<LanguageInfoLabels, LabelKey>();
 
-	function putLabels(labels: LanguageInfoLabels, forLocale: MacLocale): LabelKey {
+	function putLabels(labels: LanguageInfoLabels, forLanguage: MacLanguage): LabelKey {
 		{
 			const key = labelKeys.get(labels);
 			if (key !== undefined) {
@@ -104,35 +104,35 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 			return key;
 		}
 
-		for (const potentialKey of [forLocale.displayLangTag, ...forLocale.langTags])
+		for (const potentialKey of [forLanguage.displayLangTag, ...forLanguage.langTags])
 		if (!(potentialKey in data.labels))
 			return setKeyTo(potentialKey);
 
 		for (let potentialKeyNum = 2; ; potentialKeyNum++) {
-			const potentialKey = `${forLocale.displayLangTag}-${potentialKeyNum}`;
+			const potentialKey = `${forLanguage.displayLangTag}-${potentialKeyNum}`;
 
 			if (!(potentialKey in data.labels))
 				return setKeyTo(potentialKey);
 		}
 	}
 
-	for (const locale of locales) {
-		const label = labelMap.get(locale.id);
-		const labelRef = label ? putLabels(label, locale) : undefined;
+	for (const language of languages) {
+		const label = labelMap.get(language.id);
+		const labelRef = label ? putLabels(label, language) : undefined;
 
-		const name = languageNames.get(locale.displayLangTag);
+		const name = languageNames.get(language.displayLangTag);
 		if (!name) {
-			throw new Error(`No entry in Language names.tsv for locale ${locale.displayLangTag}.`);
+			throw new Error(`No entry in Language names.tsv for language ${language.displayLangTag}.`);
 		}
 
-		const { id, langTags, charsets } = locale;
+		const { id, langTags, charsets } = language;
 
-		data.locales[id] = {
+		data.languages[id] = {
 			charsets,
 			labels: labelRef,
 			langTags,
 			...name,
-			doubleByteCharset: locale.doubleByteCharset || undefined
+			doubleByteCharset: language.doubleByteCharset || undefined
 		};
 	}
 

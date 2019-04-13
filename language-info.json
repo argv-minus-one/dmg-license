@@ -117,7 +117,7 @@
       "message": "Se está de acordo com os termos desta licença, pressione \"Concordar\" para instalar o software. Se não está de acordo, pressione \"Discordar\"."
     }
   },
-  "locales": {
+  "languages": {
     "0": {
       "charsets": [
         "MacRoman",
