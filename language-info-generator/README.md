@@ -13,6 +13,8 @@ The file is empty, but its resource fork contains a set of localized strings tha
 
 ## Usage
 
+Just do `npm run run`. It performs two steps, which can be done separately:
+
 ### Regenerate `Language names.tsv`
 
 Install the latest [OpenJDK] (or some other JDK ≥ 7), if you haven't already. Then run:
@@ -21,28 +23,27 @@ Install the latest [OpenJDK] (or some other JDK ≥ 7), if you haven't already. 
 ./generate-language-names.sh
 ```
 
-### Regenerate `license/languages.json`
-
-As described above, you need to point the program to the `SLAResources` file. Then run:
+### Regenerate `language-info.json`
 
 ```
-npm install
-npx ts-node gen-lang-json.ts /path/to/SLAResources >../lib/license/languages.json
+npx ts-node . >../language-info.json
 ```
 
-Note that `npm install` has to be run separately for license-languages-generator, because its dependencies are different from those of the main node-appdmg project.
+This expects the `SLAResources` file to be located at `/Volumes/SLAs_for_UDIFs_1.0/SLAResources`. If it is located elsewhere, set the environment variable `SLAResources` to the correct path, like so:
+
+```
+SLAResources=/path/to/SLAResources npx ts-node . >../language-info.json
+```
 
 ## Files
 
-### [gen-lang-json.ts]
+### [index.ts]
 
-TypeScript program that generates the contents of `../lib/license-locales.json`, using data from:
+TypeScript program that generates the contents of `../language-info.json`, using data from:
 
 * `Languages.tsv`
 * `Language names.tsv`
 * `SLAResources`
-
-It takes one command-line parameter: the path to `SLAResources`.
 
 Output is written to `stdout`.
 
@@ -90,7 +91,7 @@ Table of languages and their display names, in TSV format. The first row is a he
 
 3. Display name of the language in that language (e.g. “Deutsch” for German).
 
-[gen-lang-json.ts]: gen-lang-json.ts
+[index.ts]: index.ts
 [Languages.tsv]: Languages.tsv
 [GetLanguageNames.java]: GetLanguageNames.java
 [generate-language-names.sh]: generate-language-names.sh
