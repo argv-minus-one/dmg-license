@@ -6,7 +6,7 @@ type LanguageNames = Map<string, {
 	localizedName: string
 }>;
 
-async function LanguageNames(file: string = require.resolve("../Language names.tsv")): Promise<LanguageNames> {
+async function LanguageNames(file: string): Promise<LanguageNames> {
 	const result: LanguageNames = new Map();
 	const errors: Error[] = [];
 
