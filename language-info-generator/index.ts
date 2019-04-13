@@ -3,7 +3,7 @@ import { LanguageInfoLabels } from "../src/Labels";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageNames from "./LanguageNames";
-import MacLanguage from "./MacLocale";
+import MacLanguage from "./MacLanguage";
 
 interface LicenseLanguage {
 	labels?: keyof LicenseLanguageData["labels"];
