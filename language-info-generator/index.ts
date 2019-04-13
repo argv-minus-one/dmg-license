@@ -27,7 +27,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	// Load everything in parallel.
 	const languageNamesPromise = LanguageNames(require.resolve("./Language names.tsv"));
 
-	const localesPromise = MacLocale(require.resolve("./Locales.tsv"));
+	const localesPromise = MacLocale(require.resolve("./Languages.tsv"));
 
 	const labelMapPromise: Promise<LanguageLabelsMap> = (async () => {
 		if (!resourcesFile)

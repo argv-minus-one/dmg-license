@@ -38,7 +38,7 @@ Note that `npm install` has to be run separately for license-languages-generator
 
 TypeScript program that generates the contents of `../lib/license-locales.json`, using data from:
 
-* `Locales.tsv`
+* `Languages.tsv`
 * `Language names.tsv`
 * `SLAResources`
 
@@ -46,7 +46,7 @@ It takes one command-line parameter: the path to `SLAResources`.
 
 Output is written to `stdout`.
 
-### [Locales.tsv]
+### [Languages.tsv]
 
 Table of Classic Mac OS language IDs and associated information. Modern macOS (aka Mac OS X) does not use them directly, but the `DiskImageMounter` still uses them to look up the correct localized license text.
 
@@ -78,20 +78,20 @@ You need at least JDK 7 to compile and run it, but more recent JDKs come with mo
 
 ### [generate-language-names.sh]
 
-A shell script that generates [Language names.tsv]. It extracts language tags from [Locales.tsv], feeds them to [GetLanguageNames.java], and writes the output to [Language names.tsv]. It compiles [GetLanguageNames.java] if necessary.
+A shell script that generates [Language names.tsv]. It extracts language tags from [Languages.tsv], feeds them to [GetLanguageNames.java], and writes the output to [Language names.tsv]. It compiles [GetLanguageNames.java] if necessary.
 
 ### [Language names.tsv]
 
 Table of languages and their display names, in TSV format. The first row is a header. Columns are:
 
-1. Language tag. This corresponds to the fourth column (display name language) in [Locales.tsv].
+1. Language tag. This corresponds to the fourth column (display name language) in [Languages.tsv].
 
 2. English display name of the language.
 
 3. Display name of the language in that language (e.g. “Deutsch” for German).
 
 [gen-lang-json.ts]: gen-lang-json.ts
-[Locales.tsv]: Locales.tsv
+[Languages.tsv]: Languages.tsv
 [GetLanguageNames.java]: GetLanguageNames.java
 [generate-language-names.sh]: generate-language-names.sh
 [Language names.tsv]: Language%20names.tsv
