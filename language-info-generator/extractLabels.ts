@@ -65,9 +65,9 @@ export class ResourceDecodingError extends VError {
 	) {
 		super(
 			options,
-			"Can't decode resource %d (for region %d) from %s" + (message ? ": " + message : (options.cause && options.cause.message) ? "" : "."),
+			"Can't decode resource %d (for language %d) from %s" + (message ? ": " + message : (options.cause && options.cause.message) ? "" : "."),
 			options.info.resourceID,
-			options.info.regionCode,
+			options.info.languageID,
 			options.info.charset,
 			...params
 		);
@@ -78,7 +78,7 @@ export namespace ResourceDecodingError {
 	export interface Options {
 		cause?: Error | null;
 		info: VErrorInfo & {
-			regionCode: number;
+			languageID: number;
 			resourceID: number;
 			charset: string | ReadonlyArray<string>;
 		};
@@ -155,16 +155,16 @@ function readRawLabels(
 
 function decodeLabels(
 	rawLabels: Labels<Buffer>,
-	regionCode: number,
+	languageID: number,
 	pos: ResourcePos,
 	config: extractLabels.Config
 ): LanguageInfoLabels {
-	const charsets = config.lookupCharsets && config.lookupCharsets(regionCode) || [];
+	const charsets = config.lookupCharsets && config.lookupCharsets(languageID) || [];
 
 	for (const charset of charsets) {
 		const info: ResourceDecodingError.Options["info"] = {
 			charset,
-			regionCode,
+			languageID,
 			resourceID: pos.resID
 		};
 
@@ -215,7 +215,7 @@ function decodeLabels(
 			new ResourceDecodingError({
 				info: {
 					charset: charsets,
-					regionCode,
+					languageID,
 					resourceID: pos.resID
 				}
 			}),
@@ -250,8 +250,8 @@ async function extractLabels(config: extractLabels.Config): Promise<LanguageLabe
 	const result: LanguageLabelsMap = new Map();
 
 	for (const r of Object.values(rmap["STR#"])) {
-		const regionCode = config.lookupRegionCode(r.id);
-		if (regionCode === null) continue;
+		const languageID = config.lookupLanguageID(r.id);
+		if (languageID === null) continue;
 
 		const pos = freeze(ResourcePos(config.resourcesFile, r));
 
@@ -265,7 +265,7 @@ async function extractLabels(config: extractLabels.Config): Promise<LanguageLabe
 					if (Buffer.isBuffer(fallback.agree))
 						rawLabels = fallback as Labels<Buffer>;
 					else {
-						result.set(regionCode, fallback as Labels<string>);
+						result.set(languageID, fallback as Labels<string>);
 						continue;
 					}
 				}
@@ -276,7 +276,7 @@ async function extractLabels(config: extractLabels.Config): Promise<LanguageLabe
 				throw rawLabels.error;
 		}
 
-		result.set(regionCode, decodeLabels(rawLabels, regionCode, pos, config));
+		result.set(languageID, decodeLabels(rawLabels, languageID, pos, config));
 	}
 
 	return result;
@@ -286,8 +286,8 @@ namespace extractLabels {
 	export interface Config {
 		resourcesFile: string;
 		fromDataFork?: boolean;
-		lookupRegionCode(resourceID: number): number | null;
-		lookupCharsets?(regionCode: number): string[];
+		lookupLanguageID(resourceID: number): number | null;
+		lookupCharsets?(languageID: number): string[];
 
 		/**
 		 * This method is called if one of the provided character charsets was unsuitable for decoding an `STR#` resource. This is only a notification; `onDecodingFailure` will be called if all attempts at decoding a resource fail.

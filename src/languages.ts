@@ -15,10 +15,10 @@ export class Language {
 	englishName: string;
 	localizedName: string;
 	labels?: Labels<string | Buffer>;
-	regionCode: number;
+	languageID: number;
 
 	constructor(
-		regionCode: number,
+		languageID: number,
 		rawLocale: any,
 		labelsByName: LabelsByName
 	) {
@@ -28,11 +28,11 @@ export class Language {
 		this.labels = labelsByName[rawLocale.labels];
 		this.langTags = rawLocale.langTags;
 		this.localizedName = rawLocale.localizedName;
-		this.regionCode = regionCode;
+		this.languageID = languageID;
 	}
 
 	toString() {
-		return `${this.englishName} (region ${this.regionCode}; ${this.langTags.join(", ")})`;
+		return `${this.englishName} (language ${this.languageID}; ${this.langTags.join(", ")})`;
 	}
 }
 
@@ -43,7 +43,7 @@ export namespace Language {
 		for (const specLang of arrayify(spec.lang)) {
 			const lang =
 				typeof specLang === "number"
-				? byRegionCode[specLang]
+				? byLanguageID[specLang]
 				: byLocale[specLang.toLowerCase()];
 
 			if (lang)
@@ -67,8 +67,8 @@ export const byLocale: {
 	[langTag: string]: Language | undefined;
 } = {};
 
-/** Known `Language`s, indexed by classic Mac OS region code. This is a sparse array. */
-export const byRegionCode: Array<Language | undefined> = [];
+/** Known `Language`s, indexed by classic Mac OS language ID. This is a sparse array. */
+export const byLanguageID: Array<Language | undefined> = [];
 
 {
 	// tslint:disable-next-line: no-var-requires
@@ -87,14 +87,14 @@ export const byRegionCode: Array<Language | undefined> = [];
 		);
 	}
 
-	for (const regionCodeStr in langJSON.locales) {
+	for (const languageIDStr in langJSON.locales) {
 		const entry = new Language(
-			Number(regionCodeStr),
-			langJSON.locales[regionCodeStr],
+			Number(languageIDStr),
+			langJSON.locales[languageIDStr],
 			labelsByName
 		);
 
-		byRegionCode[entry.regionCode] = entry;
+		byLanguageID[entry.languageID] = entry;
 		for (const locale of entry.langTags)
 			byLocale[locale.toLowerCase()] = entry;
 	}

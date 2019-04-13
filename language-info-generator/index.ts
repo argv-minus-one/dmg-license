@@ -33,24 +33,24 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 		if (!resourcesFile)
 			return new Map();
 
-		const regionCodesByResourceID: Array<number | undefined> = [];
-		const localesByRegionCode: Array<MacLocale | undefined> = [];
+		const languageIDsByResourceID: Array<number | undefined> = [];
+		const localesByLanguageID: Array<MacLocale | undefined> = [];
 
 		for (const locale of await localesPromise) {
-			localesByRegionCode[locale.id] = locale;
+			localesByLanguageID[locale.id] = locale;
 			if (locale.labelsResourceID !== undefined) {
-				regionCodesByResourceID[locale.labelsResourceID] = locale.id;
+				languageIDsByResourceID[locale.labelsResourceID] = locale.id;
 			}
 		}
 
 		try {
 			return await extractLabels({
-				lookupRegionCode(resourceID) {
-					const regionCode = regionCodesByResourceID[resourceID];
-					return regionCode === undefined ? null : regionCode;
+				lookupLanguageID(resourceID) {
+					const languageID = languageIDsByResourceID[resourceID];
+					return languageID === undefined ? null : languageID;
 				},
-				lookupCharsets(regionCode) {
-					const locale = localesByRegionCode[regionCode];
+				lookupCharsets(languageID) {
+					const locale = localesByLanguageID[languageID];
 					return locale ? locale.charsets : [];
 				},
 				onWrongCharset(error) {

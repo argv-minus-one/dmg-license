@@ -15,13 +15,13 @@ export interface LicenseContentItem {
 	};
 	labels: Buffer;
 	langs: Language[];
-	regionCodes: number[];
+	languageIDs: number[];
 }
 
 interface LicenseContent {
 	inOrder: LicenseContentItem[];
-	byRegionCode: Map<number, LicenseContentItem>;
-	defaultRegionCode: number;
+	byLanguageID: Map<number, LicenseContentItem>;
+	defaultLanguageID: number;
 }
 
 namespace LicenseContent {
@@ -86,7 +86,7 @@ namespace LicenseContent {
 				body,
 				labels,
 				langs,
-				regionCodes: langs.map(lang => lang.regionCode),
+				languageIDs: langs.map(lang => lang.languageID),
 				spec
 			};
 		}));
@@ -95,8 +95,8 @@ namespace LicenseContent {
 			throw new Error("No license specifications were provided.");
 
 		const ret: LicenseContent = {
-			byRegionCode: new Map(),
-			defaultRegionCode: NaN,
+			byLanguageID: new Map(),
+			defaultLanguageID: NaN,
 			inOrder: contents
 		};
 
@@ -107,12 +107,12 @@ namespace LicenseContent {
 			let contentWasUsed = false;
 
 			for (const lang of content.langs) {
-				const {regionCode} = lang;
+				const {languageID} = lang;
 
-				if (ret.byRegionCode.has(regionCode))
+				if (ret.byLanguageID.has(languageID))
 					langCollisions.add(lang);
 				else {
-					ret.byRegionCode.set(regionCode, content);
+					ret.byLanguageID.set(languageID, content);
 					contentWasUsed = true;
 				}
 			}
@@ -123,8 +123,8 @@ namespace LicenseContent {
 			if (content.spec.default) {
 				content.langs.forEach(defaultLangs.add.bind(defaultLangs));
 
-				if (isNaN(ret.defaultRegionCode))
-					ret.defaultRegionCode = content.langs[0].regionCode;
+				if (isNaN(ret.defaultLanguageID))
+					ret.defaultLanguageID = content.langs[0].languageID;
 			}
 
 			delete content.spec;
@@ -141,12 +141,12 @@ namespace LicenseContent {
 			);
 		}
 
-		if (isNaN(ret.defaultRegionCode))
-			ret.defaultRegionCode = contents[0].langs[0].regionCode;
+		if (isNaN(ret.defaultLanguageID))
+			ret.defaultLanguageID = contents[0].langs[0].languageID;
 		else if (defaultLangs.size > 1) {
 			context.warning(
 				new Error(`More than one language was designated as the default. Choosing ${
-					languages.byRegionCode[ret.defaultRegionCode]
+					languages.byLanguageID[ret.defaultLanguageID]
 				}. Choices were ${
 					Array.from(defaultLangs).join(", ")
 				}.`),

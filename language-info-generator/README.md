@@ -48,15 +48,15 @@ Output is written to `stdout`.
 
 ### [Locales.tsv]
 
-Table of Classic Mac OS region codes and associated information. Modern macOS (aka Mac OS X) does not use them directly, but the `DiskImageMounter` still uses them to look up the correct localized license text.
+Table of Classic Mac OS language IDs and associated information. Modern macOS (aka Mac OS X) does not use them directly, but the `DiskImageMounter` still uses them to look up the correct localized license text.
 
 The first row is a header. Columns are as follows:
 
-1. Mac OS region name, as it appears in [`Script.h` in `CarbonCore.framework`](https://github.com/phracker/MacOSX-SDKs/blob/master/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/Script.h). Each localization of Classic Mac OS has one of these.
+1. Mac OS language name, as it appears in [`Script.h` in `CarbonCore.framework`](https://github.com/phracker/MacOSX-SDKs/blob/master/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/Script.h). Each localization of Classic Mac OS has one of these.
 
-2. Numeric region code corresponding to the region name. It also appears in `Script.h`. This is what `DiskImageMounter` looks up by.
+2. Numeric language ID corresponding to the language name. It also appears in `Script.h`. This is what `DiskImageMounter` looks up by.
 
-3. Applicable languages: a comma-separated list of language tags that map to this Mac OS region code. These mostly come from comments in `Script.h`, but some adjustments have been made by hand.
+3. Applicable languages: a comma-separated list of language tags that map to this Mac OS language ID. These mostly come from comments in `Script.h`, but some adjustments have been made by hand.
 
 4. Display name language: a single language tag. [GetLanguageNames.java] looks up each language's display name from this.
 

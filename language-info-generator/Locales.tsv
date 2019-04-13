@@ -1,4 +1,4 @@
-# Mac OS region name	Region code	Applicable languages	Display name language	Character sets	Comment	STR# Resource ID	Double byte charset?
+# Mac OS language name	Language ID	Applicable languages	Display name language	Character sets	Comment	STR# Resource ID	Double byte charset?
 verUS	0	en-US	en-US	MacRoman,ASCII		5002
 verFrance	1	fr-FR	fr	MacRoman,ASCII		5004
 verBritain	2	en-GB	en-GB	MacRoman,ASCII

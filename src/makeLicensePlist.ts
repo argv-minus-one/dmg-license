@@ -45,15 +45,15 @@ export default function makeLicensePlist(
 
 		// LPic header
 		// The first field is the default language ID.
-		buf.writeInt16BE(content.defaultRegionCode);
+		buf.writeInt16BE(content.defaultLanguageID);
 
 		// The second field is the count of language ID to license resource mappings.
-		buf.writeUInt16BE(content.byRegionCode.size);
+		buf.writeUInt16BE(content.byLanguageID.size);
 
 		// Next is the list of resource ID mappings.
-		for (const [regionCode, item] of content.byRegionCode.entries()) {
+		for (const [languageID, item] of content.byLanguageID.entries()) {
 			// Mapping field 1: system language ID
-			buf.writeInt16BE(regionCode);
+			buf.writeInt16BE(languageID);
 
 			// Mapping field 2: local resource ID minus 5000
 			buf.writeInt16BE(content.inOrder.indexOf(item));
