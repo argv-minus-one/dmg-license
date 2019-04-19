@@ -30,6 +30,9 @@ namespace CodedString {
 			if (typeof data === "string" && s.encoding === "base64")
 				data = bufferFrom(data, "base64");
 
+			if (Buffer.isBuffer(data) && s.charset && s.charset.toLowerCase() === "native")
+				return data;
+
 			return context.iconvCache.tryCharEncode(
 				typeof data === "string" ? data : { charset: s.charset || "UTF-8", data },
 				langs
