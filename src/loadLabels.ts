@@ -3,6 +3,7 @@ import { VError } from "verror";
 import { Labels, LabelsSpec, LicenseSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
+import IconvCache from "./IconvCache";
 import Language from "./Language";
 import * as languages from "./languages";
 import { arrayify, readFileP } from "./util";
@@ -42,18 +43,58 @@ export function packLabels(
 	sbuf.writeUInt16BE(6);
 
 	// Language name
-	{
+	if (labels.languageName === undefined) {
 		const languageName = CodedString.encode(langs[0].localizedName, langs, context);
-		writeStr(languageName, "Language name");
+		writeStr(languageName, Labels.descriptions.languageName);
 	}
 
 	// Labels
-	for (const labelKey of Labels.keys) {
-		const label = labels[labelKey];
-		const data = Buffer.isBuffer(label) ? label : CodedString.encode(label, langs, context);
-		writeStr(data, Labels.descriptions[labelKey]);
+	const errors = new ErrorBuffer();
+
+	Labels.forEach(
+		labels,
+		(label, key) => {
+			let data: Buffer;
+
+			try {
+				data = Buffer.isBuffer(label) ? label : CodedString.encode(label, langs, context);
+			}
+			catch (e) {
+				errors.add(new VError(e, "Cannot encode %s label for %s", Labels.descriptions[key].toLowerCase(), langs[0].englishName));
+				return;
 			}
 
+			writeStr(data, Labels.descriptions[key]);
+		},
+		{ onNoLanguageName() {
+			// If no language name is provided, try the languageName in the built-in labels.
+			let languageName: CodedString | Buffer | null = langs[0].labels && langs[0].labels.languageName || null;
+
+			try {
+				if (languageName !== null && !Buffer.isBuffer(languageName))
+					languageName = CodedString.encode(languageName, langs, context);
+
+				// Failing that, encode the localizedName of the language.
+				if (languageName === null)
+					languageName = CodedString.encode(langs[0].localizedName, langs, context);
+			}
+			catch (e) {
+				if (e instanceof IconvCache.NoSuitableCharsetError) {
+					// In languages that iconv can't handle, encoding the language name won't work. All of the labels, including the language name, must be native-encoded.
+					// Note: The correctness of this error message hinges on the assumption that every language's name is representable in its own Macintosh character set. This is highly likely, but not actually guaranteed; language names come from the Unicode CLDR, which isn't restricted to characters present in the corresponding Macintosh character sets. Long story short, this shouldn't be a problem, but it's not impossible.
+					throw new Error(`Labels for ${langs[0].englishName}, including the languageName label, must be provided with "charset":"native". Transcoding text from Unicode for this language is not supported.`);
+				}
+				else {
+					errors.add(e);
+					return;
+				}
+			}
+
+			writeStr(languageName, Labels.descriptions.languageName);
+		}}
+	);
+
+	errors.check();
 	return sbuf.toBuffer();
 }
 
@@ -187,24 +228,28 @@ const LabelLoader: {
 		const fpath = context.resolvePath(spec.file);
 		const data = await readFileP(fpath);
 		const pieces = bufferSplitMulti(data, spec.delimiters);
+		const pieceCount = pieces.length;
 
-		if (pieces.length !== 5) {
+		if (pieceCount !== 5 && pieceCount !== 6) {
 			throw new VError(
 				{
 					info: {
 						path: fpath
 					}
 				},
-				"Delimited labels file should have contained 5 parts, but instead contains %d.",
-				pieces.length
+				"Delimited labels file should have contained 5 or 6 parts, but instead contains %d.",
+				pieceCount
 			);
 		}
 		else {
-			const labels = Labels.create<CodedString>((key, index) => ({
-				charset: spec.charset,
-				data: pieces[index],
-				encoding: spec.encoding
-			}));
+			const labels = Labels.create<CodedString>(
+				(key, index) => ({
+					charset: spec.charset,
+					data: pieces[index],
+					encoding: spec.encoding
+				}),
+				{ includeLanguageName: pieceCount === 6 }
+			);
 
 			return packLabels(labels, langs, context);
 		}

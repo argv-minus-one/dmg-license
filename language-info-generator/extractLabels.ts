@@ -127,7 +127,7 @@ function splitSTR(buf: Buffer, pos: Readonly<ResourcePos>) {
 function readRawLabels(
 	r: ResourceForkLib.Resource,
 	pos: ResourcePos
-): Labels<Buffer> | {
+): Labels.WithLanguageName<Buffer> | {
 	error: InvalidResourceError,
 	data: Buffer
 } {
@@ -149,12 +149,11 @@ function readRawLabels(
 		};
 	}
 
-	// TODO: Include the language name.
-	return Labels.create((_, index) => rawStrings[index + 1]);
+	return Labels.create((_, index) => rawStrings[index], { includeLanguageName: true });
 }
 
 function decodeLabels(
-	rawLabels: Labels<Buffer>,
+	rawLabels: Labels.WithLanguageName<Buffer>,
 	languageID: number,
 	pos: ResourcePos,
 	config: extractLabels.Config
@@ -228,13 +227,13 @@ function decodeLabels(
 		return {
 			charset: "native;base64",
 			...Labels.map(
-				fallbackLabels as Labels<Buffer>,
+				fallbackLabels as Labels.WithLanguageName<Buffer>,
 				label => label.toString("base64")
 			)
 		};
 	}
 	else
-		return fallbackLabels as Labels<string>;
+		return fallbackLabels as Labels.WithLanguageName<string>;
 }
 
 export type LanguageLabelsMap = Map<number, LanguageInfoLabels>;
@@ -263,9 +262,9 @@ async function extractLabels(config: extractLabels.Config): Promise<LanguageLabe
 
 				if (fallback) {
 					if (Buffer.isBuffer(fallback.agree))
-						rawLabels = fallback as Labels<Buffer>;
+						rawLabels = fallback as Labels.WithLanguageName<Buffer>;
 					else {
-						result.set(languageID, fallback as Labels<string>);
+						result.set(languageID, fallback as Labels.WithLanguageName<string>);
 						continue;
 					}
 				}
@@ -297,7 +296,7 @@ namespace extractLabels {
 		 */
 		onWrongCharset?(
 			error: ResourceDecodingError,
-			encodedLabels: Labels<Buffer>
+			encodedLabels: Labels.WithLanguageName<Buffer>
 		): void;
 
 		/**
@@ -309,8 +308,8 @@ namespace extractLabels {
 		 */
 		onDecodingFailure?(
 			error: ResourceDecodingError,
-			encodedLabels: Labels<Buffer>
-		): Labels | Labels<Buffer>;
+			encodedLabels: Labels.WithLanguageName<Buffer>
+		): Labels.WithLanguageName | Labels.WithLanguageName<Buffer>;
 
 		/**
 		 * This method is called if an invalid `STR#` resource is found. It may do several things:
@@ -322,7 +321,7 @@ namespace extractLabels {
 		 * @param error - An error object describing the problem.
 		 * @param data - The raw bytes of the resource.
 		 */
-		onInvalidResource?(error: InvalidResourceError, data: Buffer): Labels | Labels<Buffer> | null;
+		onInvalidResource?(error: InvalidResourceError, data: Buffer): Labels.WithLanguageName | Labels.WithLanguageName<Buffer> | null;
 	}
 }
 
