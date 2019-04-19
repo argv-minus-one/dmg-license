@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"@types/node": "*"
+	},
+	"name": "read-xml",
+	"types": "./read-xml.d.ts"
+}
