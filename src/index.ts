@@ -2,6 +2,7 @@ import Context from "./Context";
 import { Labels, NoLabels } from "./Labels";
 import LicenseContent from "./LicenseContent";
 import makeLicensePlist from "./makeLicensePlist";
+import specFromJSON from "./specFromJSON";
 import writePlistToDmg from "./writePlistToDmg";
 
 export { Labels, NoLabels };
@@ -137,6 +138,13 @@ export async function dmgLicense(imagePath: string, specs: LicenseSpec[], option
 			context
 		)
 	);
+}
+
+export namespace dmgLicense {
+	export async function fromJSON(imagePath: string, specJSON: string | object, options: Options): Promise<void> {
+		const spec = specFromJSON(specJSON);
+		return await dmgLicense(imagePath, spec, options);
+	}
 }
 
 export default dmgLicense;
