@@ -7,7 +7,12 @@
 	"repository": "argvminusone/dmg-license",
 	"keywords": [
 		"dmg",
-		"license"
+		"licence",
+		"license",
+		"mac",
+		"macos",
+		"osx",
+		"udif"
 	],
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
