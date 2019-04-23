@@ -8,15 +8,8 @@
 			"description": "A character set name, as understood by the Node.js iconv module [1]. Case insensitive.\n\nThe special value \"native\" means the text is already in the appropriate classic Mac OS character set, and no character set conversion should be done.\n\n[1] https://github.com/bnoordhuis/node-iconv",
 
 			"type": "string",
-
-			"oneOf": [
-				{
-					"const": "native"
-				},
-				{
-					"pattern": "^[A-Za-z][A-Za-z0-9.:_-]*$"
-				}
-			]
+			"pattern": "^[A-Za-z][A-Za-z0-9.:_-]*$",
+			"examples": ["UTF-8", "ASCII", "native"]
 		},
 
 		"encoding": {
@@ -52,7 +45,7 @@
 
 				"properties": {
 					"body": {
-						"description": "Text of the license agreement.",
+						"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
 
 						"type": "object",
 
@@ -62,83 +55,74 @@
 
 								"type": "string",
 								"enum": ["rtf", "plain"]
+							},
+
+							"text": {
+								"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
+
+								"type": "string"
+							},
+
+							"file": {
+								"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
+
+								"type": "string"
+							},
+
+							"charset": {
+								"$ref": "#/definitions/charset"
+							},
+
+							"encoding": {
+								"$ref": "#/definitions/encoding"
 							}
 						},
 
 						"oneOf": [
 							{
 								"properties": {
-									"text": {
-										"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
-
-										"type": "string"
-									},
-
-									"charset": {
-										"description": "Character set of the \"text\" property, if it is encoded.\n\nIf this property is specified, the \"encoding\" property must also be specified.",
-
-										"$ref": "#/definitions/charset"
-									},
-
-									"encoding": {
-										"description": "Encoding of the \"text\" property, if it is encoded.\n\nIf this property is specified, the \"charset\" property must also be specified.",
-
-										"$ref": "#/definitions/encoding"
-									}
+									"charset": false,
+									"encoding": false,
+									"file": false
 								},
-
-								"required": ["text"],
-								"dependencies": {
-									"charset": ["encoding"],
-									"encoding": ["charset"]
-								}
+								"required": ["text"]
 							},
 
 							{
 								"properties": {
-									"file": {
-										"description": "Path to the file containing the license text.",
-
-										"type": "string"
-									},
-
-									"charset": {
-										"description": "Character set used in the file.",
-										"default": "UTF-8",
-
-										"$ref": "#/definitions/charset"
-									},
-
-									"encoding": {
-										"description": "Special encoding of the file, if any.",
-
-										"$ref": "#/definitions/encoding"
-									}
+									"file": false
 								},
+								"required": ["text", "charset", "encoding"]
+							},
 
+							{
+								"properties": {
+									"charset": {
+										"default": "UTF-8"
+									},
+									"text": false
+								},
 								"required": ["file"]
 							}
 						]
 					},
 
 					"labels": {
-						"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\". They may be given in the JSON configuration file, or from separate file(s).\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
+						"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\". They may be given in the JSON configuration file, or from separate file(s).\n\nThe \"charset\" and \"encoding\" properties control the character set and binary encoding of the label strings or file(s). Their exact meaning depends on the \"type\" property.\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
 
 						"type": "object",
 
 						"properties": {
 							"charset": {
-								"description": "Character set of the label strings or file(s). The exact meaning of this property depends on the \"type\" property:\n\n• When \"type\" is not \"raw\" and \"charset\" is absent, label strings are UTF-8.\n\n• When \"type\" is absent, \"inline\", or \"json\", the \"charset\" property indicates that the label strings are encoded, and what their actual character set is. In this case, the \"encoding\" property must also be specified.\n\n• When \"type\" is \"one-per-file\" or \"delimited\", the \"charset\" property indicates the character set of the label file(s). The default character set is UTF-8.\n\n• When \"type\" is \"raw\", the \"charset\" property must be absent.",
-
 								"$ref": "#/definitions/charset"
 							},
 
 							"encoding": {
-								"description": "Encoding of the label strings or file(s).\n\nIf this property is specified, and \"type\" is absent, \"inline\", or \"json\", then the \"charset\" property must also be specified."
+								"$ref": "#/definitions/encoding"
 							},
 
 							"type": {
-								"description": "How the label strings are structured.\n\n• When \"type\" is absent or \"inline\", label strings are given directly, in the \"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\" properties.\n\n• When \"type\" is \"one-per-file\", the label properties (\"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\") contain paths to single files, each of which contains only that label.\n\n• When \"type\" is \"json\", there must be a \"file\" property containing the path to an external JSON file. It must contain an object with \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", \"message\" properties. They are interpreted as though \"type\" were \"inline\".\n\n• When \"type\" is \"raw\", there must be a \"file\" property containing the path to an external file containing a classic Mac OS STR# data structure, as DiskImageMounter expects. The file's contents are copied into the disk image as a STR# resource without any sort of conversion.\n\n• When \"type\" is \"delimited\", there must be a \"file\" and a \"delimiter\" property. \"file\" must be the path to an external file containing five or six strings (for \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\", in that order) separated by a delimiter. The \"delimiter\" property indicates what sequence of bytes will serve as the delimiter.",
+								"description": "How the label strings are structured.\n\n• When \"type\" is absent or \"inline\", label strings are given directly, in the \"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\" properties.\n\n• When \"type\" is \"one-per-file\", the label properties (\"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\") contain paths to single files, each of which contains only that label.\n\n• When \"type\" is \"json\", there must be a \"file\" property containing the path to an external JSON file. It must contain an object with \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", \"message\" properties. They are interpreted as though \"type\" were \"inline\".\n\n• When \"type\" is \"raw\", there must be a \"file\" property containing the path to an external file containing a classic Mac OS STR# data structure, as DiskImageMounter expects. The file's contents are copied into the disk image as a STR# resource without any sort of conversion.\n\n• When \"type\" is \"delimited\", there must be a \"file\" and a \"delimiter\" property. \"file\" must be the path to an external file containing five or six strings (for \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\", in that order) separated by a delimiter. The \"delimiter\" property indicates what sequence of bytes will serve as the delimiter.\n\nThe meanings of the \"charset\" and \"encoding\" properties depend on the \"type\" property. The rules are:\n\n• When \"type\" is absent, \"inline\", or \"json\", label strings are assumed to be in UTF-8, because JSON is always in UTF-8. If they are in any other character set (given with the \"charset\" property), they must be encoded (given with the \"encoding\" property).\n\n• When \"type\" is \"raw\", the \"charset\" and \"encoding\" properties must be absent.\n• When \"type\" is \"one-per-file\" or \"delimited\", the \"charset\" property indicates the character set of the label file(s), and defaults to UTF-8. In this case, any combination of \"charset\" and \"encoding\" (or neither) is valid.",
 
 								"type": "string",
 								"enum": ["inline", "one-per-file", "json", "raw", "delimited"],
