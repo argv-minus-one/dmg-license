@@ -29,7 +29,7 @@ function showHelp(onStderr: boolean = true) {
 	(onStderr ? stderr : stdout).write(
 `Add a license agreement to a Mac disk image.
 
-Usage: dmg-license <json-path> <dmg-path>
+Usage: dmg-license [options…] <json-path> <dmg-path>
 
 json-path:  Path to a JSON license specification file.
 dmg-path:   Path to a disk image (.dmg) file.
