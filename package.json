@@ -28,7 +28,8 @@
 		"bin/**.js",
 		"language-info.json",
 		"lib/**.js",
-		"lib/**.d.ts"
+		"lib/**.d.ts",
+		"schema.json"
 	],
 	"dependencies": {
 		"buffer-from": "^1.1.1",
