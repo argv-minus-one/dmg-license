@@ -14,6 +14,9 @@
 		"osx",
 		"udif"
 	],
+	"bin": {
+		"dmg-license": "./bin/dmg-license.js"
+	},
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
 	"scripts": {
@@ -22,8 +25,9 @@
 		"test": "mocha -r ts-node/register test/**.spec.ts"
 	},
 	"files": [
-		"lib/**.js",
+		"bin/**.js",
 		"language-info.json",
+		"lib/**.js",
 		"lib/**.d.ts"
 	],
 	"dependencies": {

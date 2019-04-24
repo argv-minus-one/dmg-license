@@ -1,21 +1,14 @@
-#!/usr/bin/env node
-
 import { promises as FSP } from "fs";
-import IsMyJSONValid = require("is-my-json-valid");
 import minimist = require("minimist");
 import * as Path from "path";
 import { inspect } from "util";
-import { VError } from "verror";
-import { dmgLicense, LicenseSpec } from "..";
-import { BadJSONLicenseSpecError } from "../specFromJSON";
+import { dmgLicense } from ".";
+import { BadJSONLicenseSpecError } from "./specFromJSON";
 
 const { stderr, stdout } = process;
 
 // tslint:disable-next-line: no-var-requires
-const pkg: { name: string, version: string } = require("../../package.json");
-
-// tslint:disable-next-line: no-var-requires
-const dmgLicenseSchema = require("../../schema.json");
+const pkg: { name: string, version: string } = require("../package.json");
 
 let showedHelp = false;
 
@@ -67,8 +60,7 @@ function wrongUsage() {
 	return 64;
 }
 
-async function main() {
-	let verbose = false;
+export async function main() {
 	let showError = showVerboseWarning;
 	let showWarning = showNormalWarning;
 
@@ -93,8 +85,6 @@ async function main() {
 					return true;
 			}
 		});
-
-		verbose = args.verbose;
 
 		if (args.quiet) {
 			showWarning = nop;
