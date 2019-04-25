@@ -4,7 +4,7 @@
 	"description": "Generate license agreements for macOS .dmg files",
 	"author": "argvminusone",
 	"license": "MIT",
-	"repository": "argvminusone/dmg-license",
+	"repository": "argv-minus-one/dmg-license",
 	"keywords": [
 		"dmg",
 		"licence",
