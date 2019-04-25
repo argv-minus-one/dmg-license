@@ -25,10 +25,10 @@
 		"test": "mocha -r ts-node/register test/**.spec.ts"
 	},
 	"files": [
-		"bin/**.js",
+		"bin/**/*.js",
 		"language-info.json",
-		"lib/**.js",
-		"lib/**.d.ts",
+		"lib/**/*.js",
+		"lib/**/*.d.ts",
 		"schema.json"
 	],
 	"dependencies": {
