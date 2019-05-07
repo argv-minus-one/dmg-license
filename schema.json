@@ -1,4 +1,5 @@
 {
+	"$id": "https://github.com/argv-minus-one/dmg-license/raw/master/schema.json",
 	"$schema": "http://json-schema.org/draft-07/schema",
 
 	"description": "Configuration for a disk image license agreement. This is an array of objects, one for each localization of the license agreement.\n\nDisk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language.",
