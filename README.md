@@ -55,6 +55,6 @@ Usage: <kbd>dmg-license [<var>options…</var>] <var>json-path</var> <var>dmg-pa
 
 ## API
 
-This package's default export is a function that, like the command-line tool, attaches a license agreement to a disk image according to a provided [license specification](License%20Specifications.md).
+This package's default export is a function that, like the command-line tool, attaches a license agreement to a disk image according to a provided [license specification](License%20Specifications%20%28API%29.md).
 
 The API is currently undocumented, aside from TypeScript declarations.

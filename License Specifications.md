@@ -1,11 +1,13 @@
 # License Specifications
 
-`dmg-license` the command-line tool requires a JSON license specification file. The API takes a JavaScript object with the same structure (except without the outer wrapper object). This information describes the license agreement to be attached to the disk image.
+A <dfn>license specification</dfn> describes a license agreement to be attached to a disk image. The `dmg-license` command-line tool requires a JSON license specification file. (The API expects [just the `license` array, without the wrapper object](License%20Specifications%20%28single%29.md).) This information describes the license agreement to be attached to the disk image.
 
-Here's the structure of a license specification. Click a property name to see more information about it.
+Disk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language. Accordingly, the [`license`] property's value is an array of objects, one for each localization of the license agreement.
+
+Here's the structure of a JSON license specification. Click a property name to see more information about it.
 
 <pre><code>{
-	"$schema"?: "<var>path/to/schema.json</var>",
+	"$schema"?: "https://github.com/argv-minus-one/dmg-license/raw/master/schema.json" | "<var>path/to/</var>schema.json",
 	<a href="#license">"license"</a>: [
 		<i>// one or more of:</i>
 		{
@@ -47,9 +49,7 @@ Here's the structure of a license specification. Click a property name to see mo
 
 ## `/license`
 
-Configuration for a disk image license agreement. This is an array of objects, one for each localization of the license agreement.
-
-Disk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language.
+The actual license specification. This is an array of objects, one for each localization of the license agreement.
 
 ## `/license/*/body`
 
