@@ -1,6 +1,6 @@
 # License Specifications
 
-A <dfn>license specification</dfn> describes a license agreement to be attached to a disk image. The `dmg-license` command-line tool requires a JSON license specification file. (The API expects [just the `license` array, without the wrapper object](License%20Specifications%20%28single%29.md).) This information describes the license agreement to be attached to the disk image.
+A <dfn>license specification</dfn> describes a license agreement to be attached to a disk image. The `dmg-license` command-line tool requires a JSON license specification file. (The API expects [just the `license` array, without the wrapper object](License%20Specifications%20%28API%29.md).) This information describes the license agreement to be attached to the disk image.
 
 Disk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language. Accordingly, the [`license`] property's value is an array of objects, one for each localization of the license agreement.
 
