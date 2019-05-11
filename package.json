@@ -32,10 +32,10 @@
 		"schema.json"
 	],
 	"dependencies": {
+		"ajv": "^6.10.0",
 		"buffer-from": "^1.1.1",
 		"core-js": "^3.0.0",
 		"iconv": "^2.3.4",
-		"is-my-json-valid": "^2.19.0",
 		"plist": "^3.0.1",
 		"smart-buffer": "^4.0.2",
 		"verror": "^1.10.0"

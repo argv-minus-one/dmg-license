@@ -141,9 +141,14 @@ export async function dmgLicense(imagePath: string, specs: LicenseSpec[], option
 }
 
 export namespace dmgLicense {
-	export async function fromJSON(imagePath: string, specJSON: string | object, options: Options): Promise<void> {
-		const spec = specFromJSON(specJSON);
+	export async function fromJSON(imagePath: string, specJSON: string | object, options: fromJSON.Options): Promise<void> {
+		const spec = specFromJSON(specJSON, options);
 		return await dmgLicense(imagePath, spec, options);
+	}
+
+	export namespace fromJSON {
+		// tslint:disable-next-line: no-shadowed-variable
+		export type Options = specFromJSON.Options;
 	}
 }
 

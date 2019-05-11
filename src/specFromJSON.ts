@@ -1,15 +1,15 @@
-import IsMyJSONValid = require("is-my-json-valid");
+import Ajv = require("ajv");
 import { VError } from "verror";
-import { LicenseSpec } from ".";
+import { LicenseSpec, Options as MainOptions } from ".";
 
-const validator = IsMyJSONValid(
-	// tslint:disable-next-line: no-var-requires
-	require("../schema.json"),
-	{
-		greedy: true,
-		verbose: true
-	}
-);
+const ajv = new Ajv({
+	allErrors: true,
+	format: "full",
+	jsonPointers: true
+});
+
+// tslint:disable-next-line: no-var-requires
+const validator = ajv.compile(require("../schema.json"));
 
 interface JSONLicenseSpec {
 	license: LicenseSpec[];
@@ -17,8 +17,9 @@ interface JSONLicenseSpec {
 
 export class BadJSONLicenseSpecError extends VError {}
 
-export default function specFromJSON(
-	spec: string | object
+function specFromJSON(
+	spec: string | object,
+	options?: specFromJSON.Options
 ): LicenseSpec[] {
 	if (typeof spec === "string") {
 		try {
@@ -32,18 +33,33 @@ export default function specFromJSON(
 		}
 	}
 
+	const dataVar = options && options.specSourceURL || "";
+
 	try {
-		if (!validator(spec)) {
+		if (!validator(spec, dataVar)) {
 			throw new BadJSONLicenseSpecError(
-				"JSON license specification is not valid.\n%s", validator.errors
-					.map(error => `· ${error.field} ${error.message}`)
-					.join("\n")
+				{
+					info: {
+						errors: validator.errors
+					}
+				},
+				"JSON license specification is not valid:\n· %s",
+				ajv.errorsText(validator.errors, { dataVar, separator: "\n· " })
 			);
 		}
 	}
 	finally {
-		validator.errors = [];
+		delete ajv.errors;
+		delete validator.errors;
 	}
 
 	return (spec as JSONLicenseSpec).license;
 }
+
+namespace specFromJSON {
+	export interface Options extends MainOptions {
+		specSourceURL?: string;
+	}
+}
+
+export default specFromJSON;
