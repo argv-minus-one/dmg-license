@@ -3,6 +3,7 @@ import minimist = require("minimist");
 import * as Path from "path";
 import { inspect } from "util";
 import { dmgLicense } from ".";
+import * as languages from "./languages";
 import { BadJSONLicenseSpecError } from "./specFromJSON";
 
 const { stderr, stdout } = process;
@@ -30,6 +31,7 @@ function showHelp(onStderr: boolean = true) {
 `Add a license agreement to a Mac disk image.
 
 Usage: dmg-license [options…] <json-path> <dmg-path>
+       dmg-license --show-languages [--no-header-row]
 
 json-path:  Path to a JSON license specification file.
 dmg-path:   Path to a disk image (.dmg) file.
@@ -47,6 +49,9 @@ Show this help, without doing anything else.
 
 -V, --version
 Show version.
+
+--show-languages
+Output a tab-separated table of all recognized languages.
 `);
 }
 
@@ -74,7 +79,7 @@ export async function main() {
 				v: "verbose"
 			},
 
-			boolean: ["verbose", "quiet", "help", "version"],
+			boolean: ["verbose", "quiet", "help", "version", "show-languages"],
 
 			unknown(arg) {
 				if (arg.startsWith("-")) {
@@ -111,6 +116,17 @@ export async function main() {
 				showVersion(false);
 				return;
 			}
+		}
+
+		if (args["show-languages"]) {
+			stdout.write("Language ID\tLanguage tag\tNative charset\tName\n");
+
+			for (const language of languages.byLanguageID)
+			if (language)
+			for (const languageTag of language.langTags)
+				stdout.write(`${language.languageID}\t${languageTag}\t${language.charsets[0]}\t${language.englishName}\n`);
+
+			return;
 		}
 
 		if (args._.length !== 2) {
