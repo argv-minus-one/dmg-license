@@ -26,7 +26,7 @@ verCyprus	23	el-CY	el-CY	MacRoman,ASCII
 verTurkey	24	tr-TR	tr	MacTurkish,ASCII
 verIndiaHindi	33	hi-IN	hi	MacDevanagari,ASCII	Hindi for India
 verPakistanUrdu	34	ur-PK	ur-PK	MacArabic,ASCII	Urdu for Pakistan
-verTurkishModified	35	tr-TR	tr	MacTurkish,ASCII
+verTurkishModified	35		tr	MacTurkish,ASCII
 verItalianSwiss	36	it-CH	it-CH	MacRoman,ASCII	Italian Swiss
 verInternational	37	en-001	en-001	ASCII	English for international use; ASCII chars only
 verRomania	39	ro-RO	ro	MacRomania,ASCII
