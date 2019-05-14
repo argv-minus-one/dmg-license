@@ -9,10 +9,12 @@ interface LanguageBasics {
 	doubleByteCharset: boolean;
 	charsets: string[];
 	labelsResourceID?: number;
+	lineNum: number;
 }
 
 async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 	const languages: LanguageBasics[] = [];
+	const langTagMap = new Map<string, Set<LanguageBasics>>();
 	const errors = new ErrorBuffer();
 
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
@@ -36,14 +38,34 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 			continue;
 		}
 
-		languages.push({
+		const language: LanguageBasics = {
 			charsets: charsetList.split(","),
 			displayLangTag,
 			doubleByteCharset: doubleByteCharsetYN === "Y",
 			id,
 			labelsResourceID,
-			langTags: langTagList.split(",")
-		});
+			langTags: langTagList.split(","),
+			lineNum
+		};
+		languages.push(language);
+
+		for (const langTag of language.langTags) {
+			let languagesForTag = langTagMap.get(langTag);
+
+			if (!languagesForTag) {
+				languagesForTag = new Set();
+				langTagMap.set(langTag, languagesForTag);
+			}
+
+			languagesForTag.add(language);
+		}
+	}
+
+	// Look for collisions.
+	for (const [langTag, languagesForTag] of langTagMap.entries())
+	if (languagesForTag && languagesForTag.size > 1) {
+		const languagesForTagArray = Array.from(languagesForTag);
+		errors.add(new Error(`[${file}:${languagesForTagArray.map(l => l.lineNum).join(",")}] The language tag “${langTag}” is shared by languages ${languagesForTagArray.map(l => l.id).join(", ")}. Each language tag should occur only once.`));
 	}
 
 	errors.check();
