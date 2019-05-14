@@ -27,7 +27,7 @@ export class Language {
 	}
 
 	toString() {
-		return `${this.englishName} (language ${this.languageID}; ${this.langTags.join(", ")})`;
+		return `${this.englishName} (language ${this.languageID}${this.langTags.length === 0 ? "" : `; ${this.langTags.join(", ")}`})`;
 	}
 }
 

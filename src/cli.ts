@@ -122,9 +122,14 @@ export async function main() {
 			stdout.write("Language ID\tLanguage tag\tNative charset\tName\n");
 
 			for (const language of languages.byLanguageID)
-			if (language)
-			for (const languageTag of language.langTags)
-				stdout.write(`${language.languageID}\t${languageTag}\t${language.charsets[0]}\t${language.englishName}\n`);
+			if (language) {
+				if (language.langTags.length) {
+					for (const languageTag of language.langTags)
+						stdout.write(`${language.languageID}\t${languageTag}\t${language.charsets[0]}\t${language.englishName}\n`);
+				}
+				else
+					stdout.write(`${language.languageID}\t\t${language.charsets[0]}\t${language.englishName}\n`);
+			}
 
 			return;
 		}

@@ -20,7 +20,7 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
 		const [, idStr, langTagList, displayLangTag, charsetList, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
 
-		if (!idStr || !langTagList || !displayLangTag || !charsetList) {
+		if (!idStr || !displayLangTag || !charsetList) {
 			errors.add(new Error(`[${file}:${lineNum}] This line is incomplete.`));
 			continue;
 		}
@@ -44,7 +44,7 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 			doubleByteCharset: doubleByteCharsetYN === "Y",
 			id,
 			labelsResourceID,
-			langTags: langTagList.split(","),
+			langTags: langTagList ? langTagList.split(",") : [],
 			lineNum
 		};
 		languages.push(language);
