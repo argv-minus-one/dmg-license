@@ -611,7 +611,6 @@
     },
     "52": {
       "charsets": [
-        "MacSimpChinese",
         "MacChineseSimp",
         "ASCII"
       ],
@@ -626,7 +625,6 @@
     },
     "53": {
       "charsets": [
-        "MacTradChinese",
         "MacChineseTrad",
         "ASCII"
       ],
