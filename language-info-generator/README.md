@@ -11,33 +11,27 @@ This program uses, as input, a file published by Apple and made available on the
 
 The file is empty, but its resource fork contains a set of localized strings that appear on the license agreement window: “Agree”, “Disagree”, and so on. In order for a disk image created by node-appdmg to present a license agreement, it must contain these strings as well as the text of the license agreement.
 
+## Java
+
+Besides Node.js and npm, this program also requires a Java JDK, version 7 or later. See the section “GetLanguageNames.java” below for details.
+
 ## Usage
 
-Just do `npm run run`. It performs two steps, which can be done separately:
-
-### Regenerate `Language names.tsv`
-
-Install the latest [OpenJDK] (or some other JDK ≥ 7), if you haven't already. Then run:
+This program is invoked by the npm script `regenerate-language-info`. To run it:
 
 ```
-./generate-language-names.sh
-```
-
-### Regenerate `language-info.json`
-
-```
-npx ts-node . >../language-info.json
+npm run regenerate-language-info
 ```
 
 This expects the `SLAResources` file to be located at `/Volumes/SLAs_for_UDIFs_1.0/SLAResources`. If it is located elsewhere, set the environment variable `SLAResources` to the correct path, like so:
 
 ```
-SLAResources=/path/to/SLAResources npx ts-node . >../language-info.json
+SLAResources=/path/to/SLAResources npm run regenerate-language-info
 ```
 
 ## Files
 
-### [index.ts]
+### [language-info-generator.ts]
 
 TypeScript program that generates the contents of `../language-info.json`, using data from:
 
@@ -71,19 +65,11 @@ The first row is a header. Columns are as follows:
 
 ### [GetLanguageNames.java]
 
-A simple Java program that looks up display names for languages. It's written in Java because Java happens to have a good API for getting language display names, and Node.js seems not to.
-
-Output is as described under Languge names.tsv.
+A simple Java program that looks up display names for languages. It's written in Java because Java happens to have a good API for getting language display names, and Node.js seems not to. The TypeScript program will automatically compile and run this Java program in a subprocess.
 
 You need at least JDK 7 to compile and run it, but more recent JDKs come with more recent locale information, so you should use the latest JDK.
 
-### [generate-language-names.sh]
-
-A shell script that generates [Language names.tsv]. It extracts language tags from [Languages.tsv], feeds them to [GetLanguageNames.java], and writes the output to [Language names.tsv]. It compiles [GetLanguageNames.java] if necessary.
-
-### [Language names.tsv]
-
-Table of languages and their display names, in TSV format. The first row is a header. Columns are:
+As input, it takes language tags, one per line. The output is a table of languages and their display names, in TSV format. The first row is a header. Columns are:
 
 1. Language tag. This corresponds to the fourth column (display name language) in [Languages.tsv].
 
@@ -91,9 +77,7 @@ Table of languages and their display names, in TSV format. The first row is a he
 
 3. Display name of the language in that language (e.g. “Deutsch” for German).
 
-[index.ts]: index.ts
+[language-info-generator.ts]: language-info-generator.ts
 [Languages.tsv]: Languages.tsv
 [GetLanguageNames.java]: GetLanguageNames.java
-[generate-language-names.sh]: generate-language-names.sh
-[Language names.tsv]: Language%20names.tsv
 [OpenJDK]: https://jdk.java.net

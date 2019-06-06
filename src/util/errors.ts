@@ -49,9 +49,24 @@ export class ErrorBuffer {
 	/**
 	 * Catches errors thrown from the given function, adding them to the array of accumulated errors.
 	 */
-	catching(fun: () => void): void {
+	catching<T>(fun: () => T): T | undefined {
 		try {
-			fun();
+			return fun();
+		}
+		catch (e) {
+			this.add(e);
+		}
+	}
+
+	/**
+	 * Catches errors thrown from the given async function or promise, adding them to the array of accumulated errors.
+	 */
+	async catchingAsync<T>(fun: Promise<T> | (() => Promise<T>)): Promise<T | undefined> {
+		try {
+			if (typeof fun === "function")
+				return await fun();
+			else
+				return await fun;
 		}
 		catch (e) {
 			this.add(e);
@@ -64,5 +79,9 @@ export class ErrorBuffer {
 	check(): void {
 		const error = VError.errorFromList(this.errors);
 		if (error) throw error;
+	}
+
+	get isEmpty(): boolean {
+		return !this.errors.length;
 	}
 }

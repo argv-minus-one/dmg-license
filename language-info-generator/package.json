@@ -1,6 +1,0 @@
-{
-	"private": true,
-	"scripts": {
-		"run": "./generate-language-names.sh && ts-node . >../language-info.json"
-	}
-}

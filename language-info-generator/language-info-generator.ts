@@ -4,12 +4,9 @@ import { RawLanguageInfo } from "../src/Language";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageBasics from "./LanguageBasics";
-import LanguageNames from "./LanguageNames";
 
 async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonFatalError: (error: Error) => void): Promise<void> {
 	// Load everything in parallel.
-	const languageNamesPromise = LanguageNames(require.resolve("./Language names.tsv"));
-
 	const languagesPromise = LanguageBasics(require.resolve("./Languages.tsv"));
 
 	const labelMapPromise: Promise<LanguageLabelsMap> = (async () => {
@@ -57,8 +54,7 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	})();
 
 	// Now wait for everything to get loaded.
-	const [languageNames, languages, labelMap] = await PromiseEach([
-		languageNamesPromise,
+	const [languages, labelMap] = await PromiseEach([
 		languagesPromise,
 		labelMapPromise
 	]);
@@ -101,18 +97,14 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 		const label = labelMap.get(language.id);
 		const labelRef = label ? putLabels(label, language) : undefined;
 
-		const name = languageNames.get(language.displayLangTag);
-		if (!name) {
-			throw new Error(`No entry in Language names.tsv for language ${language.displayLangTag}.`);
-		}
-
-		const { id, langTags, charsets } = language;
+		const { englishName, id, langTags, localizedName, charsets } = language;
 
 		data.languages[id] = {
 			charsets,
 			labels: labelRef,
 			langTags,
-			...name,
+			englishName,
+			localizedName,
 			doubleByteCharset: language.doubleByteCharset || undefined
 		};
 	}

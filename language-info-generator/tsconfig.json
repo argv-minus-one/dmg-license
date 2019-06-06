@@ -7,5 +7,5 @@
 	"allowJs": true,
 	"maxNodeModuleJsDepth": 5
 },
-"include": ["index.ts"]
+"include": ["language-info-generator.ts"]
 }

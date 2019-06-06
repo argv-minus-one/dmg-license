@@ -1,31 +1,36 @@
-import java.util.Locale;
 import static java.lang.System.err;
 import static java.lang.System.exit;
-import static java.lang.System.out;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.ENGLISH;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Locale;
 
 public final class GetLanguageNames {
 	public static void main(String[] args) throws Exception {
-		if (args.length == 0) {
-			err.println("This program should be passed, on the command line, a list of locales.");
-			err.println("Example: java … GetLanguageNames en fr pt-br");
-			exit(1);
-		}
-
-		out.println("# Language tag\tEnglish display name\tLocalized display name");
-
+		final BufferedReader in = new BufferedReader(new InputStreamReader(System.in, UTF_8));
+		final Writer out = new OutputStreamWriter(System.out, UTF_8);
 		boolean hadErrors = false;
+		String localeName;
 
-		for (String arg : args) {
-			Locale locale = Locale.forLanguageTag(arg);
+		out.write("# Language tag\tEnglish display name\tLocalized display name\tError message, if any\n");
+		out.flush();
+
+		while ((localeName = in.readLine()) != null) {
+			final Locale locale = Locale.forLanguageTag(localeName);
 
 			if (locale.equals(Locale.ROOT)) {
-				err.println("Invalid language tag: " + arg);
+				err.println("Invalid language tag: " + localeName);
 				hadErrors = true;
+				out.write(localeName + "\t\tInvalid language tag.\n");
 				continue;
 			}
 
-			out.println(arg + '\t' + locale.getDisplayName(ENGLISH) + '\t' + locale.getDisplayName(locale));
+			out.write(localeName + '\t' + locale.getDisplayName(ENGLISH) + '\t' + locale.getDisplayName(locale) + "\t\n");
+			out.flush();
 		}
 
 		if (hadErrors) {

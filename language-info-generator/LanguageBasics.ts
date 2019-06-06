@@ -1,5 +1,6 @@
 import * as FS from "fs";
 import { ErrorBuffer } from "../src/util/errors";
+import LanguageNames from "./LanguageNames";
 import readTSV from "./readTSV";
 
 interface LanguageBasics {
@@ -7,9 +8,11 @@ interface LanguageBasics {
 	langTags: string[];
 	displayLangTag: string;
 	doubleByteCharset: boolean;
+	englishName: string;
 	charsets: string[];
 	labelsResourceID?: number;
 	lineNum: number;
+	localizedName: string;
 }
 
 async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
@@ -17,6 +20,7 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 	const langTagMap = new Map<string, Set<LanguageBasics>>();
 	const errors = new ErrorBuffer();
 
+	await errors.catchingAsync(LanguageNames(async queryDisplayName => {
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
 		const [, idStr, langTagList, displayLangTag, charsetList, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
 
@@ -38,14 +42,18 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 			continue;
 		}
 
+		const {englishName, localizedName} = await queryDisplayName(displayLangTag);
+
 		const language: LanguageBasics = {
 			charsets: charsetList.split(","),
 			displayLangTag,
 			doubleByteCharset: doubleByteCharsetYN === "Y",
+			englishName,
 			id,
 			labelsResourceID,
 			langTags: langTagList ? langTagList.split(",") : [],
-			lineNum
+			lineNum,
+			localizedName
 		};
 		languages.push(language);
 
@@ -60,6 +68,7 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 			languagesForTag.add(language);
 		}
 	}
+	}));
 
 	// Look for collisions.
 	for (const [langTag, languagesForTag] of langTagMap.entries())
