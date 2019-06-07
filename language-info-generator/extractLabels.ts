@@ -289,7 +289,7 @@ namespace extractLabels {
 		lookupCharsets?(languageID: number): string[];
 
 		/**
-		 * This method is called if one of the provided character charsets was unsuitable for decoding an `STR#` resource. This is only a notification; `onDecodingFailure` will be called if all attempts at decoding a resource fail.
+		 * This method is called if one of the provided character sets was unsuitable for decoding an `STR#` resource. This is only a notification; `onDecodingFailure` will be called if all attempts at decoding a resource fail.
 		 *
 		 * @param error - Details about the failure.
 		 * @param encodedLabels - The undecoded label strings.
@@ -300,7 +300,7 @@ namespace extractLabels {
 		): void;
 
 		/**
-		 * This method is called if none of the provided character charsets were suitable for decoding an `STR#` resource.
+		 * This method is called if none of the provided character sets were suitable for decoding an `STR#` resource.
 		 *
 		 * @param error - Details about the failure.
 		 * @param encodedLabels - The undecoded label strings.
