@@ -1,5 +1,3 @@
-Implement & document `language-info-generator/Language name overrides.tsv`. These are languages whose English and/or localized name is *not* to be taken from Unicode data.
-
 Remove "charset": "native" support. Require specific charsets to be named at all times. Needed because this can result in wrong labels charset for multi-region license bodies, and because it's a footgun that can easily result in text with the wrong charset.
 
 Use CFStringGetBytes [https://developer.apple.com/documentation/corefoundation/1543006-cfstringgetbytes?language=objc] for charset conversion. Use CFStringIsEncodingAvailable [https://developer.apple.com/documentation/corefoundation/1542860-cfstringisencodingavailable?language=objc] to determine whether a charset is available.

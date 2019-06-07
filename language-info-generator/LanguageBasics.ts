@@ -15,10 +15,51 @@ interface LanguageBasics {
 	localizedName: string;
 }
 
+interface LanguageNameOverride {
+	englishName?: string;
+	localizedName?: string;
+}
+
+async function readLanguageNameOverrides(errors: ErrorBuffer): Promise<Map<number, LanguageNameOverride>> {
+	const file = require.resolve("./Language name overrides.tsv");
+	const map = new Map<number, LanguageNameOverride>();
+
+	for await (const {lineNum, cells: [languageIDString, englishName, localizedName]} of readTSV.withSkips(FS.createReadStream(file))) {
+		if (!languageIDString) {
+			errors.add(new Error(`[${file}:${lineNum}] This line is missing the language ID column.`));
+			continue;
+		}
+
+		const languageID = Number(languageIDString);
+		if (!Number.isInteger(languageID) || languageID < 0) {
+			errors.add(new Error(`[${file}:${lineNum}] Invalid language ID “${languageIDString}”.`));
+			continue;
+		}
+
+		if (!englishName && !localizedName) {
+			errors.add(new Error(`[${file}:${lineNum}] This line has a language tag, but no name overrides.`));
+			continue;
+		}
+
+		if (map.has(languageID)) {
+			errors.add(new Error(`[${file}:${lineNum}] Duplicate language ID “${languageIDString}”.`));
+			continue;
+		}
+
+		map.set(languageID, {
+			englishName: englishName || undefined,
+			localizedName: localizedName || undefined
+		});
+	}
+
+	return map;
+}
+
 async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 	const languages: LanguageBasics[] = [];
 	const langTagMap = new Map<string, Set<LanguageBasics>>();
 	const errors = new ErrorBuffer();
+	const nameOverrides = readLanguageNameOverrides(errors);
 
 	await errors.catchingAsync(LanguageNames(async queryDisplayName => {
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
@@ -42,18 +83,21 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 			continue;
 		}
 
-		const {englishName, localizedName} = await queryDisplayName(displayLangTag);
+		const nameOverride = (await nameOverrides).get(id) || {};
+
+		// Only query for display names if at least one of the display names isn't overridden.
+		const displayNames = (nameOverride.englishName && nameOverride.localizedName) ? null : await queryDisplayName(displayLangTag);
 
 		const language: LanguageBasics = {
 			charsets: charsetList.split(","),
 			displayLangTag,
 			doubleByteCharset: doubleByteCharsetYN === "Y",
-			englishName,
+			englishName: nameOverride.englishName || displayNames!.englishName,
 			id,
 			labelsResourceID,
 			langTags: langTagList ? langTagList.split(",") : [],
 			lineNum,
-			localizedName
+			localizedName: nameOverride.localizedName || displayNames!.localizedName
 		};
 		languages.push(language);
 

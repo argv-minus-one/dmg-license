@@ -63,6 +63,18 @@ The first row is a header. Columns are as follows:
 
    There are only `STR#` resources for a handful of languages, so this column is blank on most rows.
 
+### [Language name overrides.tsv]
+
+Table of display names for the languages in [Languages.tsv]. Display names are normally looked up using [GetLanguageNames.java]. This file allows the display names to be overridden.
+
+The first row is a header. Columns are:
+
+1. Mac OS language ID. Same as the second column of [Languages.tsv].
+
+2. `englishName` for this language. If blank, the name will be looked up as normal.
+
+3. `localizedName` for this language. If blank, the name will be looked up as normal.
+
 ### [GetLanguageNames.java]
 
 A simple Java program that looks up display names for languages. It's written in Java because Java happens to have a good API for getting language display names, and Node.js seems not to. The TypeScript program will automatically compile and run this Java program in a subprocess.
@@ -81,3 +93,4 @@ As input, it takes language tags, one per line. The output is a table of languag
 [Languages.tsv]: Languages.tsv
 [GetLanguageNames.java]: GetLanguageNames.java
 [OpenJDK]: https://jdk.java.net
+[Language name overrides.tsv]: Language%20name%20overrides.tsv
