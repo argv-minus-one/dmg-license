@@ -5,7 +5,6 @@ import * as Path from "path";
 import { promisify } from "util";
 import { ErrorBuffer } from "../src/util/errors";
 import readTSV from "./readTSV";
-import { VError } from "verror";
 const FSP = FS.promises;
 
 async function runJavac() {
