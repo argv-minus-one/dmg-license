@@ -1,6 +1,6 @@
+import { assembleLicenses } from "./assemble";
 import Context from "./Context";
 import { Labels, NoLabels } from "./Labels";
-import LicenseContent from "./LicenseContent";
 import makeLicensePlist from "./makeLicensePlist";
 import specFromJSON from "./specFromJSON";
 import writePlistToDmg from "./writePlistToDmg";
@@ -15,6 +15,7 @@ export type BodySpec =
 export namespace BodySpec {
 	interface BaseBodySpec {
 		type?: "rtf" | "plain";
+		lang: string | number | Array<string | number>;
 	}
 
 	export interface BodyInline extends BaseBodySpec {
@@ -25,14 +26,14 @@ export namespace BodySpec {
 	}
 
 	export interface BodyInlineBase64 extends BaseBodySpec {
-		charset: "native" | string;
+		charset: string;
 		encoding: "base64";
 		file?: never;
 		text: string;
 	}
 
 	export interface BodyInFile extends BaseBodySpec {
-		charset?: "UTF-8" | "native" | string;
+		charset?: "UTF-8" | string;
 		encoding?: "base64";
 		file: string;
 		text?: never;
@@ -59,7 +60,11 @@ export namespace LabelsSpec {
 		T extends "delimited" ? LabelsInDelimitedFile :
 		never;
 
-	export interface LabelsInline extends Labels {
+	interface LabelsSpecBase {
+		lang: string | number | Array<string | number>;
+	}
+
+	export interface LabelsInline extends Labels, LabelsSpecBase {
 		charset?: never;
 		delimiters?: never;
 		encoding?: never;
@@ -67,23 +72,23 @@ export namespace LabelsSpec {
 		type?: "inline";
 	}
 
-	export interface LabelsInlineBase64 extends Labels {
-		charset: "native" | string;
+	export interface LabelsInlineBase64 extends Labels, LabelsSpecBase {
+		charset: string;
 		delimiters?: never;
 		encoding: "base64";
 		file?: never;
 		type?: "inline";
 	}
 
-	export interface LabelsOnePerFile extends Labels {
-		charset?: "UTF-8" | "native" | string;
+	export interface LabelsOnePerFile extends Labels, LabelsSpecBase {
+		charset?: "UTF-8" | string;
 		delimiters?: never;
 		encoding?: "base64";
 		file?: never;
 		type: "one-per-file";
 	}
 
-	export interface LabelsInJSON extends NoLabels {
+	export interface LabelsInJSON extends NoLabels, LabelsSpecBase {
 		charset?: never;
 		delimiters?: never;
 		encoding?: never;
@@ -91,15 +96,15 @@ export namespace LabelsSpec {
 		type: "json";
 	}
 
-	export interface LabelsInJSONBase64 extends NoLabels {
-		charset: "native" | string;
+	export interface LabelsInJSONBase64 extends NoLabels, LabelsSpecBase {
+		charset: string;
 		delimiters?: never;
 		encoding: "base64";
 		file: string;
 		type: "json";
 	}
 
-	export interface LabelsInRawFile extends NoLabels {
+	export interface LabelsInRawFile extends NoLabels, LabelsSpecBase {
 		charset?: never;
 		delimiters?: never;
 		encoding?: never;
@@ -107,8 +112,8 @@ export namespace LabelsSpec {
 		type: "raw";
 	}
 
-	export interface LabelsInDelimitedFile extends NoLabels {
-		charset: "UTF-8" | "native" | string;
+	export interface LabelsInDelimitedFile extends NoLabels, LabelsSpecBase {
+		charset: "UTF-8" | string;
 		delimiters: Array<"tab" | "lf" | "cr" | "crlf" | "nul" | "eol" | Uint8Array>;
 		encoding?: "base64";
 		file: string;
@@ -117,10 +122,9 @@ export namespace LabelsSpec {
 }
 
 export interface LicenseSpec {
-	body: BodySpec;
-	labels?: LabelsSpec;
-	lang: string | number | Array<string | number>;
-	default?: boolean;
+	body: BodySpec[];
+	labels?: LabelsSpec[];
+	defaultLang?: string | number;
 }
 
 export interface Options {
@@ -128,13 +132,13 @@ export interface Options {
 	onNonFatalError?(error: Error): void;
 }
 
-export async function dmgLicense(imagePath: string, specs: LicenseSpec[], options: Options): Promise<void> {
+export async function dmgLicense(imagePath: string, spec: LicenseSpec, options: Options): Promise<void> {
 	const context = new Context(options);
 
 	await writePlistToDmg(
 		imagePath,
 		makeLicensePlist(
-			await LicenseContent.load(specs, context),
+			await assembleLicenses(spec, context),
 			context
 		)
 	);

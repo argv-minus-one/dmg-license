@@ -1,11 +1,10 @@
 {
 "compilerOptions": {
-	"target": "es5",
+	"target": "es6",
 	"module": "commonjs",
 	"moduleResolution": "node",
 	"resolveJsonModule": true,
 	"strict": true,
-	"downlevelIteration": true,
 	"plugins": [
 		{"name": "typescript-tslint-plugin"}
 	],

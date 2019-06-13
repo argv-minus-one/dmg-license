@@ -1,8 +1,39 @@
-[
 {
-	"body": {
-		"file": "basic-license.txt"
-	},
-	"lang": "en-US"
+	"$schema": "../schema.json",
+	"body": [
+		{
+			"file": "basic-license.txt",
+			"lang": ["en-US", "es-ES"]
+		},
+		{
+			"text": "Hello, world!",
+			"lang": "fr-FR"
+		},
+		{
+			"text": "同意します",
+			"lang": "ja-jp"
+		},
+		{
+			"text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ᐃᐄᐅᐆᐊᐋᐱᐲᐳᐴᐸᐹᑉᑎᑏᑐᑑᑕᑖᑦᑭᑮᑯᑰᑲᑳᒃᒋᒌᒍᒎᒐᒑ°ᒡᒥᒦ•¶ᒧ®©™ᒨᒪᒫᒻᓂᓃᓄᓅᓇᓈᓐᓯᓰᓱᓲᓴᓵᔅᓕᓖᓗᓘᓚᓛᓪᔨᔩᔪᔫᔭ… ᔮᔾᕕᕖᕗ–—“”‘’ᕘᕙᕚᕝᕆᕇᕈᕉᕋᕌᕐᕿᖀᖁᖂᖃᖄᖅᖏᖐᖑᖒᖓᖔᖕᙱᙲᙳᙴᙵᙶᖖᖠᖡᖢᖣᖤᖥᖦᕼŁł",
+			"lang": "iu-ca"
+		}
+	],
+	"labels": [
+		{
+			"agree": "agree",
+			"disagree": "dis°agree",
+			"message": "message",
+			"print": "print",
+			"save": "save",
+			"lang": ["ja-jp", "iu-ca"]
+		},
+		{
+			"lang": ["es-ES", "fr-FR"],
+			"agree": "Agree, world!",
+			"disagree": "Disagree, world!",
+			"message": "Hello, world!",
+			"print": "Print, world!",
+			"save": "Save, world!"
+		}
+	]
 }
-]

@@ -11,16 +11,12 @@ const ajv = new Ajv({
 // tslint:disable-next-line: no-var-requires
 const validator = ajv.compile(require("../schema.json"));
 
-interface JSONLicenseSpec {
-	license: LicenseSpec[];
-}
-
 export class BadJSONLicenseSpecError extends VError {}
 
 function specFromJSON(
 	spec: string | object,
 	options?: specFromJSON.Options
-): LicenseSpec[] {
+): LicenseSpec {
 	if (typeof spec === "string") {
 		try {
 			spec = JSON.parse(spec);
@@ -53,7 +49,7 @@ function specFromJSON(
 		delete validator.errors;
 	}
 
-	return (spec as JSONLicenseSpec).license;
+	return spec as LicenseSpec;
 }
 
 namespace specFromJSON {

@@ -1,12 +1,10 @@
 import { SmartBuffer } from "smart-buffer";
 import { VError } from "verror";
-import { Labels, LabelsSpec, LicenseSpec, Options } from ".";
+import { Labels, LabelsSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
-import IconvCache from "./IconvCache";
 import Language from "./Language";
-import * as languages from "./languages";
-import { arrayify, readFileP } from "./util";
+import { readFileP } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
 import { ErrorBuffer } from "./util/errors";
 
@@ -15,14 +13,9 @@ import { ErrorBuffer } from "./util/errors";
  */
 export function packLabels(
 	labels: Labels<Buffer | CodedString>,
-	lang: Language | Language[],
+	lang: Language,
 	context: Context
 ): Buffer {
-	const langs = arrayify(lang);
-
-	if (!langs.length)
-		throw new RangeError("packLabels called with an empty array for the lang parameter.");
-
 	const sbuf = new SmartBuffer();
 
 	function writeStr(data: Buffer, description: string) {
@@ -30,7 +23,7 @@ export function packLabels(
 
 		if (length > 255) {
 			throw Object.assign(
-				new Error(`${description} for ${langs[0].englishName} is too large to write into a STR# resource. The maximum size is 255 bytes, but it is ${length} bytes.`),
+				new Error(`${description} for ${lang.englishName} is too large to write into a STR# resource. The maximum size is 255 bytes, but it is ${length} bytes.`),
 				{ data }
 			);
 		}
@@ -42,12 +35,6 @@ export function packLabels(
 	// Magic
 	sbuf.writeUInt16BE(6);
 
-	// Language name
-	if (labels.languageName === undefined) {
-		const languageName = CodedString.encode(langs[0].localizedName, langs, context);
-		writeStr(languageName, Labels.descriptions.languageName);
-	}
-
 	// Labels
 	const errors = new ErrorBuffer();
 
@@ -57,10 +44,10 @@ export function packLabels(
 			let data: Buffer;
 
 			try {
-				data = Buffer.isBuffer(label) ? label : CodedString.encode(label, langs, context);
+				data = Buffer.isBuffer(label) ? label : CodedString.encode(label, lang);
 			}
 			catch (e) {
-				errors.add(new VError(e, "Cannot encode %s label for %s", Labels.descriptions[key].toLowerCase(), langs[0].englishName));
+				errors.add(new VError(e, "Cannot encode %s for %s", Labels.descriptions[key].toLowerCase(), lang.englishName));
 				return;
 			}
 
@@ -68,27 +55,14 @@ export function packLabels(
 		},
 		{ onNoLanguageName() {
 			// If no language name is provided, try the languageName in the built-in labels.
-			let languageName: CodedString | Buffer | null = langs[0].labels && langs[0].labels.languageName || null;
+			let languageName: CodedString | Buffer | null = lang.labels && lang.labels.languageName || null;
 
-			try {
-				if (languageName !== null && !Buffer.isBuffer(languageName))
-					languageName = CodedString.encode(languageName, langs, context);
+			if (languageName !== null && !Buffer.isBuffer(languageName))
+				languageName = CodedString.encode(languageName, lang);
 
-				// Failing that, encode the localizedName of the language.
-				if (languageName === null)
-					languageName = CodedString.encode(langs[0].localizedName, langs, context);
-			}
-			catch (e) {
-				if (e instanceof IconvCache.NoSuitableCharsetError) {
-					// In languages that iconv can't handle, encoding the language name won't work. All of the labels, including the language name, must be native-encoded.
-					// Note: The correctness of this error message hinges on the assumption that every language's name is representable in its own Macintosh character set. This is highly likely, but not actually guaranteed; language names come from the Unicode CLDR, which isn't restricted to characters present in the corresponding Macintosh character sets. Long story short, this shouldn't be a problem, but it's not impossible.
-					throw new Error(`Labels for ${langs[0].englishName}, including the languageName label, must be provided with "charset":"native". Transcoding text from Unicode for this language is not supported.`);
-				}
-				else {
-					errors.add(e);
-					return;
-				}
-			}
+			// Failing that, encode the localizedName of the language.
+			if (languageName === null)
+				languageName = CodedString.encode(lang.localizedName, lang);
 
 			writeStr(languageName, Labels.descriptions.languageName);
 		}}
@@ -101,82 +75,69 @@ export function packLabels(
 /**
  * Loads the label set for the given `LicenseSpec`, encoded as a `STR#` resource.
  *
- * @param langs - Languages that `spec` applies to. Computed from `spec` if not supplied.
+ * @param lang - Language to encode the labels for.
  */
 export default function loadLabels(
-	spec: LicenseSpec,
+	spec: LabelsSpec | null | undefined,
 	contextOrOptions: Context | Options,
-	langs: Language[] = languages.bySpec(spec)
+	lang: Language
 ): Promise<Buffer> {
 	const context =
 		contextOrOptions instanceof Context ?
 		contextOrOptions :
 		new Context(contextOrOptions);
 
-	const labels = spec.labels;
-
-	if (labels) {
-		const loader = LabelLoader[labels.type || "inline"];
-		return loader(labels as any, langs, context);
+	if (spec) {
+		const loader = LabelLoader[spec.type || "inline"];
+		return loader(spec as any, lang, context);
 	}
 	else
-		return loadDefault(spec, langs, context);
+		return loadDefault(lang, context);
 }
 
 function loadDefault(
-	spec: LicenseSpec,
-	langs: Language[],
+	lang: Language,
 	context: Context
 ): Promise<Buffer> {
-	const errors: Error[] = [];
-
-	for (const lang of langs) {
-		const data = context.defaultLabelsOf(lang);
-
-		if (data instanceof Error)
-			errors.push(data);
-		else
-			return Promise.resolve(data);
-	}
-
-	return Promise.reject(VError.errorFromList(errors));
+	const data = context.defaultLabelsOf(lang);
+	return data instanceof Error ? Promise.reject(data) : Promise.resolve(data);
 }
 
 type LabelLoader<T extends LabelsSpec.Type | undefined> = (
 	spec: LabelsSpec.ForType<T>,
-	langs: Language[],
+	lang: Language,
 	context: Context
 ) => Promise<Buffer>;
 
 const LabelLoader: {
 	[T in LabelsSpec.Type]: LabelLoader<T>;
 } = {
-	"inline"(spec, langs, context) {
+	"inline"(spec, lang, context) {
 		return Promise.resolve(packLabels(
 			Labels.map(spec, label => ({
 				charset: spec.charset!,
-				data: label,
-				encoding: spec.encoding!
+				encoding: spec.encoding!,
+				text: label
 			})),
-			langs, context
+			lang, context
 		));
 	},
 
-	async "one-per-file"(spec, langs, context) {
+	async "one-per-file"(spec, lang, context) {
 		return packLabels(
 			await Labels.mapAsync(
 				spec,
 				async label => ({
 					charset: spec.charset || "UTF-8",
-					data: await readFileP(label),
-					encoding: spec.encoding
+					encoding: spec.encoding,
+					text: await readFileP(label)
 				})
 			),
-			langs, context
+			lang, context
 		);
 	},
 
-	async "json"(spec, langs, context) {
+	async "json"(spec, lang, context) {
 		const fpath = context.resolvePath(spec.file);
 		const json: Labels<unknown> = JSON.parse((await readFileP(fpath)).toString("UTF-8"));
 
@@ -209,22 +170,22 @@ const LabelLoader: {
 				}
 				else return {
 					charset: spec.charset!,
-					data,
-					encoding: spec.encoding!
+					encoding: spec.encoding!,
+					text: data
 				};
 			}
 		);
 
 		errors.check();
-		return packLabels(labels, langs, context);
+		return packLabels(labels, lang, context);
 	},
 
-	async "raw"(spec, langs, context) {
+	async "raw"(spec, lang, context) {
 		// Simplest case. The STR# resource is already fully assembled; it just needs to be returned.
 		return await readFileP(context.resolvePath(spec.file));
 	},
 
-	async "delimited"(spec, langs, context) {
+	async "delimited"(spec, lang, context) {
 		const fpath = context.resolvePath(spec.file);
 		const data = await readFileP(fpath);
 		const pieces = bufferSplitMulti(data, spec.delimiters);
@@ -245,13 +206,13 @@ const LabelLoader: {
 			const labels = Labels.create<CodedString>(
 				(key, index) => ({
 					charset: spec.charset,
-					data: pieces[index],
-					encoding: spec.encoding
+					encoding: spec.encoding,
+					text: pieces[index]
 				}),
 				{ includeLanguageName: pieceCount === 6 }
 			);
 
-			return packLabels(labels, langs, context);
+			return packLabels(labels, lang, context);
 		}
 	}
 };

@@ -1,23 +1,3 @@
-Remove "charset": "native" support. Require specific charsets to be named at all times. Needed because this can result in wrong labels charset for multi-region license bodies, and because it's a footgun that can easily result in text with the wrong charset.
-
-Use CFStringGetBytes [https://developer.apple.com/documentation/corefoundation/1543006-cfstringgetbytes?language=objc] for charset conversion. Use CFStringIsEncodingAvailable [https://developer.apple.com/documentation/corefoundation/1542860-cfstringisencodingavailable?language=objc] to determine whether a charset is available.
-
 When the charset of some input text is the same as the target charset, don't do charset conversion.
-
-When transcoding text with multiple target languages, encode the text for all of them, and ensure that the encoded text is bit-for-bit identical in each case. Otherwise, one or more of those target languages will see text in the wrong encoding.
-
-Or maybe just don't allow a single LicenseSpec to target more than one language?
-
-When transcoding to a native charset isn't supported and the native charset isn't ASCII compatible, try checking if the text is representable in the ASCII subset that the native charset is compatible with.
-
-In language-info.json, change `"charset": "native;base64"` to `"base64": true`.
-
-Define the ASCII subsets representable by the charsets that are not fully ASCII-compatible. If transcoding text to these charsets
-
-When conversion to native charset is not supported, if input text is UTF8 (or can be converted to UTF8) and native charset is ASCII compatible, check if the input text is all in the ASCII subset of UTF8.
-
-When conversion to native charset is not supported, if input text is UTF8 (or can be converted to UTF8) and native charset is not fully ASCII compatible, check if the input text is all in the ASCII subset that is compatible with that native charset.
-
-When conversion to native charset is not supported, if input text is RTF and can be converted to UTF8, use escapes to reduce it to ASCII (or, if the target charset is not ASCII compatible, the ASCII subset that is compatible).
 
 When conversion to native charset is supported, and input text is RTF, and input text can be converted to UTF8, but input text is not completely representable in the native charset, use escapes to reduce it to ASCII.

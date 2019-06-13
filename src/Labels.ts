@@ -208,10 +208,5 @@ export namespace Labels {
 
 export interface NoLabels extends Partial<Labels<undefined>> {}
 
-/** A label set, whose values are base64-encoded strings in the language's native character set. */
-export interface NativeEncodedLabels extends Labels<string> {
-	charset: "native;base64";
-}
-
 /** A label set, as it appears in `language-info.json`. */
-export type LanguageInfoLabels = Labels.WithLanguageName<string> & ({} | NativeEncodedLabels);
+export type LanguageInfoLabels = Labels.WithLanguageName<string>;

@@ -35,8 +35,11 @@
 	"dependencies": {
 		"ajv": "^6.10.0",
 		"buffer-from": "^1.1.1",
+		"cli-truncate": "^1.1.0",
 		"core-js": "^3.0.0",
+		"crc": "^3.8.0",
 		"iconv": "^2.3.4",
+		"iconv-corefoundation": "^1.0.0",
 		"plist": "^3.0.1",
 		"smart-buffer": "^4.0.2",
 		"verror": "^1.10.0"
@@ -44,7 +47,9 @@
 	"devDependencies": {
 		"@types/buffer-from": "^1.1.0",
 		"@types/chai": "^4.1.7",
+		"@types/cli-truncate": "^1.1.0",
 		"@types/core-js": "^2.5.0",
+		"@types/crc": "^3.4.0",
 		"@types/execa": "^0.9.0",
 		"@types/minimist": "^1.2.0",
 		"@types/mocha": "^5.2.6",

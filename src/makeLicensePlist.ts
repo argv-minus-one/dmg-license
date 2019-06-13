@@ -1,10 +1,11 @@
 import { PlistObject } from "plist";
 import { SmartBuffer } from "smart-buffer";
+import { AssembledLicenseSet } from "./assemble";
 import Context from "./Context";
-import LicenseContent from "./LicenseContent";
+import * as languages from "./languages";
 
 export default function makeLicensePlist(
-	content: LicenseContent,
+	licenses: AssembledLicenseSet,
 	context: Context
 ): PlistObject {
 	const ret = {
@@ -15,9 +16,9 @@ export default function makeLicensePlist(
 	};
 
 	// Assemble resources.
-	for (const [index, item] of content.inOrder.entries()) {
+	for (const [index, item] of licenses.inOrder.entries()) {
 		const ID = String(index + 5000);
-		const Name = item.langs[0].englishName;
+		const Name = languages.byLanguageID[item.languageIDs[0]]!.englishName;
 
 		ret["STR#"].push({
 			Attributes: "0x0000",
@@ -41,26 +42,26 @@ export default function makeLicensePlist(
 
 	// Generate LPic.
 	{
-		const buf = SmartBuffer.fromSize(4 + (6 * content.inOrder.length));
+		const buf = SmartBuffer.fromSize(4 + (6 * licenses.inOrder.length));
 
 		// LPic header
 		// The first field is the default language ID.
-		buf.writeInt16BE(content.defaultLanguageID);
+		buf.writeInt16BE(licenses.defaultLanguageID);
 
 		// The second field is the count of language ID to license resource mappings.
-		buf.writeUInt16BE(content.byLanguageID.size);
+		buf.writeUInt16BE(licenses.byLanguageID.size);
 
 		// Next is the list of resource ID mappings.
-		for (const [languageID, item] of content.byLanguageID.entries()) {
+		for (const [languageID, item] of licenses.byLanguageID.entries()) {
 			// Mapping field 1: system language ID
 			buf.writeInt16BE(languageID);
 
 			// Mapping field 2: local resource ID minus 5000
-			buf.writeInt16BE(content.inOrder.indexOf(item));
+			buf.writeInt16BE(licenses.inOrder.indexOf(item));
 
 			// Mapping field 3: 2-byte language?
 			// TODO: Figure out how modern macOS interprets this flag.
-			buf.writeInt16BE(item.langs.some(lang => lang.doubleByteCharset) ? 1 : 0);
+			buf.writeInt16BE(languages.byLanguageID[languageID]!.doubleByteCharset ? 1 : 0);
 		}
 
 		ret.LPic.push({

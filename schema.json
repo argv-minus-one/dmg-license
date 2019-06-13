@@ -2,17 +2,17 @@
 	"$id": "https://github.com/argv-minus-one/dmg-license/raw/master/schema.json",
 	"$schema": "http://json-schema.org/draft-07/schema",
 
-	"description": "Configuration for a disk image license agreement. This is an array of objects, one for each localization of the license agreement.\n\nDisk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language.",
+	"description": "Configuration for a disk image license agreement.\n\nDisk image license agreements can be multilingual. A disk image can contain several license agreements, and macOS will show the one appropriate for the user's preferred language. Accordingly, there can be more than one `body`, one for each language.",
 
 	"definitions": {
 		"Charset": {
 			"$id": "#Charset",
 			"title": "Charset",
-			"description": "A character set name, as understood by the Node.js iconv module [1]. Case insensitive.\n\nThe special value \"native\" means the text is already in the appropriate classic Mac OS character set, and no character set conversion should be done.\n\n[1] https://github.com/bnoordhuis/node-iconv",
+			"description": "An IANA character set name, as understood by the Core Foundation framework. Case insensitive.",
 
 			"type": "string",
 			"pattern": "^[A-Za-z][A-Za-z0-9.:_-]*$",
-			"examples": ["UTF-8", "ASCII", "native"]
+			"examples": ["UTF-8", "US-ASCII"]
 		},
 
 		"Encoding": {
@@ -39,298 +39,308 @@
 
 			"type": "integer",
 			"minimum": 0
-		}
-	},
+		},
 
-	"type": "object",
-	"properties": {
-		"license": {
-			"$id": "#LicenseSpecs",
+		"Languages": {
+			"$id": "#Languages",
+			"title": "Languages",
+			"description": "Which language(s) this object is in. Can be a language tag like \"en-US\", a classic Mac OS language code like 0, or an array of language tags and/or language codes.",
 
-			"type": "array",
-			"items": {
-				"$id": "#LicenseSpec",
-				"title": "LicenseSpec",
-				"description": "One localization of a license agreement.",
-
-				"type": "object",
-				"required": ["body", "lang"],
-
-				"properties": {
-					"body": {
-						"$id": "#BodySpec",
-						"title": "BodySpec",
-						"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
-
-						"type": "object",
-
-						"properties": {
-							"type": {
-								"description": "Which format the text is in: either plain text or RTF.\n\nDefault is \"plain\", except when the file path ends in “.rtf”, in which case the default is \"rtf\".",
-
-								"type": "string",
-								"enum": ["rtf", "plain"]
-							},
-
-							"text": {
-								"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
-
-								"type": "string"
-							},
-
-							"file": {
-								"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
-
-								"type": "string"
-							},
-
-							"charset": {
-								"$ref": "#Charset"
-							},
-
-							"encoding": {
-								"$ref": "#Encoding"
-							}
-						},
-
-						"oneOf": [
-							{
-								"properties": {
-									"charset": false,
-									"encoding": false,
-									"file": false
-								},
-								"required": ["text"]
-							},
-
-							{
-								"properties": {
-									"file": false
-								},
-								"required": ["text", "charset", "encoding"]
-							},
-
-							{
-								"properties": {
-									"charset": {
-										"default": "UTF-8"
-									},
-									"text": false
-								},
-								"required": ["file"]
-							}
-						]
-					},
-
-					"labels": {
-						"$id": "#LabelsSpec",
-						"title": "LabelsSpec",
-						"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\". They may be given in the JSON configuration file, or from separate file(s).\n\nThe \"charset\" and \"encoding\" properties control the character set and binary encoding of the label strings or file(s). Their exact meaning depends on the \"type\" property.\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
-
-						"type": "object",
-
-						"properties": {
-							"charset": {
-								"$ref": "#Charset"
-							},
-
-							"encoding": {
-								"$ref": "#Encoding"
-							},
-
-							"type": {
-								"description": "How the label strings are structured.\n\n• When \"type\" is absent or \"inline\", label strings are given directly, in the \"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\" properties.\n\n• When \"type\" is \"one-per-file\", the label properties (\"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\") contain paths to single files, each of which contains only that label.\n\n• When \"type\" is \"json\", there must be a \"file\" property containing the path to an external JSON file. It must contain an object with \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", \"message\" properties. They are interpreted as though \"type\" were \"inline\".\n\n• When \"type\" is \"raw\", there must be a \"file\" property containing the path to an external file containing a classic Mac OS STR# data structure, as DiskImageMounter expects. The file's contents are copied into the disk image as a STR# resource without any sort of conversion.\n\n• When \"type\" is \"delimited\", there must be a \"file\" and a \"delimiter\" property. \"file\" must be the path to an external file containing five or six strings (for \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\", in that order) separated by a delimiter. The \"delimiter\" property indicates what sequence of bytes will serve as the delimiter.\n\nThe meanings of the \"charset\" and \"encoding\" properties depend on the \"type\" property. The rules are:\n\n• When \"type\" is absent, \"inline\", or \"json\", label strings are assumed to be in UTF-8, because JSON is always in UTF-8. If they are in any other character set (given with the \"charset\" property), they must be encoded (given with the \"encoding\" property).\n• When \"type\" is \"raw\", the \"charset\" and \"encoding\" properties must be absent.\n• When \"type\" is \"one-per-file\" or \"delimited\", the \"charset\" property indicates the character set of the label file(s), and defaults to UTF-8. In this case, any combination of \"charset\" and \"encoding\" (or neither) is valid.",
-
-								"type": "string",
-								"enum": ["inline", "one-per-file", "json", "raw", "delimited"],
-								"default": "inline"
-							},
-
-							"delimiters": {
-								"description": "Sequences of bytes that will be interpreted as delimiter strings.\n\nEach item in this array may be either an array of bytes (given as numbers between 0 and 255), or one of the following shorthands:\n\n• \"tab\": [9] (an ASCII tab character)\n• \"lf\": [10] (an ASCII line feed character)\n• \"cr\": [13] (an ASCII carriage return character)\n• \"crlf\": [13, 10] (an ASCII CR+LF pair)\n• \"nul\": [0] (a zero byte)\n• \"eol\": any line ending (LF, CR, or CR+LF)\n\nIf the \"encoding\" property is also specified, delimiters must not be encoded. They must occur literally in the file.\n\nUsed when \"type\" is \"delimited\".",
-
-								"type": "array",
-								"items": {
-									"oneOf": [
-										{
-											"type": "string",
-											"enum": ["tab", "lf", "cr", "crlf", "nul", "eol"]
-										},
-										{
-											"type": "array",
-											"minItems": 1,
-											"items": {
-												"type": "integer",
-												"minimum": 0,
-												"maximum": 255
-											}
-										}
-									]
-								}
-							},
-
-							"file": {
-								"description": "Path to an external file containing the label strings.\n\nUsed when \"type\" is \"one-per-file\", \"json\", \"raw\", or \"delimited\".",
-
-								"type": "string"
-							},
-
-							"languageName": {
-								"description": "Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							},
-
-							"agree": {
-								"description": "Label text for the “Agree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							},
-
-							"disagree": {
-								"description": "Label text for the “Disagree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							},
-
-							"print": {
-								"description": "Label text for the “Print” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							},
-
-							"save": {
-								"description": "Label text for the “Save” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							},
-
-							"message": {
-								"description": "Brief instructions for the user.\n\nFor example, the English default message is: “If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\".”\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
-
-								"type": "string"
-							}
-						},
-
-						"oneOf": [
-							{
-								"properties": {
-									"type": {
-										"const": "inline"
-									},
-									"delimiters": false,
-									"file": false
-								},
-
-								"required": ["agree", "disagree", "print", "save", "message"],
-								"dependencies": {
-									"charset": ["encoding"],
-									"encoding": ["charset"]
-								}
-							},
-
-							{
-								"properties": {
-									"type": {
-										"const": "one-per-file"
-									},
-									"delimiters": false,
-									"file": false
-								},
-								"required": ["type", "agree", "disagree", "print", "save", "message"]
-							},
-							{
-								"properties": {
-									"type": {
-										"const": "json"
-									},
-									"delimiters": false,
-									"languageName": false,
-									"agree": false,
-									"disagree": false,
-									"print": false,
-									"save": false,
-									"message": false
-								},
-								"required": ["type", "file"],
-								"dependencies": {
-									"charset": ["encoding"],
-									"encoding": ["charset"]
-								}
-							},
-							{
-								"properties": {
-									"type": {
-										"const": "raw"
-									},
-									"charset": false,
-									"delimiters": false,
-									"encoding": false,
-									"languageName": false,
-									"agree": false,
-									"disagree": false,
-									"print": false,
-									"save": false,
-									"message": false
-								},
-								"required": ["type", "file"]
-							},
-							{
-								"properties": {
-									"type": {
-										"const": "delimited"
-									},
-									"languageName": false,
-									"agree": false,
-									"disagree": false,
-									"print": false,
-									"save": false,
-									"message": false
-								},
-								"required": ["type", "file", "delimiters"]
-							}
-						]
-					},
-
-					"lang": {
-						"description": "Which language(s) this version of the license agreement is in. Can be a language tag like \"en-US\", a classic Mac OS language code like 0, or an array of language tags and/or language codes.",
-
+			"oneOf": [
+				{
+					"$ref": "#LanguageTag"
+				},
+				{
+					"$ref": "#LanguageCode"
+				},
+				{
+					"type": "array",
+					"minItems": 1,
+					"items": {
 						"oneOf": [
 							{
 								"$ref": "#LanguageTag"
 							},
 							{
 								"$ref": "#LanguageCode"
-							},
-							{
-								"type": "array",
-								"minItems": 1,
-								"items": {
-									"oneOf": [
-										{
-											"$ref": "#LanguageTag"
-										},
-										{
-											"$ref": "#LanguageCode"
-										}
-									]
-								}
 							}
 						]
-					},
-
-					"default": {
-						"description": "If set to true, marks this version of the license as the default. The default version is shown by DiskImageMounter when there is no other version of the license that better matches the user's language preferences.\n\nIf no version of the license is marked as default, the first one is used as the default.",
-
-						"type": "boolean"
 					}
 				}
+			]
+		}
+	},
+
+	"type": "object",
+	"properties": {
+		"body": {
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"body": {
+					"$id": "#BodySpec",
+					"title": "BodySpec",
+					"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
+
+					"type": "object",
+
+					"properties": {
+						"type": {
+							"description": "Which format the text is in: either plain text or RTF.\n\nDefault is \"plain\", except when the file path ends in “.rtf”, in which case the default is \"rtf\".",
+
+							"type": "string",
+							"enum": ["rtf", "plain"]
+						},
+
+						"text": {
+							"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
+
+							"type": "string"
+						},
+
+						"file": {
+							"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
+
+							"type": "string"
+						},
+
+						"charset": {
+							"$ref": "#Charset"
+						},
+
+						"encoding": {
+							"$ref": "#Encoding"
+						},
+
+						"lang": {
+							"$ref": "#Languages"
+						}
+					},
+
+					"oneOf": [
+						{
+							"properties": {
+								"charset": false,
+								"encoding": false,
+								"file": false
+							},
+							"required": ["text", "lang"]
+						},
+
+						{
+							"properties": {
+								"file": false
+							},
+							"required": ["text", "charset", "encoding", "lang"]
+						},
+
+						{
+							"properties": {
+								"charset": {
+									"default": "UTF-8"
+								},
+								"text": false
+							},
+							"required": ["file", "lang"]
+						}
+					]
+				}
 			}
+		},
+
+		"labels": {
+			"type": "array",
+			"items": {
+				"$id": "#LabelsSpec",
+				"title": "LabelsSpec",
+				"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\". They may be given in the JSON configuration file, or from separate file(s).\n\nThe \"charset\" and \"encoding\" properties control the character set and binary encoding of the label strings or file(s). Their exact meaning depends on the \"type\" property.\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
+
+				"type": "object",
+
+				"properties": {
+					"charset": {
+						"$ref": "#Charset"
+					},
+
+					"encoding": {
+						"$ref": "#Encoding"
+					},
+
+					"type": {
+						"description": "How the label strings are structured.\n\n• When \"type\" is absent or \"inline\", label strings are given directly, in the \"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\" properties.\n\n• When \"type\" is \"one-per-file\", the label properties (\"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\") contain paths to single files, each of which contains only that label.\n\n• When \"type\" is \"json\", there must be a \"file\" property containing the path to an external JSON file. It must contain an object with \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", \"message\" properties. They are interpreted as though \"type\" were \"inline\".\n\n• When \"type\" is \"raw\", there must be a \"file\" property containing the path to an external file containing a classic Mac OS STR# data structure, as DiskImageMounter expects. The file's contents are copied into the disk image as a STR# resource without any sort of conversion.\n\n• When \"type\" is \"delimited\", there must be a \"file\" and a \"delimiter\" property. \"file\" must be the path to an external file containing five or six strings (for \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\", in that order) separated by a delimiter. The \"delimiter\" property indicates what sequence of bytes will serve as the delimiter.\n\nThe meanings of the \"charset\" and \"encoding\" properties depend on the \"type\" property. The rules are:\n\n• When \"type\" is absent, \"inline\", or \"json\", label strings are assumed to be in UTF-8, because JSON is always in UTF-8. If they are in any other character set (given with the \"charset\" property), they must be encoded (given with the \"encoding\" property).\n• When \"type\" is \"raw\", the \"charset\" and \"encoding\" properties must be absent.\n• When \"type\" is \"one-per-file\" or \"delimited\", the \"charset\" property indicates the character set of the label file(s), and defaults to UTF-8. In this case, any combination of \"charset\" and \"encoding\" (or neither) is valid.",
+
+						"type": "string",
+						"enum": ["inline", "one-per-file", "json", "raw", "delimited"],
+						"default": "inline"
+					},
+
+					"delimiters": {
+						"description": "Sequences of bytes that will be interpreted as delimiter strings.\n\nEach item in this array may be either an array of bytes (given as numbers between 0 and 255), or one of the following shorthands:\n\n• \"tab\": [9] (an ASCII tab character)\n• \"lf\": [10] (an ASCII line feed character)\n• \"cr\": [13] (an ASCII carriage return character)\n• \"crlf\": [13, 10] (an ASCII CR+LF pair)\n• \"nul\": [0] (a zero byte)\n• \"eol\": any line ending (LF, CR, or CR+LF)\n\nIf the \"encoding\" property is also specified, delimiters must not be encoded. They must occur literally in the file.\n\nUsed when \"type\" is \"delimited\".",
+
+						"type": "array",
+						"items": {
+							"oneOf": [
+								{
+									"type": "string",
+									"enum": ["tab", "lf", "cr", "crlf", "nul", "eol"]
+								},
+								{
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"type": "integer",
+										"minimum": 0,
+										"maximum": 255
+									}
+								}
+							]
+						}
+					},
+
+					"file": {
+						"description": "Path to an external file containing the label strings.\n\nUsed when \"type\" is \"one-per-file\", \"json\", \"raw\", or \"delimited\".",
+
+						"type": "string"
+					},
+
+					"languageName": {
+						"description": "Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"agree": {
+						"description": "Label text for the “Agree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"disagree": {
+						"description": "Label text for the “Disagree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"print": {
+						"description": "Label text for the “Print” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"save": {
+						"description": "Label text for the “Save” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"message": {
+						"description": "Brief instructions for the user.\n\nFor example, the English default message is: “If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\".”\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+
+						"type": "string"
+					},
+
+					"lang": {
+						"$ref": "#Languages"
+					}
+				},
+
+				"oneOf": [
+					{
+						"properties": {
+							"type": {
+								"const": "inline"
+							},
+							"delimiters": false,
+							"file": false
+						},
+
+						"required": ["agree", "disagree", "print", "save", "message", "lang"],
+						"dependencies": {
+							"charset": ["encoding"],
+							"encoding": ["charset"]
+						}
+					},
+
+					{
+						"properties": {
+							"type": {
+								"const": "one-per-file"
+							},
+							"delimiters": false,
+							"file": false
+						},
+						"required": ["type", "agree", "disagree", "print", "save", "message", "lang"]
+					},
+					{
+						"properties": {
+							"type": {
+								"const": "json"
+							},
+							"delimiters": false,
+							"languageName": false,
+							"agree": false,
+							"disagree": false,
+							"print": false,
+							"save": false,
+							"message": false
+						},
+						"required": ["type", "file", "lang"],
+						"dependencies": {
+							"charset": ["encoding"],
+							"encoding": ["charset"]
+						}
+					},
+					{
+						"properties": {
+							"type": {
+								"const": "raw"
+							},
+							"charset": false,
+							"delimiters": false,
+							"encoding": false,
+							"languageName": false,
+							"agree": false,
+							"disagree": false,
+							"print": false,
+							"save": false,
+							"message": false
+						},
+						"required": ["type", "file", "lang"]
+					},
+					{
+						"properties": {
+							"type": {
+								"const": "delimited"
+							},
+							"languageName": false,
+							"agree": false,
+							"disagree": false,
+							"print": false,
+							"save": false,
+							"message": false
+						},
+						"required": ["type", "file", "delimiters", "lang"]
+					}
+				]
+			}
+		},
+
+		"defaultLang": {
+			"description": "Selects which language should be the default, if there is no license localization for the user's preferred language.\n\nIf this property is omitted, the first `lang` of the first `body` is used as the default.",
+
+			"oneOf": [
+				{
+					"$ref": "#LanguageTag"
+				},
+				{
+					"$ref": "#LanguageCode"
+				}
+			]
 		},
 
 		"$schema": {
 			"type": "string"
 		}
 	},
-	"required": ["license"]
+	"required": ["body"]
 }

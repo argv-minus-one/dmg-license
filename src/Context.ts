@@ -1,11 +1,9 @@
 import { Options } from ".";
-import IconvCache from "./IconvCache";
 import Language from "./Language";
 import { packLabels } from "./loadLabels";
 import { ErrorBuffer } from "./util/errors";
 
 export default class Context {
-	iconvCache = new IconvCache();
 	defaultLabels = new Map<Language, Buffer | Error>();
 
 	constructor(public options: Options) {

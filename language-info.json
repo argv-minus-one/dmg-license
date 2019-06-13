@@ -81,13 +81,12 @@
       "message": "Hvis De er enig i bestemmelsene i denne lisensavtalen, klikker De på \"Enig\"-knappen for å installere programvaren. Hvis De ikke er enig, klikker De på \"Ikke enig\"."
     },
     "ja": {
-      "charset": "native;base64",
-      "languageName": "SmFwYW5lc2U=",
-      "agree": "k6+I04K1gtyCtw==",
-      "disagree": "k6+I04K1gtyCuYLx",
-      "print": "iPON/IK3guk=",
-      "save": "lduRti4uLg==",
-      "message": "lnuDXIN0g2eDRYNHg0GOZ5dwi5aR+IxflvGCzI/wjI+CyZOviNOCs4LqgumP6o2HgsmCzYFBg1yDdINng0WDR4NBgvCDQ4OTg1iDZ4Fbg4uCt4Lpgr2C34LJgXWTr4jTgrWC3IK3gXaC8ImfgrWCxIKtgr6Cs4KigUKBQJOviNOCs4LqgsiCoo/qjYeCyYLNgUGBdZOviNOCtYLcgrmC8YF2gvCJn4K1gsSCrYK+grOCooFC"
+      "languageName": "Japanese",
+      "agree": "同意します",
+      "disagree": "同意しません",
+      "print": "印刷する",
+      "save": "保存...",
+      "message": "本ソフトウエア使用許諾契約の条件に同意される場合には、ソフトウエアをインストールするために「同意します」を押してください。　同意されない場合には、「同意しません」を押してください。"
     },
     "fi": {
       "languageName": "Suomi",
@@ -98,31 +97,28 @@
       "message": "Hyväksy lisenssisopimuksen ehdot osoittamalla ’Hyväksy’. Jos et hyväksy sopimuksen ehtoja, osoita ’En hyväksy’."
     },
     "ko": {
-      "charset": "native;base64",
-      "languageName": "S29yZWFu",
-      "agree": "tb/Axw==",
-      "disagree": "tb/AxyC+yMfU",
-      "print": "x8G4sMau",
-      "save": "wPrA5S4uLg==",
-      "message": "u+e/6yCw6L7gvK3AxyCzu7/rv6Egtb/Ax8fPuOksICK1v8DHIiC03MPfuKYgtK23ryC80sfBxq6//r7uuKYgvLPEocfPvcq9w7/ALiC1v8DHx8/B9iC+yrTCtNm46SwgIrW/wMcgvsjH1CIgtNzD37imILSpuKO9yr3Dv8Au"
+      "languageName": "Korean",
+      "agree": "동의",
+      "disagree": "동의 안함",
+      "print": "프린트",
+      "save": "저장...",
+      "message": "사용 계약서의 내용에 동의하면, \"동의\" 단추를 눌러 소프트웨어를 설치하십시오. 동의하지 않는다면, \"동의 안함\" 단추를 누르십시오."
     },
     "zh-Hans": {
-      "charset": "native;base64",
-      "languageName": "U2ltcGxpZmllZCBDaGluZXNl",
-      "agree": "zazS4g==",
-      "disagree": "srvNrNLi",
-      "print": "tPLToQ==",
-      "save": "tOa0oqGt",
-      "message": "yOe5+8T6zazS4rG+0O2/ydCt0um1xMz1v+6jrMfrsLShsM2s0uKhscC0sLLXsLTLyO28/qGjyOe5+8T6srvNrNLio6zH67C0obCyu82s0uKhsaGj"
+      "languageName": "Simplified Chinese",
+      "agree": "同意",
+      "disagree": "不同意",
+      "print": "打印",
+      "save": "存储⋯",
+      "message": "如果您同意本许可协议的条款，请按“同意”来安装此软件。如果您不同意，请按“不同意”。"
     },
     "zh-Hant": {
-      "charset": "native;base64",
-      "languageName": "VHJhZGl0aW9uYWwgQ2hpbmVzZQ==",
-      "agree": "plC3Tg==",
-      "disagree": "pKOmULdO",
-      "print": "pkOmTA==",
-      "save": "wHimc6FL",
-      "message": "pnCqR7F6plC3TqW7s1ylacPSuMyqurH4tNqhQb3Qq/ahp6ZQt06hqKVIpne4y7NuxemhQ6Zwqkeko6ZQt06hQb3Qq/ahp6SjplC3TqGooUM="
+      "languageName": "Traditional Chinese",
+      "agree": "同意",
+      "disagree": "不同意",
+      "print": "列印",
+      "save": "儲存⋯",
+      "message": "如果您同意本許可證裡的條款，請按“同意”以安裝軟體。如果不同意，請按“不同意”。"
     },
     "pt-BR": {
       "languageName": "Português, Brasil",
@@ -135,10 +131,7 @@
   },
   "languages": {
     "0": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "en-US",
       "langTags": [
         "en-US"
@@ -147,10 +140,7 @@
       "localizedName": "English (United States)"
     },
     "1": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "fr",
       "langTags": [
         "fr-FR"
@@ -159,10 +149,7 @@
       "localizedName": "français"
     },
     "2": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "en-GB"
       ],
@@ -170,10 +157,7 @@
       "localizedName": "English (United Kingdom)"
     },
     "3": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "de",
       "langTags": [
         "de-DE"
@@ -182,10 +166,7 @@
       "localizedName": "Deutsch"
     },
     "4": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "it",
       "langTags": [
         "it-IT"
@@ -194,10 +175,7 @@
       "localizedName": "italiano"
     },
     "5": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "nl",
       "langTags": [
         "nl-NL"
@@ -206,10 +184,7 @@
       "localizedName": "Nederlands"
     },
     "6": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "nl-BE"
       ],
@@ -217,10 +192,7 @@
       "localizedName": "Nederlands (België)"
     },
     "7": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "sv",
       "langTags": [
         "sv-SE"
@@ -229,10 +201,7 @@
       "localizedName": "svenska"
     },
     "8": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "es",
       "langTags": [
         "es-ES"
@@ -241,10 +210,7 @@
       "localizedName": "español"
     },
     "9": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "da",
       "langTags": [
         "da-DK"
@@ -253,10 +219,7 @@
       "localizedName": "dansk"
     },
     "10": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "pt-PT"
       ],
@@ -264,10 +227,7 @@
       "localizedName": "português"
     },
     "11": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "fr-CA",
       "langTags": [
         "fr-CA"
@@ -276,10 +236,7 @@
       "localizedName": "français (Canada)"
     },
     "12": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "nb",
       "langTags": [
         "nb-NO"
@@ -288,10 +245,7 @@
       "localizedName": "norsk bokmål"
     },
     "13": {
-      "charsets": [
-        "MacHebrew",
-        "ASCII"
-      ],
+      "charset": "x-mac-hebrew",
       "langTags": [
         "he-IL"
       ],
@@ -299,9 +253,7 @@
       "localizedName": "עברית"
     },
     "14": {
-      "charsets": [
-        "MacJapanese"
-      ],
+      "charset": "x-mac-japanese",
       "labels": "ja",
       "langTags": [
         "ja-JP"
@@ -311,10 +263,7 @@
       "doubleByteCharset": true
     },
     "15": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "en-AU"
       ],
@@ -322,10 +271,7 @@
       "localizedName": "English (Australia)"
     },
     "16": {
-      "charsets": [
-        "MacArabic",
-        "ASCII"
-      ],
+      "charset": "x-mac-arabic",
       "langTags": [
         "ar"
       ],
@@ -333,10 +279,7 @@
       "localizedName": "العربية"
     },
     "17": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "fi",
       "langTags": [
         "fi-FI"
@@ -345,10 +288,7 @@
       "localizedName": "suomi"
     },
     "18": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "fr-CH"
       ],
@@ -356,10 +296,7 @@
       "localizedName": "français (Suisse)"
     },
     "19": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "de-CH"
       ],
@@ -367,10 +304,7 @@
       "localizedName": "Deutsch (Schweiz)"
     },
     "20": {
-      "charsets": [
-        "MacGreek",
-        "ASCII"
-      ],
+      "charset": "x-mac-greek",
       "langTags": [
         "el-GR"
       ],
@@ -378,10 +312,7 @@
       "localizedName": "Ελληνικά"
     },
     "21": {
-      "charsets": [
-        "MacIceland",
-        "ASCII"
-      ],
+      "charset": "x-mac-icelandic",
       "langTags": [
         "is-IS"
       ],
@@ -389,10 +320,7 @@
       "localizedName": "íslenska"
     },
     "22": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "mt-MT"
       ],
@@ -400,10 +328,7 @@
       "localizedName": "Malti"
     },
     "23": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "el-CY"
       ],
@@ -411,10 +336,7 @@
       "localizedName": "Ελληνικά (Κύπρος)"
     },
     "24": {
-      "charsets": [
-        "MacTurkish",
-        "ASCII"
-      ],
+      "charset": "x-mac-turkish",
       "langTags": [
         "tr-TR"
       ],
@@ -422,10 +344,7 @@
       "localizedName": "Türkçe"
     },
     "33": {
-      "charsets": [
-        "MacDevanagari",
-        "ASCII"
-      ],
+      "charset": "x-mac-devanagari",
       "langTags": [
         "hi-IN"
       ],
@@ -433,10 +352,7 @@
       "localizedName": "हिन्दी"
     },
     "34": {
-      "charsets": [
-        "MacArabic",
-        "ASCII"
-      ],
+      "charset": "x-mac-arabic",
       "langTags": [
         "ur-PK"
       ],
@@ -444,19 +360,13 @@
       "localizedName": "اردو (پاکستان)"
     },
     "35": {
-      "charsets": [
-        "MacTurkish",
-        "ASCII"
-      ],
+      "charset": "x-mac-turkish",
       "langTags": [],
       "englishName": "Modified Turkish",
       "localizedName": "Türkçe"
     },
     "36": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "it-CH"
       ],
@@ -464,9 +374,7 @@
       "localizedName": "italiano (Svizzera)"
     },
     "37": {
-      "charsets": [
-        "ASCII"
-      ],
+      "charset": "us-ascii",
       "langTags": [
         "en-001"
       ],
@@ -474,10 +382,7 @@
       "localizedName": "English (World)"
     },
     "39": {
-      "charsets": [
-        "MacRomania",
-        "ASCII"
-      ],
+      "charset": "x-mac-romanian",
       "langTags": [
         "ro-RO"
       ],
@@ -485,10 +390,7 @@
       "localizedName": "română"
     },
     "41": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "lt-LT"
       ],
@@ -496,10 +398,7 @@
       "localizedName": "lietuvių"
     },
     "42": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "pl-PL"
       ],
@@ -507,10 +406,7 @@
       "localizedName": "polski"
     },
     "43": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "hu-HU"
       ],
@@ -518,10 +414,7 @@
       "localizedName": "magyar"
     },
     "44": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "et-EE"
       ],
@@ -529,10 +422,7 @@
       "localizedName": "eesti"
     },
     "45": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "lv-LV"
       ],
@@ -540,10 +430,7 @@
       "localizedName": "latviešu"
     },
     "46": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "se"
       ],
@@ -551,10 +438,7 @@
       "localizedName": "davvisámegiella"
     },
     "47": {
-      "charsets": [
-        "MacIceland",
-        "ASCII"
-      ],
+      "charset": "x-mac-icelandic",
       "langTags": [
         "fo-FO"
       ],
@@ -562,10 +446,7 @@
       "localizedName": "føroyskt"
     },
     "48": {
-      "charsets": [
-        "MacFarsi",
-        "ASCII"
-      ],
+      "charset": "x-mac-farsi",
       "langTags": [
         "fa-IR"
       ],
@@ -573,10 +454,7 @@
       "localizedName": "فارسی"
     },
     "49": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "ru-RU"
       ],
@@ -584,10 +462,7 @@
       "localizedName": "русский"
     },
     "50": {
-      "charsets": [
-        "MacCeltic",
-        "ASCII"
-      ],
+      "charset": "x-mac-celtic",
       "langTags": [
         "ga-IE"
       ],
@@ -595,10 +470,7 @@
       "localizedName": "Gaeilge (Éire)"
     },
     "51": {
-      "charsets": [
-        "MacKorean",
-        "ASCII"
-      ],
+      "charset": "x-mac-korean",
       "labels": "ko",
       "langTags": [
         "ko-KR"
@@ -608,10 +480,7 @@
       "doubleByteCharset": true
     },
     "52": {
-      "charsets": [
-        "MacChineseSimp",
-        "ASCII"
-      ],
+      "charset": "x-mac-simp-chinese",
       "labels": "zh-Hans",
       "langTags": [
         "zh-CN",
@@ -622,10 +491,7 @@
       "doubleByteCharset": true
     },
     "53": {
-      "charsets": [
-        "MacChineseTrad",
-        "ASCII"
-      ],
+      "charset": "x-mac-trad-chinese",
       "labels": "zh-Hant",
       "langTags": [
         "zh-TW",
@@ -636,10 +502,7 @@
       "doubleByteCharset": true
     },
     "54": {
-      "charsets": [
-        "MacThai",
-        "ASCII"
-      ],
+      "charset": "x-mac-thai",
       "langTags": [
         "th-TH"
       ],
@@ -647,10 +510,7 @@
       "localizedName": "ไทย"
     },
     "56": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "cs-CZ"
       ],
@@ -658,10 +518,7 @@
       "localizedName": "čeština"
     },
     "57": {
-      "charsets": [
-        "MacCentralEurope",
-        "ASCII"
-      ],
+      "charset": "x-mac-centraleurroman",
       "langTags": [
         "sk-SK"
       ],
@@ -669,9 +526,7 @@
       "localizedName": "slovenčina"
     },
     "60": {
-      "charsets": [
-        "MacBengali"
-      ],
+      "charset": "x-mac-bengali",
       "langTags": [
         "bn"
       ],
@@ -679,10 +534,7 @@
       "localizedName": "বাংলা"
     },
     "61": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "be-BY"
       ],
@@ -690,10 +542,7 @@
       "localizedName": "беларуская"
     },
     "62": {
-      "charsets": [
-        "MacUkraine",
-        "ASCII"
-      ],
+      "charset": "x-mac-ukrainian",
       "langTags": [
         "uk-UA"
       ],
@@ -701,10 +550,7 @@
       "localizedName": "українська"
     },
     "65": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "sr-CS"
       ],
@@ -712,10 +558,7 @@
       "localizedName": "српски"
     },
     "66": {
-      "charsets": [
-        "MacCroatian",
-        "ASCII"
-      ],
+      "charset": "x-mac-croatian",
       "langTags": [
         "sl-SI"
       ],
@@ -723,10 +566,7 @@
       "localizedName": "slovenščina"
     },
     "67": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "mk-MK"
       ],
@@ -734,10 +574,7 @@
       "localizedName": "македонски"
     },
     "68": {
-      "charsets": [
-        "MacCroatian",
-        "ASCII"
-      ],
+      "charset": "x-mac-croatian",
       "langTags": [
         "hr-HR"
       ],
@@ -745,10 +582,7 @@
       "localizedName": "hrvatski"
     },
     "71": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "labels": "pt-BR",
       "langTags": [
         "pt-BR"
@@ -757,10 +591,7 @@
       "localizedName": "português (Brasil)"
     },
     "72": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "bg-BG"
       ],
@@ -768,10 +599,7 @@
       "localizedName": "български"
     },
     "73": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "ca-ES"
       ],
@@ -779,10 +607,7 @@
       "localizedName": "català (Espanya)"
     },
     "75": {
-      "charsets": [
-        "MacCeltic",
-        "ASCII"
-      ],
+      "charset": "x-mac-celtic",
       "langTags": [
         "gd"
       ],
@@ -790,10 +615,7 @@
       "localizedName": "Gàidhlig"
     },
     "76": {
-      "charsets": [
-        "MacCeltic",
-        "ASCII"
-      ],
+      "charset": "x-mac-celtic",
       "langTags": [
         "gv"
       ],
@@ -801,10 +623,7 @@
       "localizedName": "Gaelg"
     },
     "77": {
-      "charsets": [
-        "MacCeltic",
-        "ASCII"
-      ],
+      "charset": "x-mac-celtic",
       "langTags": [
         "br"
       ],
@@ -812,10 +631,7 @@
       "localizedName": "brezhoneg"
     },
     "78": {
-      "charsets": [
-        "MacInuit",
-        "ASCII"
-      ],
+      "charset": "x-mac-inuit",
       "langTags": [
         "iu-CA"
       ],
@@ -823,10 +639,7 @@
       "localizedName": "Inuktitut"
     },
     "79": {
-      "charsets": [
-        "MacCeltic",
-        "ASCII"
-      ],
+      "charset": "x-mac-celtic",
       "langTags": [
         "cy"
       ],
@@ -834,10 +647,7 @@
       "localizedName": "Cymraeg"
     },
     "81": {
-      "charsets": [
-        "MacGaelic",
-        "ASCII"
-      ],
+      "charset": "x-mac-gaelic",
       "langTags": [
         "ga-Latg-IE"
       ],
@@ -845,10 +655,7 @@
       "localizedName": "Gaeilge (Cló Gaelach, Éire)"
     },
     "82": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "en-CA"
       ],
@@ -856,9 +663,7 @@
       "localizedName": "English (Canada)"
     },
     "83": {
-      "charsets": [
-        "MacTibetan"
-      ],
+      "charset": "x-mac-tibetan",
       "langTags": [
         "dz-BT"
       ],
@@ -866,9 +671,7 @@
       "localizedName": "རྫོང་ཁ"
     },
     "84": {
-      "charsets": [
-        "MacArmenian"
-      ],
+      "charset": "x-mac-armenian",
       "langTags": [
         "hy-AM"
       ],
@@ -876,9 +679,7 @@
       "localizedName": "հայերեն"
     },
     "85": {
-      "charsets": [
-        "MacGeorgian"
-      ],
+      "charset": "x-mac-georgian",
       "langTags": [
         "ka-GE"
       ],
@@ -886,10 +687,7 @@
       "localizedName": "ქართული"
     },
     "86": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "es-419"
       ],
@@ -897,10 +695,7 @@
       "localizedName": "español (Latinoamérica)"
     },
     "88": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "to-TO"
       ],
@@ -908,10 +703,7 @@
       "localizedName": "lea fakatonga"
     },
     "91": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "fr-001"
       ],
@@ -919,10 +711,7 @@
       "localizedName": "français (Monde)"
     },
     "92": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "de-AT"
       ],
@@ -930,10 +719,7 @@
       "localizedName": "Deutsch (Österreich)"
     },
     "94": {
-      "charsets": [
-        "MacGujarati",
-        "ASCII"
-      ],
+      "charset": "x-mac-gujarati",
       "langTags": [
         "gu-IN"
       ],
@@ -941,10 +727,7 @@
       "localizedName": "ગુજરાતી (ભારત)"
     },
     "95": {
-      "charsets": [
-        "MacGurmukhi",
-        "ASCII"
-      ],
+      "charset": "x-mac-gurmukhi",
       "langTags": [
         "pa"
       ],
@@ -952,10 +735,7 @@
       "localizedName": "ਪੰਜਾਬੀ"
     },
     "96": {
-      "charsets": [
-        "MacArabic",
-        "ASCII"
-      ],
+      "charset": "x-mac-arabic",
       "langTags": [
         "ur-IN"
       ],
@@ -963,9 +743,7 @@
       "localizedName": "اردو (بھارت)"
     },
     "97": {
-      "charsets": [
-        "MacVietnamese"
-      ],
+      "charset": "x-mac-vietnamese",
       "langTags": [
         "vi-VN"
       ],
@@ -973,10 +751,7 @@
       "localizedName": "Tiếng Việt"
     },
     "98": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "fr-BE"
       ],
@@ -984,10 +759,7 @@
       "localizedName": "français (Belgique)"
     },
     "99": {
-      "charsets": [
-        "MacCyrillic",
-        "ASCII"
-      ],
+      "charset": "x-mac-cyrillic",
       "langTags": [
         "uz-UZ"
       ],
@@ -995,10 +767,7 @@
       "localizedName": "o‘zbek"
     },
     "100": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "en-SG"
       ],
@@ -1006,10 +775,7 @@
       "localizedName": "English (Singapore)"
     },
     "101": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "nn-NO"
       ],
@@ -1017,10 +783,7 @@
       "localizedName": "nynorsk"
     },
     "102": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "af-ZA"
       ],
@@ -1028,10 +791,7 @@
       "localizedName": "Afrikaans (Suid-Afrika)"
     },
     "103": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "eo"
       ],
@@ -1039,10 +799,7 @@
       "localizedName": "esperanto"
     },
     "104": {
-      "charsets": [
-        "MacDevanagari",
-        "ASCII"
-      ],
+      "charset": "x-mac-devanagari",
       "langTags": [
         "mr-IN"
       ],
@@ -1050,9 +807,7 @@
       "localizedName": "मराठी (भारत)"
     },
     "105": {
-      "charsets": [
-        "MacTibetan"
-      ],
+      "charset": "x-mac-tibetan",
       "langTags": [
         "bo"
       ],
@@ -1060,10 +815,7 @@
       "localizedName": "བོད་སྐད་"
     },
     "106": {
-      "charsets": [
-        "MacDevanagari",
-        "ASCII"
-      ],
+      "charset": "x-mac-devanagari",
       "langTags": [
         "ne-NP"
       ],
@@ -1071,10 +823,7 @@
       "localizedName": "नेपाली"
     },
     "107": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "kl"
       ],
@@ -1082,10 +831,7 @@
       "localizedName": "kalaallisut"
     },
     "108": {
-      "charsets": [
-        "MacRoman",
-        "ASCII"
-      ],
+      "charset": "macintosh",
       "langTags": [
         "en-IE"
       ],

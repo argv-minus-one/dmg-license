@@ -1,4 +1,5 @@
 import * as FS from "fs";
+import { encodingExists } from "iconv-corefoundation";
 import { ErrorBuffer } from "../src/util/errors";
 import LanguageNames from "./LanguageNames";
 import readTSV from "./readTSV";
@@ -9,7 +10,7 @@ interface LanguageBasics {
 	displayLangTag: string;
 	doubleByteCharset: boolean;
 	englishName: string;
-	charsets: string[];
+	charset: string;
 	labelsResourceID?: number;
 	lineNum: number;
 	localizedName: string;
@@ -63,9 +64,9 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 
 	await errors.catchingAsync(LanguageNames(async queryDisplayName => {
 	for await (const { cells, lineNum } of readTSV.withSkips(FS.createReadStream(file))) {
-		const [, idStr, langTagList, displayLangTag, charsetList, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
+		const [, idStr, langTagList, displayLangTag, charset, , labelsResourceIDStr, doubleByteCharsetYN] = cells;
 
-		if (!idStr || !displayLangTag || !charsetList) {
+		if (!idStr || !displayLangTag || !charset) {
 			errors.add(new Error(`[${file}:${lineNum}] This line is incomplete.`));
 			continue;
 		}
@@ -88,8 +89,11 @@ async function LanguageBasics(file: FS.PathLike): Promise<LanguageBasics[]> {
 		// Only query for display names if at least one of the display names isn't overridden.
 		const displayNames = (nameOverride.englishName && nameOverride.localizedName) ? null : await queryDisplayName(displayLangTag);
 
+		if (!encodingExists(charset))
+			errors.add(new Error(`[${file}:${lineNum}] Invalid or unsupported character set “${charset}”.`));
+
 		const language: LanguageBasics = {
-			charsets: charsetList.split(","),
+			charset,
 			displayLangTag,
 			doubleByteCharset: doubleByteCharsetYN === "Y",
 			englishName: nameOverride.englishName || displayNames!.englishName,

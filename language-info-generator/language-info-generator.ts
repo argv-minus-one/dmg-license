@@ -1,3 +1,4 @@
+import { StringEncoding } from "iconv-corefoundation";
 import { promisify } from "util";
 import { LanguageInfoLabels } from "../src/Labels";
 import { RawLanguageInfo } from "../src/Language";
@@ -29,16 +30,8 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 					const languageID = languageIDsByResourceID[resourceID];
 					return languageID === undefined ? null : languageID;
 				},
-				lookupCharsets(languageID) {
-					const language = languagesByLanguageID[languageID];
-					return language ? language.charsets : [];
-				},
-				onWrongCharset(error) {
-					onNonFatalError(error);
-				},
-				onDecodingFailure(error, rawLabels) {
-					onNonFatalError(error);
-					return rawLabels;
+				lookupCharset(languageID) {
+					return StringEncoding.byIANACharSetName(languagesByLanguageID[languageID]!.charset);
 				},
 				resourcesFile
 			});
@@ -97,10 +90,10 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 		const label = labelMap.get(language.id);
 		const labelRef = label ? putLabels(label, language) : undefined;
 
-		const { englishName, id, langTags, localizedName, charsets } = language;
+		const { englishName, id, langTags, localizedName, charset } = language;
 
 		data.languages[id] = {
-			charsets,
+			charset,
 			labels: labelRef,
 			langTags,
 			englishName,

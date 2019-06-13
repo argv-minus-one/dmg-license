@@ -1,43 +1,52 @@
 import bufferFrom = require("buffer-from");
-import Context from "./Context";
+import { StringEncoding, transcode } from "iconv-corefoundation";
 import Language from "./Language";
 
 type CodedString = string | {
-	data: string;
+	text: string;
 	charset?: never;
 	encoding?: never;
 } | {
-	data: string;
-	charset: "native" | string;
+	text: string;
+	charset: string;
 	encoding: "base64";
 } | {
-	data: Buffer;
-	charset: "native" | string;
+	text: Buffer;
+	charset: string;
 	encoding?: "base64";
 };
 
 namespace CodedString {
+	export type Resolved = {
+		text: string;
+		charset?: never;
+	} | {
+		text: Buffer;
+		charset: StringEncoding;
+	};
+
+	export function resolve(s: CodedString): Resolved {
+		if (typeof s === "string")
+			return { text: s };
+		else {
+			const {text, charset, encoding} = s;
+			return {
+				text: typeof text === "string" && encoding ? bufferFrom(text, encoding) : text,
+				...charset ? { charset: StringEncoding.byIANACharSetName(charset) } : {}
+			} as Resolved;
+		}
+	}
+
 	export function encode(
 		s: CodedString,
-		langs: Language[],
-		context: Context
+		lang: Language
 	): Buffer {
-		if (typeof s === "string")
-			return context.iconvCache.tryCharEncode(s, langs);
-		else {
-			let {data} = s;
+		const {text, charset} = resolve(s);
 
-			if (typeof data === "string" && s.encoding === "base64")
-				data = bufferFrom(data, "base64");
-
-			if (Buffer.isBuffer(data) && s.charset && s.charset.toLowerCase() === "native")
-				return data;
-
-			return context.iconvCache.tryCharEncode(
-				typeof data === "string" ? data : { charset: s.charset || "UTF-8", data },
-				langs
-			);
-		}
+		if (typeof text === "string")
+			return lang.charset.encode(text);
+		else
+			return transcode(text, charset!, lang.charset);
 	}
 }
 
