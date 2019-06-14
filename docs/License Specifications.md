@@ -110,7 +110,7 @@ How the label strings are structured.
 
 * When `type` is `"json"`, there must be a `file` property containing the path to an external JSON file. It must contain an object with [`languageName`] (optional), [`agree`], [`disagree`], [`print`], [`save`], and [`message`] properties. They are interpreted as though `type` were `"inline"`.
 
-* When `type` is `"raw"`, there must be a `file` property containing the path to an external file containing a classic Mac OS `STR#` data structure, as DiskImageMounter expects. The file's contents are copied into the disk image as a `STR#` resource without any sort of conversion.
+* When `type` is `"raw"`, there must be a `file` property containing the path to an external file, whose contents (data fork) are copied into the disk image as a `STR#` resource, as `DiskImageMounter` expects. No character set conversion is performed. This file must be in a particular binary format; please consult [the documentation of that format](Raw%20labels%20format.md).
 
 * When `type` is `"delimited"`, there must be a `file` and a `delimiter` property. `file` must be the path to an external file containing five or six strings (for [`languageName`] (optional), [`agree`], [`disagree`], [`print`], [`save`], and [`message`], in that order) separated by a delimiter. The `delimiter` property indicates what sequence of bytes will serve as the delimiter.
 
