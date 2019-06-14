@@ -32,7 +32,7 @@ Usage: <kbd>dmg-license [<var>options…</var>] <var>json-path</var> <var>dmg-pa
 
 <dl>
 <dt><kbd><var>json-path</var></kbd></dt>
-<dd>Path to a <a href="License%20Specifications.md">JSON license specification</a> file.</dd>
+<dd>Path to a <a href="docs/License%20Specifications.md">JSON license specification</a> file.</dd>
 <dt><kbd><var>dmg-path</var></kbd></dt>
 <dd>Path to a disk image (`.dmg`) file.</dd>
 </dl>
@@ -55,6 +55,6 @@ Usage: <kbd>dmg-license [<var>options…</var>] <var>json-path</var> <var>dmg-pa
 
 ## API
 
-This package's default export is a function that, like the command-line tool, attaches a license agreement to a disk image according to a provided [license specification](License%20Specifications.md).
+This package's default export is a function that, like the command-line tool, attaches a license agreement to a disk image according to a provided [license specification](docs/License%20Specifications.md).
 
 The API is currently undocumented, aside from TypeScript declarations.
