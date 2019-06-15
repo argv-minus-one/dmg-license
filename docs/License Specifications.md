@@ -173,6 +173,8 @@ Used when `type` is absent, `"inline"`, or `"one-per-file"`.
 
 Which language(s) this `body` or `labels` is in. Can be an [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) like `"en-US"`, a classic Mac OS language code like `0`, or an array of language tags and/or language codes.
 
+Only a certain set of language tags are recognized. See [`Supported Language Tags.md`](Supported%20Language%20Tags.md) for the full list.
+
 ## `defaultLang`
 
 Selects which language should be the default, if there is no license localization for the user's preferred language.
