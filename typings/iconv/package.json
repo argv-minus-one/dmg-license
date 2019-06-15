@@ -1,7 +1,0 @@
-{
-	"dependencies": {
-		"@types/node": "*"
-	},
-	"name": "iconv",
-	"types": "./iconv.d.ts"
-}
