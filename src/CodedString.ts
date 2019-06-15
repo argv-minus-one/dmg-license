@@ -45,6 +45,8 @@ namespace CodedString {
 
 		if (typeof text === "string")
 			return lang.charset.encode(text);
+		else if (lang.charset.equals(charset!))
+			return text;
 		else
 			return transcode(text, charset!, lang.charset);
 	}

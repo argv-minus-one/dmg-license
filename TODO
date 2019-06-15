@@ -1,3 +1,1 @@
-When the charset of some input text is the same as the target charset, don't do charset conversion.
-
 When conversion to native charset is supported, and input text is RTF, and input text can be converted to UTF8, but input text is not completely representable in the native charset, use escapes to reduce it to ASCII.

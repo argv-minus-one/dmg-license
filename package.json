@@ -39,7 +39,7 @@
 		"cli-truncate": "^1.1.0",
 		"core-js": "^3.0.0",
 		"crc": "^3.8.0",
-		"iconv-corefoundation": "^1.0.0",
+		"iconv-corefoundation": "^1.1.0",
 		"plist": "^3.0.1",
 		"smart-buffer": "^4.0.2",
 		"verror": "^1.10.0"
