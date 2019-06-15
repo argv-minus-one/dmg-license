@@ -37,7 +37,7 @@ describe("DMG with basic license", () => {
 			FS.constants.COPYFILE_FICLONE
 		);
 
-		await dmgLicense(tmpDmg, testLicenseSpec, {
+		await dmgLicense.fromJSON(tmpDmg, testLicenseSpec, {
 			onNonFatalError: console.warn.bind(console),
 			resolvePath(path) {
 				return Path.resolve(__dirname, path);
