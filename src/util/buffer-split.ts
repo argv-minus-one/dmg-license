@@ -1,5 +1,3 @@
-import bufferFrom = require("buffer-from");
-
 export interface FirstIndex<N> {
 	index: number;
 	needleIndex: number;
@@ -22,12 +20,12 @@ export type Delimiter = "tab" | "lf" | "cr" | "crlf" | "nul" | "eol" | Uint8Arra
 const namedDelimiters: {
 	[K in (Delimiter & string)]: Buffer[];
 } = {
-	cr: [bufferFrom([13])],
-	crlf: [bufferFrom([13, 10])],
+	cr: [Buffer.from([13])],
+	crlf: [Buffer.from([13, 10])],
 	eol: [],
-	lf: [bufferFrom([10])],
-	nul: [bufferFrom([0])],
-	tab: [bufferFrom([9])]
+	lf: [Buffer.from([10])],
+	nul: [Buffer.from([0])],
+	tab: [Buffer.from([9])]
 };
 namedDelimiters.eol = [...namedDelimiters.crlf, ...namedDelimiters.cr, ...namedDelimiters.lf];
 

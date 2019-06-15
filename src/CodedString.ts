@@ -1,4 +1,3 @@
-import bufferFrom = require("buffer-from");
 import { StringEncoding, transcode } from "iconv-corefoundation";
 import Language from "./Language";
 
@@ -31,7 +30,7 @@ namespace CodedString {
 		else {
 			const {text, charset, encoding} = s;
 			return {
-				text: typeof text === "string" && encoding ? bufferFrom(text, encoding) : text,
+				text: typeof text === "string" && encoding ? Buffer.from(text, encoding) : text,
 				...charset ? { charset: StringEncoding.byIANACharSetName(charset) } : {}
 			} as Resolved;
 		}
