@@ -6,8 +6,10 @@
 			"lang": ["en-US", "es-ES"]
 		},
 		{
-			"text": "Hello, world!",
-			"lang": "fr-FR"
+			"text": "SGVsbG8sIHdvcmxkwQ==",
+			"lang": "fr-FR",
+			"charset": "macintosh",
+			"encoding": "base64"
 		},
 		{
 			"text": "同意します",

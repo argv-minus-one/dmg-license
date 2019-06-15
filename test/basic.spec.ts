@@ -119,7 +119,7 @@ describe("DMG with basic license", () => {
 				"UTF-8",
 				"x-mac-roman"
 			),
-			encode(testLicenseSpec.body[1].text!, "x-mac-roman"),
+			Buffer.from(testLicenseSpec.body[1].text!, "base64"),
 			encode(testLicenseSpec.body[2].text!, "x-mac-japanese"),
 			encode(testLicenseSpec.body[3].text!, "x-mac-inuit")
 		];
