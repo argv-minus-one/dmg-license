@@ -1,5 +1,3 @@
-/// <reference lib="esnext.array" />
-import "core-js/features/array/flat";
 import { MultiError, VError } from "verror";
 
 /**
