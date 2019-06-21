@@ -1,4 +1,5 @@
 import { MultiError, VError } from "verror";
+import "./format-verror";
 
 /**
  * Accumulates multiple errors, to all be thrown together instead of one at a time.
