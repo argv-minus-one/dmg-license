@@ -29,10 +29,10 @@ function specFromJSON(
 		}
 	}
 
-	const dataVar = options && options.specSourceURL || "";
+	const dataPath = options && options.specSourceURL || "";
 
 	try {
-		if (!validator(spec, dataVar)) {
+		if (!validator(spec, dataPath)) {
 			throw new BadJSONLicenseSpecError(
 				{
 					info: {
@@ -40,7 +40,7 @@ function specFromJSON(
 					}
 				},
 				"JSON license specification is not valid:\n· %s",
-				ajv.errorsText(validator.errors, { dataVar, separator: "\n· " })
+				ajv.errorsText(validator.errors, { dataVar: "", separator: "\n· " })
 			);
 		}
 	}
