@@ -1,5 +1,5 @@
-import { MultiError, VError } from "verror";
-import "./format-verror";
+import { MultiError } from "verror";
+import { PrettyVError } from "./format-verror";
 
 /**
  * Accumulates multiple errors, to all be thrown together instead of one at a time.
@@ -51,7 +51,7 @@ export class ErrorBuffer {
 	throw(error: unknown): never {
 		const throwSingle = !this.errors.length;
 		this.add(error);
-		throw throwSingle ? error : VError.errorFromList(this.errors);
+		throw throwSingle ? error : PrettyVError.errorFromList(this.errors);
 	}
 
 	/**
@@ -85,7 +85,7 @@ export class ErrorBuffer {
 	 * Throws any accumulated errors.
 	 */
 	check(): void {
-		const error = VError.errorFromList(this.errors);
+		const error = PrettyVError.errorFromList(this.errors);
 		if (error) throw error;
 	}
 

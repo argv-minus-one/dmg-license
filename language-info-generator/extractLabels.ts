@@ -1,8 +1,9 @@
 import { InvalidEncodedTextError, StringEncoding } from "iconv-corefoundation";
 import * as ResourceForkLib from "resourceforkjs";
 import { SmartBuffer } from "smart-buffer";
-import { Info as VErrorInfo, Options as VErrorOptions, VError } from "verror";
+import { Info as VErrorInfo, Options as VErrorOptions } from "verror";
 import { Labels, LanguageInfoLabels } from "../src/Labels";
+import { PrettyVError } from "../src/util/format-verror";
 const { freeze } = Object;
 
 export interface ResourcePos {
@@ -22,7 +23,7 @@ function ResourcePos(file: string, r: ResourceForkLib.Resource): ResourcePos {
 	};
 }
 
-export class InvalidResourceError extends VError {
+export class InvalidResourceError extends PrettyVError {
 	constructor(
 		options: VErrorOptions & {
 			info: VErrorInfo & {

@@ -1,5 +1,4 @@
 import { SmartBuffer } from "smart-buffer";
-import { VError } from "verror";
 import { Labels, LabelsSpec, Options } from ".";
 import CodedString from "./CodedString";
 import Context from "./Context";
@@ -7,6 +6,7 @@ import Language from "./Language";
 import { readFileP } from "./util";
 import { bufferSplitMulti } from "./util/buffer-split";
 import { ErrorBuffer } from "./util/errors";
+import { PrettyVError } from "./util/format-verror";
 
 /**
  * Generates a `STR#` resources for the given `labels`.
@@ -47,7 +47,7 @@ export function packLabels(
 				data = Buffer.isBuffer(label) ? label : CodedString.encode(label, lang);
 			}
 			catch (e) {
-				errors.add(new VError(e, "Cannot encode %s for %s", Labels.descriptions[key].toLowerCase(), lang.englishName));
+				errors.add(new PrettyVError(e, "Cannot encode %s for %s", Labels.descriptions[key].toLowerCase(), lang.englishName));
 				return;
 			}
 
@@ -141,7 +141,7 @@ const LabelLoader: {
 		const fpath = context.resolvePath(spec.file);
 		const json: Labels<unknown> = JSON.parse((await readFileP(fpath)).toString("UTF-8"));
 
-		if (typeof json !== "object") throw new VError(
+		if (typeof json !== "object") throw new PrettyVError(
 			{
 				info: {
 					path: fpath
@@ -156,7 +156,7 @@ const LabelLoader: {
 			json,
 			(data, labelKey) => {
 				if (typeof data !== "string") {
-					errors.add(new VError(
+					errors.add(new PrettyVError(
 						{
 							info: {
 								path: fpath
@@ -192,7 +192,7 @@ const LabelLoader: {
 		const pieceCount = pieces.length;
 
 		if (pieceCount !== 5 && pieceCount !== 6) {
-			throw new VError(
+			throw new PrettyVError(
 				{
 					info: {
 						path: fpath

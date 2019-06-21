@@ -1,6 +1,6 @@
 import Ajv = require("ajv");
-import { VError } from "verror";
 import { LicenseSpec, Options as MainOptions } from ".";
+import { PrettyVError as PrettyVError } from "./util/format-verror";
 
 const ajv = new Ajv({
 	allErrors: true,
@@ -11,7 +11,7 @@ const ajv = new Ajv({
 // tslint:disable-next-line: no-var-requires
 const validator = ajv.compile(require("../schema.json"));
 
-export class BadJSONLicenseSpecError extends VError {}
+export class BadJSONLicenseSpecError extends PrettyVError {}
 
 function specFromJSON(
 	spec: string | object,

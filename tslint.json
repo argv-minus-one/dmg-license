@@ -28,6 +28,13 @@
 				"multiline": "never",
 				"singleline": "never"
 			}
+		},
+		"variable-name": {
+			"options": [
+				"allow-leading-underscore",
+				"allow-pascal-case",
+				"check-format"
+			]
 		}
 	},
 	"rulesDirectory": []
