@@ -151,8 +151,8 @@ async function assembleLoadedLicenses(
 		}
 	}
 
-	if (!assembled.size)
-		throw new Error("No license specifications were provided.");
+	if (!assembled.size && errors.isEmpty)
+		errors.add(new Error("No license specifications were provided."));
 
 	const hashes = new Map<number, AssembledLicense[]>();
 
