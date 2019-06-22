@@ -1,3 +1,5 @@
+import * as Plist from "plist";
+import { PlistObject } from "plist";
 import { assembleLicenses } from "./assemble";
 import Context from "./Context";
 import { Labels, NoLabels } from "./Labels";
@@ -134,27 +136,35 @@ export interface Options {
 }
 
 export async function dmgLicense(imagePath: string, spec: LicenseSpec, options: Options): Promise<void> {
+	return await writePlistToDmg(imagePath, (await dmgLicensePlist(spec, options)).plist);
+}
+export default dmgLicense;
+
+export async function dmgLicensePlist(spec: LicenseSpec, options: Options): Promise<{
+	plist: PlistObject;
+	plistText: string;
+}> {
 	const context = new Context(options);
 
-	await writePlistToDmg(
-		imagePath,
-		makeLicensePlist(
-			await assembleLicenses(spec, context),
-			context
-		)
+	const plist = makeLicensePlist(
+		await assembleLicenses(spec, context),
+		context
 	);
+
+	return {
+		plist,
+		get plistText() {
+			return Plist.build(plist);
+		}
+	};
 }
 
-export namespace dmgLicense {
-	export async function fromJSON(imagePath: string, specJSON: string | object, options: fromJSON.Options): Promise<void> {
-		const spec = specFromJSON(specJSON, options);
-		return await dmgLicense(imagePath, spec, options);
-	}
+export type FromJSONOptions = specFromJSON.Options;
 
-	export namespace fromJSON {
-		// tslint:disable-next-line: no-shadowed-variable
-		export type Options = specFromJSON.Options;
-	}
+export async function dmgLicenseFromJSON(imagePath: string, specJSON: string | object, options: FromJSONOptions) {
+	return await dmgLicense(imagePath, specFromJSON(specJSON, options), options);
 }
 
-export default dmgLicense;
+export async function dmgLicensePlistFromJSON(specJSON: string | object, options: FromJSONOptions) {
+	return await dmgLicensePlist(specFromJSON(specJSON, options), options);
+}

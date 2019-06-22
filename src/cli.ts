@@ -2,7 +2,7 @@ import { promises as FSP } from "fs";
 import minimist = require("minimist");
 import * as Path from "path";
 import { inspect } from "util";
-import { dmgLicense } from ".";
+import { dmgLicenseFromJSON } from ".";
 import * as languages from "./languages";
 import { BadJSONLicenseSpecError } from "./specFromJSON";
 
@@ -151,7 +151,7 @@ export async function main() {
 		const jsonDirName = Path.dirname(args._[0]);
 
 		try {
-			await dmgLicense.fromJSON(args._[1], jsonText, {
+			await dmgLicenseFromJSON(args._[1], jsonText, {
 				resolvePath(path) {
 					return Path.resolve(jsonDirName, path);
 				},

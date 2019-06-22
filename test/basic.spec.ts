@@ -7,7 +7,7 @@ import "mocha";
 import * as Path from "path";
 import { PlistObject } from "plist";
 import { SmartBuffer } from "smart-buffer";
-import dmgLicense from "..";
+import { dmgLicenseFromJSON } from "..";
 import * as testLicenseSpec from "./basic-license.json";
 import ignoreErrorCodes from "./util/ignoreErrorCodes";
 import UDIFDeRez from "./util/UDIFDeRez";
@@ -37,7 +37,7 @@ describe("DMG with basic license", () => {
 			FS.constants.COPYFILE_FICLONE
 		);
 
-		await dmgLicense.fromJSON(tmpDmg, testLicenseSpec, {
+		await dmgLicenseFromJSON(tmpDmg, testLicenseSpec, {
 			onNonFatalError: console.warn.bind(console),
 			resolvePath(path) {
 				return Path.resolve(__dirname, path);
