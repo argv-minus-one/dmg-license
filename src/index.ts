@@ -5,6 +5,7 @@ import makeLicensePlist from "./makeLicensePlist";
 import specFromJSON from "./specFromJSON";
 import writePlistToDmg from "./writePlistToDmg";
 
+export { BadJSONLicenseSpecError } from "./specFromJSON";
 export { Labels, NoLabels };
 
 export type BodySpec =
