@@ -77,74 +77,72 @@
 			"type": "array",
 			"minItems": 1,
 			"items": {
-				"body": {
-					"$id": "#BodySpec",
-					"title": "BodySpec",
-					"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
+				"$id": "#BodySpec",
+				"title": "BodySpec",
+				"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
 
-					"type": "object",
+				"type": "object",
 
-					"properties": {
-						"type": {
-							"description": "Which format the text is in: either plain text or RTF.\n\nDefault is \"plain\", except when the file path ends in “.rtf”, in which case the default is \"rtf\".",
+				"properties": {
+					"type": {
+						"description": "Which format the text is in: either plain text or RTF.\n\nDefault is \"plain\", except when the file path ends in “.rtf”, in which case the default is \"rtf\".",
 
-							"type": "string",
-							"enum": ["rtf", "plain"]
-						},
-
-						"text": {
-							"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
-
-							"type": "string"
-						},
-
-						"file": {
-							"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
-
-							"type": "string"
-						},
-
-						"charset": {
-							"$ref": "#Charset"
-						},
-
-						"encoding": {
-							"$ref": "#Encoding"
-						},
-
-						"lang": {
-							"$ref": "#Languages"
-						}
+						"type": "string",
+						"enum": ["rtf", "plain"]
 					},
 
-					"oneOf": [
-						{
-							"properties": {
-								"charset": false,
-								"encoding": false,
-								"file": false
-							},
-							"required": ["text", "lang"]
-						},
+					"text": {
+						"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
 
-						{
-							"properties": {
-								"file": false
-							},
-							"required": ["text", "charset", "encoding", "lang"]
-						},
+						"type": "string"
+					},
 
-						{
-							"properties": {
-								"charset": {
-									"default": "UTF-8"
-								},
-								"text": false
+					"file": {
+						"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
+
+						"type": "string"
+					},
+
+					"charset": {
+						"$ref": "#Charset"
+					},
+
+					"encoding": {
+						"$ref": "#Encoding"
+					},
+
+					"lang": {
+						"$ref": "#Languages"
+					}
+				},
+
+				"oneOf": [
+					{
+						"properties": {
+							"charset": false,
+							"encoding": false,
+							"file": false
+						},
+						"required": ["text", "lang"]
+					},
+
+					{
+						"properties": {
+							"file": false
+						},
+						"required": ["text", "charset", "encoding", "lang"]
+					},
+
+					{
+						"properties": {
+							"charset": {
+								"default": "UTF-8"
 							},
-							"required": ["file", "lang"]
-						}
-					]
-				}
+							"text": false
+						},
+						"required": ["file", "lang"]
+					}
+				]
 			}
 		},
 
