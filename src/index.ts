@@ -116,7 +116,7 @@ export namespace LabelsSpec {
 	}
 
 	export interface LabelsInDelimitedFile extends NoLabels, LabelsSpecBase {
-		charset: "UTF-8" | string;
+		charset?: "UTF-8" | string;
 		delimiters: Array<"tab" | "lf" | "cr" | "crlf" | "nul" | "eol" | Uint8Array>;
 		encoding?: "base64";
 		file: string;

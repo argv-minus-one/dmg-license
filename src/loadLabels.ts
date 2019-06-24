@@ -205,7 +205,7 @@ const LabelLoader: {
 		else {
 			const labels = Labels.create<CodedString>(
 				(key, index) => ({
-					charset: spec.charset,
+					charset: spec.charset || "UTF-8",
 					encoding: spec.encoding,
 					text: pieces[index]
 				}),
