@@ -7,6 +7,7 @@ import * as languages from "./languages";
 import loadLabels from "./loadLabels";
 import { readFileP } from "./util";
 import { ErrorBuffer } from "./util/errors";
+import { PrettyVError } from "./util/format-verror";
 import PromiseEach from "./util/PromiseEach";
 
 export interface AssembledLicense {
@@ -30,13 +31,31 @@ async function loadBody(
 ): Promise<AssembledLicense["body"]> {
 	const fpath = spec.file && context.resolvePath(spec.file);
 
+	async function readBodyFile(fpath: string) {
+		try {
+			return await readFileP(fpath);
+		}
+		catch (e) {
+			throw new PrettyVError(e, "Cannot read %s license text from “%s”", lang.englishName, fpath);
+		}
+	}
+
+	function encodeBodyText(text: CodedString, lang: Language) {
+		try {
+			return CodedString.encode(text, lang);
+		}
+		catch (e) {
+			throw new PrettyVError(e, "Cannot encode %s license text", lang.englishName);
+		}
+	}
+
 	return {
-		data: CodedString.encode(
+		data: encodeBodyText(
 			fpath ?
 			{
 				charset: spec.charset || "UTF-8",
 				encoding: spec.encoding,
-				text: await readFileP(fpath)
+				text: await readBodyFile(fpath)
 			} :
 			{
 				charset: spec.charset!,
@@ -225,7 +244,7 @@ export async function assembleLicenses(
 	const bodies = loadAll({
 		context,
 		getLangs: getLangs("body", errors, context),
-		load: loadBody,
+		load: loadBody.bind(undefined),
 		onCollisions: warnAboutLanguageIDCollisions("license body", errors, context),
 		specs: spec.body
 	});
@@ -233,7 +252,7 @@ export async function assembleLicenses(
 	const customLabelSets = loadAll<LabelsSpec, Buffer>({
 		context,
 		getLangs: getLangs("labels", errors, context),
-		load: loadLabels,
+		load: loadLabels.bind(undefined),
 		onCollisions: warnAboutLanguageIDCollisions("label set", errors, context),
 		specs: spec.labels || []
 	});
