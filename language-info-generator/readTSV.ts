@@ -43,4 +43,6 @@ namespace readTSV {
 	}
 }
 
+Object.defineProperty(readTSV, Symbol.toStringTag, {value: "readTSV"});
+
 export default readTSV;

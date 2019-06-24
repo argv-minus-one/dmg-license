@@ -51,4 +51,6 @@ namespace CodedString {
 	}
 }
 
+Object.defineProperty(CodedString, Symbol.toStringTag, {value: "CodedString"});
+
 export default CodedString;

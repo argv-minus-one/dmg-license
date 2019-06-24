@@ -206,6 +206,8 @@ export namespace Labels {
 	}
 }
 
+Object.defineProperty(Labels, Symbol.toStringTag, {value: "Labels"});
+
 export interface NoLabels extends Partial<Labels<undefined>> {}
 
 /** A label set, as it appears in `language-info.json`. */
