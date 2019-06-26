@@ -22,7 +22,7 @@
 	"scripts": {
 		"clean": "rimraf lib",
 		"prepare": "tslint --project . && tsc",
-		"test": "mocha -r ts-node/register test/**.spec.ts",
+		"test": "mocha -r ts-node/register test/*.spec.ts test/**/*.spec.ts",
 		"regenerate-language-info": "node ./language-info-generator >language-info.json",
 		"docs": "ts-node ./generate-supported-language-list.ts"
 	},
