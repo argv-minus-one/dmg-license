@@ -1,0 +1,6 @@
+Language Name
+Ãgree
+Disagree
+Print
+Save
+Message

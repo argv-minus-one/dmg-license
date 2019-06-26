@@ -1,21 +1,17 @@
-import * as Chai from "chai";
-import ChaiBytes = require("chai-bytes");
+import { assert } from "chai";
 import * as Crypto from "crypto";
 import * as FS from "fs";
 import { encode, transcode } from "iconv-corefoundation";
-import "mocha";
 import * as Path from "path";
 import { PlistObject } from "plist";
 import { SmartBuffer } from "smart-buffer";
 import { dmgLicenseFromJSON } from "..";
 import * as testLicenseSpec from "./basic-license.json";
+import "./test-setup";
 import ignoreErrorCodes from "./util/ignoreErrorCodes";
 import UDIFDeRez from "./util/UDIFDeRez";
 
-const { assert } = Chai;
 const FSP = FS.promises;
-
-Chai.use(ChaiBytes);
 
 describe("DMG with basic license", () => {
 	const tmpDir = Path.join(__dirname, "tmp");
