@@ -94,11 +94,11 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 
 		data.languages[id] = {
 			charset,
+			doubleByteCharset: language.doubleByteCharset || undefined,
+			englishName,
 			labels: labelRef,
 			langTags,
-			englishName,
-			localizedName,
-			doubleByteCharset: language.doubleByteCharset || undefined
+			localizedName
 		};
 	}
 
