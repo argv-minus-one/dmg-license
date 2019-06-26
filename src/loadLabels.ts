@@ -77,7 +77,7 @@ export function packLabels(
  *
  * @param lang - Language to encode the labels for.
  */
-export default function loadLabels(
+export default async function loadLabels(
 	spec: LabelsSpec | null | undefined,
 	contextOrOptions: Context | Options,
 	lang: Language
@@ -89,10 +89,10 @@ export default function loadLabels(
 
 	if (spec) {
 		const loader = LabelLoader[spec.type || "inline"];
-		return loader(spec as any, lang, context);
+		return await loader(spec as any, lang, context);
 	}
 	else
-		return loadDefault(lang, context);
+		return await loadDefault(lang, context);
 }
 
 function loadDefault(
