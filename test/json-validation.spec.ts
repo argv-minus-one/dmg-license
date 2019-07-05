@@ -112,6 +112,13 @@ describe("dmg-license JSON schema validation", () => {
 		}]
 	});
 
+	testCase(false, "a body whose text is `false` instead of a string", {
+		body: [{
+			lang: "en-US",
+			text: false
+		}]
+	});
+
 	testCase(true, "empty labels and rawLabels arrays", {
 		body: validBody,
 		labels: [],
