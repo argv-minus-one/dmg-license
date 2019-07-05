@@ -3,7 +3,7 @@
 import * as FS from "fs";
 import * as Path from "path";
 import { pipeline, Readable } from "stream";
-import * as languages from "./lib/languages";
+import Language from "./lib/Language";
 
 function escape(s: string | null | undefined): string {
 	return s ? s.replace(/['"&<>]/g, ss => {
@@ -75,7 +75,7 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <tbody>
 `);
 
-		for (const language of languages.byLanguageID)
+		for (const language of Language.byID)
 		if (language) {
 			const rs = language.langTags.length > 1 ? ` rowspan=${language.langTags.length}` : "";
 

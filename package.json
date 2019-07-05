@@ -24,7 +24,7 @@
 		"prepare": "tslint --project . --project test --project language-info-generator && tsc",
 		"test": "mocha -r ts-node/register test/*.spec.ts test/**/*.spec.ts",
 		"regenerate-language-info": "node ./language-info-generator >language-info.json",
-		"docs": "ts-node ./generate-supported-language-list.ts",
+		"docs": "ts-node ./generate-supported-language-list.ts && api-extractor run && api-documenter markdown --input-folder temp --output-folder docs/api && ln -s dmg-license.md docs/api/index.md",
 		"prepublishOnly": "npm test"
 	},
 	"files": [
@@ -44,6 +44,8 @@
 		"verror": "^1.10.0"
 	},
 	"devDependencies": {
+		"@microsoft/api-documenter": "^7.3.4",
+		"@microsoft/api-extractor": "^7.2.2",
 		"@types/chai": "^4.1.7",
 		"@types/chai-as-promised": "^7.1.0",
 		"@types/cli-truncate": "^1.1.0",
