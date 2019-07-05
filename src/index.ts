@@ -12,6 +12,7 @@ import writePlistToDmg from "./writePlistToDmg";
 export { Language } from "./Language";
 export { BadJSONLicenseSpecError } from "./specFromJSON";
 export { FromJSONOptions, Labels, NoLabels, BodySpec, LabelsSpec, LangSpec, LangSpecs, Localization };
+export { LabelEncodingError, NoDefaultLabelsError } from "./Labels";
 
 export interface LicenseSpec {
 	body: BodySpec[];
