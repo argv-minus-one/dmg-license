@@ -2,8 +2,7 @@ import { promises as FSP } from "fs";
 import minimist = require("minimist");
 import * as Path from "path";
 import { inspect } from "util";
-import { dmgLicenseFromJSON } from ".";
-import * as languages from "./languages";
+import { dmgLicenseFromJSON, Language } from ".";
 import { BadJSONLicenseSpecError } from "./specFromJSON";
 
 const { stderr, stdout } = process;
@@ -121,7 +120,7 @@ export async function main() {
 		if (args["show-languages"]) {
 			stdout.write("Language ID\tLanguage tag\tNative charset\tName\n");
 
-			for (const language of languages.byLanguageID)
+			for (const language of Language.byID)
 			if (language) {
 				if (language.langTags.length) {
 					for (const languageTag of language.langTags)

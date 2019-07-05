@@ -1,34 +1,17 @@
 import { Options } from ".";
-import Language from "./Language";
-import { packLabels } from "./loadLabels";
 import { ErrorBuffer } from "./util/errors";
 
 export default class Context {
-	defaultLabels = new Map<Language, Buffer | Error>();
+	static from(contextOrOptions: Context | Options): Context {
+		if (contextOrOptions instanceof Context)
+			return contextOrOptions;
+		else
+			return new Context(contextOrOptions);
+	}
 
 	constructor(public options: Options) {
 		if (options.resolvePath)
 			this.resolvePath = options.resolvePath.bind(options);
-	}
-
-	defaultLabelsOf(lang: Language): Buffer | Error {
-		let ret = this.defaultLabels.get(lang);
-
-		if (ret === undefined) {
-			try {
-				ret =
-					lang.labels
-					? packLabels(lang.labels, lang, this)
-					: new Error(`There are no default labels for ${lang.englishName}. You must provide your own labels for this language.`);
-			}
-			catch (e) {
-				ret = e instanceof Error ? e : new Error(e);
-			}
-
-			this.defaultLabels.set(lang, ret);
-		}
-
-		return ret;
 	}
 
 	resolvePath(path: string): string {
@@ -57,5 +40,9 @@ export default class Context {
 			else
 				reporter(error);
 		}
+	}
+
+	get canWarn() {
+		return !!this.options.onNonFatalError;
 	}
 }

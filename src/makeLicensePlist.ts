@@ -1,8 +1,8 @@
 import { PlistObject } from "plist";
 import { SmartBuffer } from "smart-buffer";
-import { AssembledLicenseSet } from "./assemble";
+import { AssembledLicenseSet } from "./assembleLicenses";
 import Context from "./Context";
-import * as languages from "./languages";
+import Language from "./Language";
 
 export default function makeLicensePlist(
 	licenses: AssembledLicenseSet,
@@ -18,7 +18,7 @@ export default function makeLicensePlist(
 	// Assemble resources.
 	for (const [index, item] of licenses.inOrder.entries()) {
 		const ID = String(index + 5000);
-		const Name = languages.byLanguageID[item.languageIDs[0]]!.englishName;
+		const Name = Language.byID[item.languageIDs[0]]!.englishName;
 
 		ret["STR#"].push({
 			Attributes: "0x0000",
@@ -61,7 +61,7 @@ export default function makeLicensePlist(
 
 			// Mapping field 3: 2-byte language?
 			// TODO: Figure out how modern macOS interprets this flag.
-			buf.writeInt16BE(languages.byLanguageID[languageID]!.doubleByteCharset ? 1 : 0);
+			buf.writeInt16BE(Language.byID[languageID]!.doubleByteCharset ? 1 : 0);
 		}
 
 		ret.LPic.push({

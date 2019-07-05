@@ -6,10 +6,9 @@
 			"lang": ["en-US", "es-ES"]
 		},
 		{
-			"text": "SGVsbG8sIHdvcmxkwQ==",
+			"file": "basic-license-fr.txt",
 			"lang": "fr-FR",
-			"charset": "macintosh",
-			"encoding": "base64"
+			"charset": "macintosh"
 		},
 		{
 			"text": "同意します",

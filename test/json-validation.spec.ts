@@ -1,31 +1,40 @@
 import { assert } from "chai";
-import { inspect } from "util";
-import { dmgLicensePlistFromJSON } from "..";
-import { BadJSONLicenseSpecError } from "../lib/specFromJSON";
+import { BadJSONLicenseSpecError, BodySpec, Labels, LabelsSpec } from "..";
+import specFromJSON from "../lib/specFromJSON";
 import "./test-setup";
 
-const testLangs: Array<{shouldAccept: boolean, lang: unknown}> = [];
-for (const lang of ["en-US", 0, 1, ["nl-NL", 3], [4, "es-ES"], ["ja-JP", "fr-CA"], [11, 12, 17]])
-	testLangs.push({shouldAccept: true, lang});
-for (const lang of [false, null, undefined, -1, 0.5, {}, [false], []])
-	testLangs.push({shouldAccept: false, lang});
+describe("dmg-license JSON schema validation", () => {
+	const validBody: BodySpec[] = [{
+		lang: 0,
+		text: "text"
+	}];
 
-const validBody = [{
-	lang: 0,
-	text: "text"
-}];
+	const validInlineLabels: LabelsSpec.LabelsInline[] = [{
+		agree: "agree",
+		disagree: "disagree",
+		lang: "en-US",
+		message: "message",
+		print: "print",
+		save: "save"
+	}];
 
-describe("dmgLicensePlistFromJSON", () => {
-	function testCase(shouldAccept: boolean, description: string, input: string | object) {
+	const validRawLabels: LabelsSpec.LabelsRaw[] = [{
+		file: "foo",
+		lang: "fr-FR"
+	}];
+
+	function testCase(shouldAccept: boolean, description: string, input: string | object, options?: specFromJSON.Options) {
 		it(
 			`${shouldAccept ? "accepts" : "rejects"} ${description}`,
 			() => {
-				const p = dmgLicensePlistFromJSON(input, {
-					resolvePath: require.resolve.bind(require)
+				const f = () => specFromJSON(input, {
+					resolvePath: require.resolve.bind(require),
+					...options
 				});
+
 				return shouldAccept
-					? p
-					: assert.isRejected(p, BadJSONLicenseSpecError);
+					? assert.doesNotThrow(f)
+					: assert.throws(f, BadJSONLicenseSpecError);
 			}
 		);
 	}
@@ -35,10 +44,20 @@ describe("dmgLicensePlistFromJSON", () => {
 	testCase(false, "an empty body object", {body: [{}]});
 
 	testCase(true, "a body with inline text", {
-		body: [{
-			lang: "en-US",
-			text: "text"
-		}]
+		body: validBody
+	});
+
+	testCase(true, "multiple bodies", {
+		body: [
+			{
+				lang: "en-US",
+				text: "Hello"
+			},
+			{
+				lang: "fr-FR",
+				text: "Bonjour"
+			}
+		]
 	});
 
 	testCase(true, "a body in a file", {
@@ -56,15 +75,23 @@ describe("dmgLicensePlistFromJSON", () => {
 		}]
 	});
 
-	testCase(false, "an object with labels but no body", {
-		labels: [{
-			agree: "agree",
-			disagree: "disagree",
-			lang: "en-US",
-			message: "message",
-			print: "print",
-			save: "save"
-		}]
+	testCase(true, "inline and raw labels", {
+		body: validBody,
+		labels: validInlineLabels,
+		rawLabels: validRawLabels
+	});
+
+	testCase(false, "an object with inline labels but no body", {
+		labels: validInlineLabels
+	});
+
+	testCase(false, "an object with raw labels but no body", {
+		rawLabels: validRawLabels
+	});
+
+	testCase(false, "an object with inline and raw labels but no body", {
+		labels: validInlineLabels,
+		rawLabels: validRawLabels
 	});
 
 	testCase(false, "a body with text but no lang", {
@@ -85,67 +112,44 @@ describe("dmgLicensePlistFromJSON", () => {
 		}]
 	});
 
-	for (const {shouldAccept, lang} of testLangs) testCase(
-		shouldAccept,
-		`a body with lang: ${inspect(lang, {compact: true})}`,
-		{
-			body: [{
-				lang,
-				text: "text"
-			}]
-		}
-	);
-
-	testCase(true, "an empty labels array", {
+	testCase(true, "empty labels and rawLabels arrays", {
 		body: validBody,
-		labels: []
+		labels: [],
+		rawLabels: []
 	});
 
-	testCase(false, "an empty labels object", {
-		body: validBody,
-		labels: [{}]
-	});
-
-	testCase(true, "an inline label set", {
+	testCase(true, "an inline label set with languageName", {
 		body: validBody,
 		labels: [{
 			agree: "agree",
 			disagree: "disagree",
-			lang: 0,
+			lang: "en-US",
+			languageName: "languageName",
 			message: "message",
 			print: "print",
 			save: "save"
 		}]
 	});
 
-	testCase(true, "a delimited label set", {
-		body: validBody,
-		labels: [{
-			delimiters: ["eol"],
-			file: "./labels/test-labels-delimited-eol.txt",
-			lang: 0,
-			type: "delimited"
-		}]
-	});
-
-	for (const type of [undefined, "inline", "delimited", "raw", "one-per-file", "json"])
-	testCase(false, `a label set with both inline labels and an external file, of type ${type}`, {
-		body: validBody,
-		labels: [{
+	for (const missing of Labels.names.filter(name => name !== "languageName"))
+	testCase(false, `an inline label set without the ${missing} property`, (() => {
+		const labelsSpec: LabelsSpec = {
 			agree: "agree",
-			delimiter: "eol",
 			disagree: "disagree",
-			file: "./labels/test-labels-delimited-eol.txt",
-			lang: 0,
+			lang: "en-US",
 			message: "message",
 			print: "print",
-			save: "save",
-			type
-		}]
-	});
+			save: "save"
+		};
+		delete labelsSpec[missing];
 
-	for (const type of [undefined, "inline", "one-per-file"])
-	testCase(false, "an incomplete label set", {
+		return {
+			body: validBody,
+			labels: [labelsSpec]
+		};
+	})());
+
+	testCase(false, "an incomplete inline label set", {
 		body: validBody,
 		labels: [{
 			agree: "agree",
@@ -156,7 +160,7 @@ describe("dmgLicensePlistFromJSON", () => {
 		}]
 	});
 
-	testCase(false, "a label set with no lang", {
+	testCase(false, "an inline label set with no lang", {
 		body: validBody,
 		labels: [{
 			agree: "agree",
@@ -167,19 +171,17 @@ describe("dmgLicensePlistFromJSON", () => {
 		}]
 	});
 
-	for (const {shouldAccept, lang} of testLangs) testCase(
-		shouldAccept,
-		`a label set with lang: ${inspect(lang, {compact: true})}`,
-		{
-			body: validBody,
-			labels: [{
-				agree: "agree",
-				disagree: "disagree",
-				lang,
-				message: "message",
-				print: "print",
-				save: "save"
-			}]
-		}
-	);
+	testCase(false, "a raw label set with no file", {
+		body: validBody,
+		rawLabels: [{
+			lang: 0
+		}]
+	});
+
+	testCase(false, "a raw label set with no lang", {
+		body: validBody,
+		rawLabels: [{
+			file: "foo"
+		}]
+	});
 });

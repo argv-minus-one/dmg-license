@@ -115,7 +115,7 @@ describe("DMG with basic license", () => {
 				"UTF-8",
 				"x-mac-roman"
 			),
-			Buffer.from(testLicenseSpec.body[1].text!, "base64"),
+			await FSP.readFile(Path.resolve(__dirname, "basic-license-fr.txt")),
 			encode(testLicenseSpec.body[2].text!, "x-mac-japanese"),
 			encode(testLicenseSpec.body[3].text!, "x-mac-inuit")
 		];
@@ -158,7 +158,7 @@ describe("DMG with basic license", () => {
 			assert.equalBytes(
 				sha1.digest(),
 				expectedLabelHashes[index],
-				`STR# resource ${rez.ID} contains incorrect bytes`
+				`STR# resource ${rez.ID} contains incorrect bytes (SHA1 hashes don't match)`
 			);
 		}
 	});

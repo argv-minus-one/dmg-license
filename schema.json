@@ -12,62 +12,24 @@
 
 			"type": "string",
 			"pattern": "^[A-Za-z][A-Za-z0-9.:_-]*$",
-			"examples": ["UTF-8", "US-ASCII"]
-		},
-
-		"Encoding": {
-			"$id": "#Encoding",
-			"title": "Encoding",
-			"description": "A binary encoding type. Only base64 is supported.",
-
-			"const": "base64"
-		},
-
-		"LanguageTag": {
-			"$id": "#LanguageTag",
-			"title": "LanguageTag",
-			"description": "An IETF language tag [1].\n\n[1] https://en.wikipedia.org/wiki/IETF_language_tag",
-
-			"type": "string",
-			"minLength": 1
-		},
-
-		"LanguageCode": {
-			"$id": "#LanguageCode",
-			"title": "LanguageCode",
-			"description": "A classic Mac OS language code, as it appears in `Script.h` of `CarbonCore.framework` [1].\n\n[1] https://github.com/phracker/MacOSX-SDKs/blob/master/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/Script.h",
-
-			"type": "integer",
-			"minimum": 0
+			"examples": ["UTF-8", "US-ASCII"],
+			"default": "UTF-8"
 		},
 
 		"Languages": {
 			"$id": "#Languages",
 			"title": "Languages",
-			"description": "Which language(s) this object is in. Can be a language tag like \"en-US\", a classic Mac OS language code like 0, or an array of language tags and/or language codes.",
+			"description": "Which language(s) this object is in. Can be an IETF language tag [1] like \"en-US\", a classic Mac OS language code [2] like 0, or an array of language tags and/or language codes.\n\n[1] https://en.wikipedia.org/wiki/IETF_language_tag\n[2] As it appears in `Script.h` of `CarbonCore.framework`. See: https://github.com/phracker/MacOSX-SDKs/blob/aea47c83334af9c27dc57c49ca268723ef5e6349/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/Script.h#L285",
 
-			"oneOf": [
-				{
-					"$ref": "#LanguageTag"
-				},
-				{
-					"$ref": "#LanguageCode"
-				},
-				{
-					"type": "array",
-					"minItems": 1,
-					"items": {
-						"oneOf": [
-							{
-								"$ref": "#LanguageTag"
-							},
-							{
-								"$ref": "#LanguageCode"
-							}
-						]
-					}
-				}
-			]
+			"type": ["string", "integer", "array"],
+			"minLength": 1,
+			"minimum": 0,
+			"minItems": 1,
+			"items": {
+				"type": ["string", "integer"],
+				"minLength": 1,
+				"minimum": 0
+			}
 		}
 	},
 
@@ -79,7 +41,7 @@
 			"items": {
 				"$id": "#BodySpec",
 				"title": "BodySpec",
-				"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.\n\nThe \"charset\" and \"encoding\" properties contain the character set and binary encoding of the text, respectively. The default is UTF-8 with no binary encoding.\n\nIf the text is given in JSON (that is, in the \"text\" property), and either \"charset\" or \"encoding\" is specified, then both of those properties must be specified. This is because JSON is always UTF-8, so the only way to represent non-UTF-8 text in JSON is with binary encoding.",
+				"description": "Text of the license agreement. Text can be given in two ways: inline, in the \"text\" property, or in a separate file, named by the \"file\" property.",
 
 				"type": "object",
 
@@ -92,23 +54,21 @@
 					},
 
 					"text": {
-						"description": "Text of the license agreement, specified directly in JSON.\n\nBesides literal text, this can be base64 encoded. If it is, also specify \"encoding\": \"base64\", and give the character set in the \"charset\" property.",
+						"description": "Text of the license agreement, specified directly in JSON.",
 
 						"type": "string"
 					},
 
 					"file": {
-						"description": "Path to the file containing the license text.\n\nBy default, the file is assumed to contain UTF-8 text with no binary encoding. To indicate otherwise, use the \"charset\" and/or \"encoding\" properties.",
+						"description": "Path to the file containing the license text.",
 
 						"type": "string"
 					},
 
 					"charset": {
-						"$ref": "#Charset"
-					},
+						"description": "Character set that the \"file\" is encoded in.",
 
-					"encoding": {
-						"$ref": "#Encoding"
+						"$ref": "#Charset"
 					},
 
 					"lang": {
@@ -116,32 +76,15 @@
 					}
 				},
 
-				"oneOf": [
-					{
-						"properties": {
-							"charset": false,
-							"encoding": false,
-							"file": false
-						},
-						"required": ["text", "lang"]
-					},
+				"dependencies": {
+					"charset": ["file"],
+					"file": {"not": {"required": ["text"]}},
+					"text": {"not": {"required": ["file"]}}
+				},
 
-					{
-						"properties": {
-							"file": false
-						},
-						"required": ["text", "charset", "encoding", "lang"]
-					},
-
-					{
-						"properties": {
-							"charset": {
-								"default": "UTF-8"
-							},
-							"text": false
-						},
-						"required": ["file", "lang"]
-					}
+				"anyOf": [
+					{"required": ["file", "lang"]},
+					{"required": ["lang", "text"]}
 				]
 			}
 		},
@@ -151,90 +94,73 @@
 			"items": {
 				"$id": "#LabelsSpec",
 				"title": "LabelsSpec",
-				"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\". They may be given in the JSON configuration file, or from separate file(s).\n\nThe \"charset\" and \"encoding\" properties control the character set and binary encoding of the label strings or file(s). Their exact meaning depends on the \"type\" property.\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
+				"description": "Localized labels for the buttons on the license agreement window. There are six: \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\".\n\nSome languages have a default set of labels that will be used if none are provided here, but for all other languages, a set of labels must be provided. Default label sets are available for en-US, fr-FR, en-GB, de-DE, it-IT, nl-NL, sv-SE, es-ES, da-DK, fr-CA, nb-NO, ja-JP, fi-FI, ko-KR, zh-CN, zh-TW, zh-Hans, zh-Hant, and pt-BR.",
 
 				"type": "object",
 
 				"properties": {
-					"charset": {
-						"$ref": "#Charset"
-					},
-
-					"encoding": {
-						"$ref": "#Encoding"
-					},
-
-					"type": {
-						"description": "How the label strings are structured.\n\n• When \"type\" is absent or \"inline\", label strings are given directly, in the \"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\" properties.\n\n• When \"type\" is \"one-per-file\", the label properties (\"languageName\", \"agree\", \"disagree\", \"print\", \"save\", and \"message\") contain paths to single files, each of which contains only that label.\n\n• When \"type\" is \"json\", there must be a \"file\" property containing the path to an external JSON file. It must contain an object with \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", \"message\" properties. They are interpreted as though \"type\" were \"inline\".\n\n• When \"type\" is \"raw\", there must be a \"file\" property containing the path to an external file, whose contents (data fork) are copied into the disk image as a STR# resource, as DiskImageMounter expects. No character set conversion is performed.\n\n• When \"type\" is \"delimited\", there must be a \"file\" and a \"delimiter\" property. \"file\" must be the path to an external file containing five or six strings (for \"languageName\" (optional), \"agree\", \"disagree\", \"print\", \"save\", and \"message\", in that order) separated by a delimiter. The \"delimiter\" property indicates what sequence of bytes will serve as the delimiter.\n\nThe meanings of the \"charset\" and \"encoding\" properties depend on the \"type\" property. The rules are:\n\n• When \"type\" is absent, \"inline\", or \"json\", label strings are assumed to be in UTF-8, because JSON is always in UTF-8. If they are in any other character set (given with the \"charset\" property), they must be encoded (given with the \"encoding\" property).\n• When \"type\" is \"raw\", the \"charset\" and \"encoding\" properties must be absent.\n• When \"type\" is \"one-per-file\" or \"delimited\", the \"charset\" property indicates the character set of the label file(s), and defaults to UTF-8. In this case, any combination of \"charset\" and \"encoding\" (or neither) is valid.",
-
-						"type": "string",
-						"enum": ["inline", "one-per-file", "json", "raw", "delimited"],
-						"default": "inline"
-					},
-
-					"delimiters": {
-						"description": "Sequences of bytes that will be interpreted as delimiter strings.\n\nEach item in this array may be either an array of bytes (given as numbers between 0 and 255), or one of the following shorthands:\n\n• \"tab\": [9] (an ASCII tab character)\n• \"lf\": [10] (an ASCII line feed character)\n• \"cr\": [13] (an ASCII carriage return character)\n• \"crlf\": [13, 10] (an ASCII CR+LF pair)\n• \"nul\": [0] (a zero byte)\n• \"eol\": any line ending (LF, CR, or CR+LF)\n\nIf the \"encoding\" property is also specified, delimiters must not be encoded. They must occur literally in the file.\n\nUsed when \"type\" is \"delimited\".",
-
-						"type": "array",
-						"items": {
-							"oneOf": [
-								{
-									"type": "string",
-									"enum": ["tab", "lf", "cr", "crlf", "nul", "eol"]
-								},
-								{
-									"type": "array",
-									"minItems": 1,
-									"items": {
-										"type": "integer",
-										"minimum": 0,
-										"maximum": 255
-									}
-								}
-							]
-						}
-					},
-
-					"file": {
-						"description": "Path to an external file containing the label strings.\n\nUsed when \"type\" is \"one-per-file\", \"json\", \"raw\", or \"delimited\".",
-
-						"type": "string"
-					},
-
 					"languageName": {
-						"description": "Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.",
 
 						"type": "string"
 					},
 
 					"agree": {
-						"description": "Label text for the “Agree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Label text for the “Agree” button.",
 
 						"type": "string"
 					},
 
 					"disagree": {
-						"description": "Label text for the “Disagree” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Label text for the “Disagree” button.",
 
 						"type": "string"
 					},
 
 					"print": {
-						"description": "Label text for the “Print” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Label text for the “Print” button.",
 
 						"type": "string"
 					},
 
 					"save": {
-						"description": "Label text for the “Save” button.\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Label text for the “Save” button.",
 
 						"type": "string"
 					},
 
 					"message": {
-						"description": "Brief instructions for the user.\n\nFor example, the English default message is: “If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\".”\n\nIf \"type\" is \"one-per-file\", this is instead the path to a file containing the label text.\n\nUsed when \"type\" is absent, \"inline\", or \"one-per-file\".",
+						"description": "Brief instructions for the user.\n\nFor example, the English default message is: “If you agree with the terms of this license, press \"Agree\" to install the software.  If you do not agree, press \"Disagree\".”",
 
 						"type": "string"
+					},
+
+					"lang": {
+						"$ref": "#Languages"
+					},
+
+					"file": false
+				},
+
+				"required": ["agree", "disagree", "print", "save", "message", "lang"]
+			}
+		},
+
+		"rawLabels": {
+			"type": "array",
+			"items": {
+				"$id": "#RawLabelsSpec",
+				"title": "RawLabelsSpec",
+				"description": "Localized labels for the buttons on the license agreement window, as with the \"labels\" property, but in raw format.\n\nInstead of plain JSON strings, label sets provided this way are stored in binary files, whose contents (data fork) are copied into the disk image as a STR# resource with no parsing or character set conversion. They must be in the format that DiskImageMounter expects.\n\nThe format is described at: https://github.com/argv-minus-one/dmg-license/blob/master/docs/Raw%20labels%20format.md",
+
+				"type": "object",
+
+				"properties": {
+					"file": {
+						"description": "Path to the file containing the label strings.",
+
+						"type": "string",
+						"minLength": 1
 					},
 
 					"lang": {
@@ -242,98 +168,16 @@
 					}
 				},
 
-				"oneOf": [
-					{
-						"properties": {
-							"type": {
-								"const": "inline"
-							},
-							"delimiters": false,
-							"file": false
-						},
-
-						"required": ["agree", "disagree", "print", "save", "message", "lang"],
-						"dependencies": {
-							"charset": ["encoding"],
-							"encoding": ["charset"]
-						}
-					},
-
-					{
-						"properties": {
-							"type": {
-								"const": "one-per-file"
-							},
-							"delimiters": false,
-							"file": false
-						},
-						"required": ["type", "agree", "disagree", "print", "save", "message", "lang"]
-					},
-					{
-						"properties": {
-							"type": {
-								"const": "json"
-							},
-							"delimiters": false,
-							"languageName": false,
-							"agree": false,
-							"disagree": false,
-							"print": false,
-							"save": false,
-							"message": false
-						},
-						"required": ["type", "file", "lang"],
-						"dependencies": {
-							"charset": ["encoding"],
-							"encoding": ["charset"]
-						}
-					},
-					{
-						"properties": {
-							"type": {
-								"const": "raw"
-							},
-							"charset": false,
-							"delimiters": false,
-							"encoding": false,
-							"languageName": false,
-							"agree": false,
-							"disagree": false,
-							"print": false,
-							"save": false,
-							"message": false
-						},
-						"required": ["type", "file", "lang"]
-					},
-					{
-						"properties": {
-							"type": {
-								"const": "delimited"
-							},
-							"languageName": false,
-							"agree": false,
-							"disagree": false,
-							"print": false,
-							"save": false,
-							"message": false
-						},
-						"required": ["type", "file", "delimiters", "lang"]
-					}
-				]
+				"required": ["file", "lang"]
 			}
 		},
 
 		"defaultLang": {
-			"description": "Selects which language should be the default, if there is no license localization for the user's preferred language.\n\nIf this property is omitted, the first `lang` of the first `body` is used as the default.",
+			"description": "Selects which language should be the default, if there is no license localization for the user's preferred language.\n\nIf this property is omitted, the first `lang` of the first `body` is used as the default.\n\nCan be an IETF language tag [1] like \"en-US\", or a classic Mac OS language code [2] like 0.\n\n[1] https://en.wikipedia.org/wiki/IETF_language_tag\n[2] As it appears in `Script.h` of `CarbonCore.framework`. See: https://github.com/phracker/MacOSX-SDKs/blob/aea47c83334af9c27dc57c49ca268723ef5e6349/MacOSX10.6.sdk/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/Headers/Script.h#L285",
 
-			"oneOf": [
-				{
-					"$ref": "#LanguageTag"
-				},
-				{
-					"$ref": "#LanguageCode"
-				}
-			]
+			"type": ["string", "integer"],
+			"minLength": 1,
+			"minimum": 0
 		},
 
 		"$schema": {

@@ -1,6 +1,36 @@
+import { SmartBuffer } from "smart-buffer";
+import { Options } from ".";
+import Context from "./Context";
+import Language, { Localization } from "./Language";
+import { readFileP } from "./util";
+import { ErrorBuffer } from "./util/errors";
+import { PrettyVError } from "./util/format-verror";
 import PromiseEach from "./util/PromiseEach";
 
 const { freeze } = Object;
+
+export class NoDefaultLabelsError extends Error {
+	constructor(public readonly lang: Language) {
+		super(`There are no default labels for ${lang.englishName}. You must provide your own labels for this language.`);
+	}
+}
+NoDefaultLabelsError.prototype.name = NoDefaultLabelsError.name;
+
+export class LabelEncodingError extends PrettyVError {
+	text?: Buffer;
+
+	constructor(labelDescription: string, lang: Language, cause?: Error | string, ...params: unknown[]) {
+		super(
+			{cause: typeof cause === "string" ? undefined : cause},
+			`Cannot encode %s for %s${typeof cause === "string" ? "%s" : cause ? "" : "."}`,
+			labelDescription,
+			lang.englishName,
+			typeof cause === "string" ? cause : undefined,
+			...params
+		);
+	}
+}
+LabelEncodingError.prototype.name = LabelEncodingError.name;
 
 export interface Labels<T = string> {
 	languageName?: T;
@@ -15,7 +45,7 @@ export namespace Labels {
 	export type WithLanguageName<T = string> = Labels<T> & { languageName: T };
 	export type WithoutLanguageName<T = string> = Labels<T> & { languageName?: never };
 
-	export const keys = freeze(["languageName", "agree", "disagree", "print", "save", "message"] as Array<keyof Labels>);
+	export const names = freeze(["languageName", "agree", "disagree", "print", "save", "message"] as Array<keyof Labels>);
 
 	export const descriptions = freeze({
 		agree: "“Agree” button label",
@@ -34,7 +64,7 @@ export namespace Labels {
 		const labelPromises: Array<Promise<void>> = [];
 		const result = {} as Labels<T>;
 
-		for (const key of Labels.keys) {
+		for (const key of Labels.names) {
 			const p = labels[key];
 			if (p) {
 				labelPromises.push(p.then(label => {
@@ -138,15 +168,15 @@ export namespace Labels {
 		fun: (label: T, key: keyof Labels, labels: Labels<T>) => void,
 		{ onNoLanguageName }: ForEachOptions = {}
 	): void {
-		for (const key of keys) {
-			const label = labels[key];
+		for (const name of names) {
+			const label = labels[name];
 
-			if (label === undefined && key === "languageName") {
+			if (label === undefined && name === "languageName") {
 				if (onNoLanguageName)
 					onNoLanguageName();
 			}
 			else
-				fun(label!, key, labels);
+				fun(label!, name, labels);
 		}
 	}
 
@@ -175,7 +205,7 @@ export namespace Labels {
 	): Labels<T> {
 		const labels = {} as Labels<T>;
 
-		keys.forEach((key, index) => {
+		names.forEach((key, index) => {
 			if (includeLanguageName || key !== "languageName")
 				labels[key] = fun(key, index);
 		});
@@ -204,11 +234,152 @@ export namespace Labels {
 	): Promise<Labels<T>> {
 		return fromPromises(create(fun, options));
 	}
+
+	/**
+	 * Prepares a label set for insertion into a disk image as a `STR#` resource.
+	 *
+	 * @remarks
+	 * Throws {@link LabelEncodingError} if there is a problem encoding some of the labels.
+	 *
+	 * Throws {@link verror#MultiError} if there is more than one error.
+	 *
+	 * @param labels - The label set to prepare.
+	 *
+	 * @param lang - The language to prepare the label set for. This determines the target character set.
+	 *
+	 * @returns A `Buffer` in `STR#` format.
+	 */
+	export function prepare(
+		labels: Labels,
+		lang: Language
+	): Buffer {
+		const sbuf = new SmartBuffer();
+
+		function writeStr(string: string, description: string) {
+			let data: Buffer;
+
+			try {
+				data = lang.charset.encode(string);
+			}
+			catch (e) {
+				errors.add(new LabelEncodingError(description, lang, e));
+				return;
+			}
+
+			const length = data.length;
+
+			if (length > 255) {
+				const e = new LabelEncodingError(description, lang, "the label is too large to write into a STR# resource. The maximum size is 255 bytes, but it is %d bytes.", length);
+				e.text = data;
+				errors.add(e);
+				return;
+			}
+
+			if (errors.isEmpty) {
+				sbuf.writeUInt8(length);
+				sbuf.writeBuffer(data);
+			}
+		}
+
+		// Magic
+		sbuf.writeUInt16BE(6);
+
+		// Labels
+		const errors = new ErrorBuffer();
+
+		Labels.forEach(
+			labels,
+			(label, key) => writeStr(label, Labels.descriptions[key]),
+			{onNoLanguageName() {
+				// If no language name is provided, try the languageName in the built-in labels, or failing that, the language's localizedName.
+
+				writeStr(
+					lang.labels && lang.labels.languageName || lang.localizedName,
+					Labels.descriptions.languageName
+				);
+			}}
+		);
+
+		errors.check();
+		return sbuf.toBuffer();
+	}
+
+	/**
+	 * Prepares the given language's default label set for insertion into a disk image as a `STR#` resource.
+	 *
+	 * @remarks
+	 * Throws {@link NoDefaultLabelsError} if there is no default label set for the given language.
+	 *
+	 * Throws {@link LabelEncodingError} if there is a problem encoding some of the labels.
+	 *
+	 * Throws a {@link verror#MultiError} if there is more than one error.
+	 *
+	 * @param lang - The language to prepare the label set for.
+	 *
+	 * @param contextOrOptions - Context of an existing {@link dmgLicense} run, or options for one (when calling this function standalone).
+	 *
+	 * @returns A `Buffer` in `STR#` format.
+	 */
+	export function prepareDefault(
+		lang: Language
+	): Buffer {
+		const labels = lang.labels;
+		if (!labels)
+			throw new NoDefaultLabelsError(lang);
+
+		return Labels.prepare(labels, lang);
+	}
+
+	/**
+	 * Prepares a label set for insertion into a disk image as a `STR#` resource.
+	 *
+	 * @remarks
+	 * This function delegates to {@link Labels.prepareDefault} or {@link Labels.prepare} as appropriate.
+	 *
+	 * Throws {@link NoDefaultLabelsError} if `labels` is `null` or `undefined` and there is no default label set for the given language.
+	 *
+	 * Throws {@link LabelEncodingError} if there is a problem encoding some of the labels.
+	 *
+	 * Throws a {@link verror#MultiError} if there is more than one error.
+	 *
+	 * @param labels - An object describing the label set to prepare. If `null` or `undefined`, the default label set for the given language is used instead.
+	 *
+	 * @param lang - The language to prepare the label set for. This determines the target character set, and if `labels` is `null` or `undefined`, which language's default label set to use.
+	 *
+	 * @param contextOrOptions - Context of an existing {@link dmgLicense} run, or options for one (when calling this function standalone). Used to resolve relative paths if `labels` is a {@link LabelsSpec.LabelsRaw}.
+	 *
+	 * @returns A `Buffer` in `STR#` format.
+	 */
+	export async function prepareSpec(
+		labels: LabelsSpec | null | undefined,
+		lang: Language,
+		contextOrOptions: Context | Options
+	): Promise<Buffer> {
+		if (!labels)
+			return prepareDefault(lang);
+		else if (labels.file) {
+			const context = Context.from(contextOrOptions);
+			return readFileP(context.resolvePath(labels.file));
+		}
+		else
+			return prepare(labels as LabelsSpec.LabelsInline, lang);
+	}
 }
 
 Object.defineProperty(Labels, Symbol.toStringTag, {value: "Labels"});
 
+export default Labels;
+
 export interface NoLabels extends Partial<Labels<undefined>> {}
 
-/** A label set, as it appears in `language-info.json`. */
-export type LanguageInfoLabels = Labels.WithLanguageName<string>;
+export type LabelsSpec = LabelsSpec.LabelsInline | LabelsSpec.LabelsRaw;
+
+export namespace LabelsSpec {
+	export interface LabelsInline extends Localization, Labels {
+		file?: never;
+	}
+
+	export interface LabelsRaw extends Localization, NoLabels {
+		file: string;
+	}
+}

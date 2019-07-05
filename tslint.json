@@ -8,6 +8,7 @@
 		"arrow-parens": false,
 		"curly": false,
 		"forin": false,
+		"import-spacing": false, // False positive on `export import` statements.
 		"indent": [true, "tabs"],
 		"interface-name": false,
 		"max-classes-per-file": false,
