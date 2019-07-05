@@ -6,12 +6,12 @@ import Context from "./Context";
 import { Labels, LabelsSpec, NoLabels } from "./Labels";
 import { LangSpec, LangSpecs, Localization } from "./Language";
 import makeLicensePlist from "./makeLicensePlist";
-import specFromJSON from "./specFromJSON";
+import specFromJSON, { FromJSONOptions } from "./specFromJSON";
 import writePlistToDmg from "./writePlistToDmg";
 
 export { Language } from "./Language";
 export { BadJSONLicenseSpecError } from "./specFromJSON";
-export { Labels, NoLabels, BodySpec, LabelsSpec, LangSpec, LangSpecs, Localization };
+export { FromJSONOptions, Labels, NoLabels, BodySpec, LabelsSpec, LangSpec, LangSpecs, Localization };
 
 export interface LicenseSpec {
 	body: BodySpec[];
@@ -48,8 +48,6 @@ export async function dmgLicensePlist(spec: LicenseSpec, options: Options): Prom
 		}
 	};
 }
-
-export type FromJSONOptions = specFromJSON.Options;
 
 export async function dmgLicenseFromJSON(imagePath: string, specJSON: string | object, options: FromJSONOptions) {
 	return await dmgLicense(imagePath, specFromJSON(specJSON, options), options);

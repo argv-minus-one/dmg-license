@@ -13,9 +13,9 @@ const validator = ajv.compile(require("../schema.json"));
 
 export class BadJSONLicenseSpecError extends PrettyVError {}
 
-function specFromJSON(
+export default function specFromJSON(
 	spec: string | object,
-	options?: specFromJSON.Options
+	options?: FromJSONOptions
 ): LicenseSpec {
 	if (typeof spec === "string") {
 		try {
@@ -52,10 +52,6 @@ function specFromJSON(
 	return spec as LicenseSpec;
 }
 
-namespace specFromJSON {
-	export interface Options extends MainOptions {
-		specSourceURL?: string;
-	}
+export interface FromJSONOptions extends MainOptions {
+	specSourceURL?: string;
 }
-
-export default specFromJSON;

@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { BadJSONLicenseSpecError, BodySpec, Labels, LabelsSpec } from "..";
+import { BadJSONLicenseSpecError, BodySpec, FromJSONOptions, Labels, LabelsSpec } from "..";
 import specFromJSON from "../lib/specFromJSON";
 import "./test-setup";
 
@@ -23,7 +23,7 @@ describe("dmg-license JSON schema validation", () => {
 		lang: "fr-FR"
 	}];
 
-	function testCase(shouldAccept: boolean, description: string, input: string | object, options?: specFromJSON.Options) {
+	function testCase(shouldAccept: boolean, description: string, input: string | object, options?: FromJSONOptions) {
 		it(
 			`${shouldAccept ? "accepts" : "rejects"} ${description}`,
 			() => {
