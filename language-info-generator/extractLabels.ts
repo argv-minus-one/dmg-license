@@ -2,7 +2,7 @@ import { InvalidEncodedTextError, StringEncoding } from "iconv-corefoundation";
 import * as ResourceForkLib from "resourceforkjs";
 import { SmartBuffer } from "smart-buffer";
 import { Info as VErrorInfo, Options as VErrorOptions } from "verror";
-import { Labels, LanguageInfoLabels } from "../src/Labels";
+import Labels from "../src/Labels";
 import { PrettyVError } from "../src/util/format-verror";
 const { freeze } = Object;
 
@@ -130,7 +130,7 @@ function decodeLabels(
 	languageID: number,
 	pos: ResourcePos,
 	config: extractLabels.Config
-): LanguageInfoLabels | null {
+): Labels.WithLanguageName | null {
 	const charset = config.lookupCharset && config.lookupCharset(languageID) || null;
 
 	if (charset) {
@@ -161,7 +161,7 @@ function decodeLabels(
 		return null;
 }
 
-export type LanguageLabelsMap = Map<number, LanguageInfoLabels>;
+export type LanguageLabelsMap = Map<number, Labels.WithLanguageName>;
 
 async function extractLabels(config: extractLabels.Config): Promise<LanguageLabelsMap> {
 	const rmap = await ResourceForkLib.readResourceFork(config.resourcesFile, !config.fromDataFork).catch(e => {

@@ -1,7 +1,6 @@
 import { StringEncoding } from "iconv-corefoundation";
 import { promisify } from "util";
-import { LanguageInfoLabels } from "../src/Labels";
-import { RawLanguageInfo } from "../src/Language";
+import Labels from "../src/Labels";
 import PromiseEach from "../src/util/PromiseEach";
 import extractLabels, { LanguageLabelsMap, ResourceFileNotFoundError } from "./extractLabels";
 import LanguageBasics from "./LanguageBasics";
@@ -53,14 +52,29 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	]);
 
 	// Assemble the output.
-	const data: RawLanguageInfo = {
+	const data: {
+		labels: {
+			[name: string]: Labels.WithLanguageName | undefined;
+		};
+
+		languages: {
+			[id: string]: {
+				charset: string;
+				labels?: string;
+				langTags: string[];
+				englishName: string;
+				localizedName: string;
+				doubleByteCharset?: boolean;
+			} | undefined;
+		};
+	} = {
 		labels: {},
 		languages: {}
 	};
 
-	const labelKeys = new Map<LanguageInfoLabels, string>();
+	const labelKeys = new Map<Labels.WithLanguageName, string>();
 
-	function putLabels(labels: LanguageInfoLabels, forLanguage: LanguageBasics): string {
+	function putLabels(labels: Labels.WithLanguageName, forLanguage: LanguageBasics): string {
 		{
 			const key = labelKeys.get(labels);
 			if (key !== undefined) {
