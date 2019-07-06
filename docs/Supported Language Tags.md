@@ -157,7 +157,7 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>Greek (Cyprus)
 <td>23
 <td>el-CY
-<td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td><a href="https://en.wikipedia.org/wiki/MacGreek_encoding">x-mac-greek</a>
 <td>
 <tr>
 <td>Turkish

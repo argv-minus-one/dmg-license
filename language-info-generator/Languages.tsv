@@ -22,7 +22,7 @@ verGrSwiss	19	de-CH	de-CH	macintosh	German Swiss
 verGreece	20	el-GR	el	x-mac-greek	Monotonic Greek (modern)
 verIceland	21	is-IS	is	x-mac-icelandic
 verMalta	22	mt-MT	mt	macintosh
-verCyprus	23	el-CY	el-CY	macintosh
+verCyprus	23	el-CY	el-CY	x-mac-greek
 verTurkey	24	tr-TR	tr	x-mac-turkish
 verIndiaHindi	33	hi-IN	hi	x-mac-devanagari	Hindi for India
 verPakistanUrdu	34	ur-PK	ur-PK	x-mac-arabic	Urdu for Pakistan
