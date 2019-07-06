@@ -36,8 +36,7 @@ Here's the structure of a license specification. Click a property name to see mo
 	<a href="#rawlabelsn">"rawLabels"</a>?: [
 		{
 			<a href="#lang">"lang"</a>: "<var>language tag</var>" | <var>language code</var> | ["<var>language tag</var>" | <var>language code</var>],
-			<a href="#rawlabelsnfile">"file"</a>: "<var>path-to-file</var>",
-			<a href="#charset">"charset"</a>?: "native" | "UTF-8" | "<var>charset</var>",
+			<a href="#rawlabelsnfile">"file"</a>: "<var>path-to-file</var>"
 		}
 	],
 
