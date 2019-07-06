@@ -1,6 +1,6 @@
 # Raw Labels Format
 
-A [set of `labels` in a license specification](License%20Specifications.md#labelsn) can have `.type: "raw"`, which accepts a file in a special binary format. This document explains that format.
+A [set of `rawLabels` in a license specification](License%20Specifications.md#rawlabelsn) must be a file in a special binary format. This document explains that format.
 
 When `DiskImageMounter` goes to mount a disk image and notices that there is a license agreement to display, in addition to looking for the license text, it also looks for a resource in the disk image of type `STR#` with the appropriate ID. This resource contains a list of six Pascal-style (length-prefixed) strings, which will be displayed on the license agreement window as labels for the buttons and other controls.
 
