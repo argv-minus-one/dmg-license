@@ -334,7 +334,7 @@ export namespace Labels {
 	 * Prepares a label set for insertion into a disk image as a `STR#` resource.
 	 *
 	 * @remarks
-	 * This function delegates to {@link Labels.prepareDefault} or {@link Labels.prepare} as appropriate.
+	 * This function delegates to `prepareDefault` or `prepare` as appropriate.
 	 *
 	 * Throws {@link NoDefaultLabelsError} if `labels` is `null` or `undefined` and there is no default label set for the given language.
 	 *
@@ -346,7 +346,7 @@ export namespace Labels {
 	 *
 	 * @param lang - The language to prepare the label set for. This determines the target character set, and if `labels` is `null` or `undefined`, which language's default label set to use.
 	 *
-	 * @param contextOrOptions - Context of an existing {@link dmgLicense} run, or options for one (when calling this function standalone). Used to resolve relative paths if `labels` is a {@link LabelsSpec.LabelsRaw}.
+	 * @param contextOrOptions - Context of an existing {@link dmgLicense} run, or options for one (when calling this function standalone). Used to resolve relative paths if `labels` is a `LabelsSpec.LabelsRaw`.
 	 *
 	 * @returns A `Buffer` in `STR#` format.
 	 */

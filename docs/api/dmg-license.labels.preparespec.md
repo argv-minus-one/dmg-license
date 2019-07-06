@@ -18,7 +18,7 @@ function prepareSpec(labels: LabelsSpec | null | undefined, lang: Language, cont
 |  --- | --- | --- |
 |  labels | <code>LabelsSpec &#124; null &#124; undefined</code> | An object describing the label set to prepare. If <code>null</code> or <code>undefined</code>, the default label set for the given language is used instead. |
 |  lang | <code>Language</code> | The language to prepare the label set for. This determines the target character set, and if <code>labels</code> is <code>null</code> or <code>undefined</code>, which language's default label set to use. |
-|  contextOrOptions | <code>Context &#124; Options</code> | Context of an existing [dmgLicense()](./dmg-license.dmglicense.md) run, or options for one (when calling this function standalone). Used to resolve relative paths if <code>labels</code> is a . |
+|  contextOrOptions | <code>Context &#124; Options</code> | Context of an existing [dmgLicense()](./dmg-license.dmglicense.md) run, or options for one (when calling this function standalone). Used to resolve relative paths if <code>labels</code> is a <code>LabelsSpec.LabelsRaw</code>. |
 
 <b>Returns:</b>
 
@@ -28,7 +28,7 @@ A `Buffer` in `STR#` format.
 
 ## Remarks
 
-This function delegates to  or  as appropriate.
+This function delegates to `prepareDefault` or `prepare` as appropriate.
 
 Throws [NoDefaultLabelsError](./dmg-license.nodefaultlabelserror.md) if `labels` is `null` or `undefined` and there is no default label set for the given language.
 
