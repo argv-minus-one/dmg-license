@@ -17,7 +17,7 @@ function writePlist(plist: PlistValue, to: Writable): Promise<void> {
 
 export default async function writePlistToDmg(imagePath: string, plist: PlistValue): Promise<void> {
 	const child = ChildProcesses.spawn("hdiutil", ["udifrez", "-xml", "/dev/fd/3", imagePath, imagePath], {
-		stdio: ["inherit", "inherit", "inherit", "pipe"]
+		stdio: ["inherit", "ignore", "inherit", "pipe"]
 	});
 
 	const childPromise = new Promise<void>((resolve, reject) => {
