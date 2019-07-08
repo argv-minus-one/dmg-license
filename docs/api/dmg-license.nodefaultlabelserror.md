@@ -14,7 +14,7 @@ export declare class NoDefaultLabelsError extends Error
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)(lang)](./dmg-license.nodefaultlabelserror.(constructor).md) |  | Constructs a new instance of the <code>NoDefaultLabelsError</code> class |
+|  [(constructor)(lang, message)](./dmg-license.nodefaultlabelserror.(constructor).md) |  | Constructs a new instance of the <code>NoDefaultLabelsError</code> class |
 
 ## Properties
 

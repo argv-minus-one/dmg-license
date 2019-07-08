@@ -10,8 +10,8 @@ import PromiseEach from "./util/PromiseEach";
 const { freeze } = Object;
 
 export class NoDefaultLabelsError extends Error {
-	constructor(public readonly lang: Language) {
-		super(`There are no default labels for ${lang.englishName}. You must provide your own labels for this language.`);
+	constructor(public readonly lang: Language, message?: string) {
+		super(message || `There are no default labels for ${lang.englishName}. You must provide your own labels for this language.`);
 	}
 }
 NoDefaultLabelsError.prototype.name = NoDefaultLabelsError.name;

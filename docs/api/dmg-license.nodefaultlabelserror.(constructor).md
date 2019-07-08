@@ -9,7 +9,7 @@ Constructs a new instance of the `NoDefaultLabelsError` class
 <b>Signature:</b>
 
 ```typescript
-constructor(lang: Language);
+constructor(lang: Language, message?: string);
 ```
 
 ## Parameters
@@ -17,4 +17,5 @@ constructor(lang: Language);
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  lang | <code>Language</code> |  |
+|  message | <code>string</code> |  |
 
