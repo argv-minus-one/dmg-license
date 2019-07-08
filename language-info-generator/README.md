@@ -55,7 +55,7 @@ The first row is a header. Columns are as follows:
 
 4. Display name language: a single language tag. [GetLanguageNames.java] looks up each language's display name from this.
 
-5. Character sets: a comma-separated list of character set encodings. These are given to the [iconv](https://www.npmjs.com/package/iconv) module to transcode from UTF-8 (or any other character set encoding) to the native character set of this Mac OS localization.
+5. Character set: the IANA name of the native Mac OS character set for this language, as understood by the Core Foundation framework.
 
 6. Comment.
 
