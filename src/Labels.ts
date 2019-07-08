@@ -1,3 +1,4 @@
+import { NotRepresentableError } from "iconv-corefoundation";
 import { SmartBuffer } from "smart-buffer";
 import { Options } from ".";
 import Context from "./Context";
@@ -255,14 +256,18 @@ export namespace Labels {
 	): Buffer {
 		const sbuf = new SmartBuffer();
 
-		function writeStr(string: string, description: string) {
+		function writeStr(string: string, description: string, isDefaultLanguageName: boolean = false) {
 			let data: Buffer;
 
 			try {
 				data = lang.charset.encode(string);
 			}
 			catch (e) {
-				errors.add(new LabelEncodingError(description, lang, e));
+				errors.add(
+					isDefaultLanguageName && e instanceof NotRepresentableError ?
+					new NoDefaultLabelsError(lang, `The default languageName label for ${lang.englishName}, “${lang.localizedName}”, is not representable in ${lang.charset}, the native character set for that language. Please provide a languageName label for this language that is representable in that character set.`) :
+					new LabelEncodingError(description, lang, e)
+				);
 				return;
 			}
 
@@ -295,7 +300,8 @@ export namespace Labels {
 
 				writeStr(
 					lang.labels && lang.labels.languageName || lang.localizedName,
-					Labels.descriptions.languageName
+					Labels.descriptions.languageName,
+					true
 				);
 			}}
 		);
