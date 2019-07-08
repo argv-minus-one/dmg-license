@@ -74,7 +74,7 @@ class ContentGenerator extends Readable {
 
 # Supported Languages
 
-This page lists all language tags supported by the \`dmg-license\` package. These are used <a href="License%20Specifications.md#bodynlang-labelsnlang">at <code>body[<var>n</var>].lang</code> and <code>labels[<var>n</var>].lang</code></a> in a [license specification](License%20Specifications.md).
+This page lists all language tags supported by the \`dmg-license\` package. These are used <a href="License%20Specifications.md#lang">at <code>body[<var>n</var>].lang</code>, <code>labels[<var>n</var>].lang</code>, and <code>rawLabels[<var>n</var>].lang</code></a> in a [license specification](License%20Specifications.md).
 
 The “predefined labels” column indicates whether a default set of [labels](License%20Specifications.md#labelsn) is available for that language. License specifications targeting other languages must provide their own label sets for those languages.
 
