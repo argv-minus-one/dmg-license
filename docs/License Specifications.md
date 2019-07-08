@@ -95,25 +95,15 @@ Some languages have a default set of labels that will be used if none are provid
 
 Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.
 
-Used when `type` is absent, `"inline"`, or `"one-per-file"`.
-
 ## <code>labels[<var>n</var>].agree</code>, `.disagree`, `.print`, `.save`
 
 Label text for the “Agree” button, “Disagree” button, “Print” button, and “Save” button, respectively.
-
-If `type` is `"one-per-file"`, this is instead the path to a file containing the label text.
-
-Used when `type` is absent, `"inline"`, or `"one-per-file"`.
 
 ## <code>labels[<var>n</var>].message</code>
 
 Brief instructions for the user.
 
 For example, the English default message is: “If you agree with the terms of this license, press [Agree][`agree`] to install the software.  If you do not agree, press [Disagree][`disagree`].”
-
-If `type` is `"one-per-file"`, this is instead the path to a file containing the label text.
-
-Used when `type` is absent, `"inline"`, or `"one-per-file"`.
 
 ## <code>rawLabels[<var>n</var>]</code>
 
