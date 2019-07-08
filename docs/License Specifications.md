@@ -95,6 +95,10 @@ Some languages have a default set of labels that will be used if none are provid
 
 Human-readable name of the language that this version of the license agreement is in, such as “English” or “Français”.
 
+This is normally optional, but in some cases it's required, because the default language name isn't representable in the language's native character set. For example, the default language name of Vietnamese is “Tiếng Việt”, but that is not representable in the `x-mac-vietnamese` character set, so a `languageName` label is required for that language.
+
+[The list of supported languages](Supported%20Language%20Tags.md) notes which languages require a `languageName` label.
+
 ## <code>labels[<var>n</var>].agree</code>, `.disagree`, `.print`, `.save`
 
 Label text for the “Agree” button, “Disagree” button, “Print” button, and “Save” button, respectively.

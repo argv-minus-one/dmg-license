@@ -6,6 +6,8 @@ This page lists all language tags supported by the `dmg-license` package. These 
 
 The “predefined labels” column indicates whether a default set of [labels](License%20Specifications.md#labelsn) is available for that language. License specifications targeting other languages must provide their own label sets for those languages.
 
+The “requires `languageName`” column indicates whether a `languageName` label is required for that language. Normally, the `languageName` label is optional, but in some cases it's required, because the default isn't representable in the language's native character set. For example, the default language name of Vietnamese is “Tiếng Việt”, but that is not representable in the `x-mac-vietnamese` character set, so a `languageName` label is required for that language.
+
 <table>
 <thead>
 <tr>
@@ -14,6 +16,7 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <th><a href="https://en.wikipedia.org/wiki/IETF_language_tag">Language tag</a>
 <th>Native character set
 <th>Predefined <a href="License%20Specifications.md#labelsn">labels</a>?
+<th>Requires <code>languageName</code>?
 <tbody>
 <tr>
 <td>English (United States)
@@ -21,17 +24,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>en-US
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>French
 <td>1
 <td>fr-FR
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>English (United Kingdom)
 <td>2
 <td>en-GB
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>German
@@ -39,23 +45,27 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>de-DE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Italian
 <td>4
 <td>it-IT
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Dutch
 <td>5
 <td>nl-NL
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Dutch (Belgium)
 <td>6
 <td>nl-BE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Swedish
@@ -63,23 +73,27 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>sv-SE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Spanish
 <td>8
 <td>es-ES
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Danish
 <td>9
 <td>da-DK
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Portuguese
 <td>10
 <td>pt-PT
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>French (Canada)
@@ -87,17 +101,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>fr-CA
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Norwegian Bokmål
 <td>12
 <td>nb-NO
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Hebrew
 <td>13
 <td>he-IL
 <td><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/HEBREW.TXT">x-mac-hebrew</a>
+<td>
 <td>
 <tr>
 <td>Japanese
@@ -105,11 +122,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ja-JP
 <td><a href="https://en.wikipedia.org/wiki/Shift_JIS#MacJapanese">x-mac-japanese</a>
 <td>Yes
+<td>
 <tr>
 <td>English (Australia)
 <td>15
 <td>en-AU
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Arabic
@@ -117,17 +136,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ar
 <td><a href="https://en.wikipedia.org/wiki/MacArabic_encoding">x-mac-arabic</a>
 <td>
+<td>
 <tr>
 <td>Finnish
 <td>17
 <td>fi-FI
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>French (Switzerland)
 <td>18
 <td>fr-CH
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>German (Switzerland)
@@ -135,11 +157,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>de-CH
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Greek
 <td>20
 <td>el-GR
 <td><a href="https://en.wikipedia.org/wiki/MacGreek_encoding">x-mac-greek</a>
+<td>
 <td>
 <tr>
 <td>Icelandic
@@ -147,11 +171,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>is-IS
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Icelandic_encoding">x-mac-icelandic</a>
 <td>
+<td>
 <tr>
 <td>Maltese
 <td>22
 <td>mt-MT
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Greek (Cyprus)
@@ -159,11 +185,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>el-CY
 <td><a href="https://en.wikipedia.org/wiki/MacGreek_encoding">x-mac-greek</a>
 <td>
+<td>
 <tr>
 <td>Turkish
 <td>24
 <td>tr-TR
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Turkish_encoding">x-mac-turkish</a>
+<td>
 <td>
 <tr>
 <td>Hindi
@@ -171,17 +199,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>hi-IN
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Devanagari_encoding">x-mac-devanagari</a>
 <td>
+<td>
 <tr>
 <td>Urdu (Pakistan)
 <td>34
 <td>ur-PK
 <td><a href="https://en.wikipedia.org/wiki/MacArabic_encoding">x-mac-arabic</a>
 <td>
+<td>Yes
 <tr>
 <td>Modified Turkish
 <td>35
 <td>
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Turkish_encoding">x-mac-turkish</a>
+<td>
 <td>
 <tr>
 <td>Italian (Switzerland)
@@ -189,11 +220,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>it-CH
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>English (World)
 <td>37
 <td>en-001
 <td><a href="https://en.wikipedia.org/wiki/ASCII">us-ascii</a>
+<td>
 <td>
 <tr>
 <td>Romanian
@@ -201,11 +234,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ro-RO
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Romanian_encoding">x-mac-romanian</a>
 <td>
+<td>
 <tr>
 <td>Lithuanian
 <td>41
 <td>lt-LT
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
+<td>
 <td>
 <tr>
 <td>Polish
@@ -213,11 +248,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>pl-PL
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
 <td>
+<td>
 <tr>
 <td>Hungarian
 <td>43
 <td>hu-HU
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
+<td>
 <td>
 <tr>
 <td>Estonian
@@ -225,11 +262,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>et-EE
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
 <td>
+<td>
 <tr>
 <td>Latvian
 <td>45
 <td>lv-LV
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
+<td>
 <td>
 <tr>
 <td>Northern Sami
@@ -237,11 +276,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>se
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Faroese
 <td>47
 <td>fo-FO
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Icelandic_encoding">x-mac-icelandic</a>
+<td>
 <td>
 <tr>
 <td>Persian
@@ -249,11 +290,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>fa-IR
 <td><a href="https://en.wikipedia.org/wiki/MacFarsi_encoding">x-mac-farsi</a>
 <td>
+<td>Yes
 <tr>
 <td>Russian
 <td>49
 <td>ru-RU
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
+<td>
 <td>
 <tr>
 <td>Irish (Ireland)
@@ -261,18 +304,21 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ga-IE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Celtic">x-mac-celtic</a>
 <td>
+<td>
 <tr>
 <td>Korean
 <td>51
 <td>ko-KR
 <td><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/KOREAN.TXT">x-mac-korean</a>
 <td>Yes
+<td>
 <tr>
 <td rowspan=2>Chinese (Simplified)
 <td rowspan=2>52
 <td>zh-CN
 <td rowspan=2><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/CHINSIMP.TXT">x-mac-simp-chinese</a>
 <td rowspan=2>Yes
+<td rowspan=2>
 <tr>
 <td>zh-Hans<tr>
 <td rowspan=2>Chinese (Traditional)
@@ -280,6 +326,7 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>zh-TW
 <td rowspan=2><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/CHINTRAD.TXT">x-mac-trad-chinese</a>
 <td rowspan=2>Yes
+<td rowspan=2>
 <tr>
 <td>zh-Hant<tr>
 <td>Thai
@@ -287,11 +334,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>th-TH
 <td><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/THAI.TXT">x-mac-thai</a>
 <td>
+<td>
 <tr>
 <td>Czech
 <td>56
 <td>cs-CZ
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
+<td>
 <td>
 <tr>
 <td>Slovak
@@ -299,17 +348,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>sk-SK
 <td><a href="https://en.wikipedia.org/wiki/Macintosh_Central_European_encoding">x-mac-centraleurroman</a>
 <td>
+<td>
 <tr>
 <td>Bangla
 <td>60
 <td>bn
 <td>x-mac-bengali
 <td>
+<td>Yes
 <tr>
 <td>Belarusian
 <td>61
 <td>be-BY
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
+<td>
 <td>
 <tr>
 <td>Ukrainian
@@ -317,11 +369,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>uk-UA
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Ukrainian_encoding">x-mac-ukrainian</a>
 <td>
+<td>
 <tr>
 <td>Serbian
 <td>65
 <td>sr-CS
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
+<td>
 <td>
 <tr>
 <td>Slovenian
@@ -329,11 +383,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>sl-SI
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Croatian_encoding">x-mac-croatian</a>
 <td>
+<td>
 <tr>
 <td>Macedonian
 <td>67
 <td>mk-MK
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
+<td>
 <td>
 <tr>
 <td>Croatian
@@ -341,17 +397,20 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>hr-HR
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Croatian_encoding">x-mac-croatian</a>
 <td>
+<td>
 <tr>
 <td>Portuguese (Brazil)
 <td>71
 <td>pt-BR
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>Yes
+<td>
 <tr>
 <td>Bulgarian
 <td>72
 <td>bg-BG
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
+<td>
 <td>
 <tr>
 <td>Catalan (Spain)
@@ -359,11 +418,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ca-ES
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Scottish Gaelic
 <td>75
 <td>gd
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Celtic">x-mac-celtic</a>
+<td>
 <td>
 <tr>
 <td>Manx
@@ -371,11 +432,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>gv
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Celtic">x-mac-celtic</a>
 <td>
+<td>
 <tr>
 <td>Breton
 <td>77
 <td>br
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Celtic">x-mac-celtic</a>
+<td>
 <td>
 <tr>
 <td>Inuktitut
@@ -383,11 +446,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>iu-CA
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Inuit">x-mac-inuit</a>
 <td>
+<td>
 <tr>
 <td>Welsh
 <td>79
 <td>cy
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Celtic">x-mac-celtic</a>
+<td>
 <td>
 <tr>
 <td>Irish (Gaelic Latin, Ireland)
@@ -395,11 +460,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>ga-Latg-IE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Gaelic">x-mac-gaelic</a>
 <td>
+<td>
 <tr>
 <td>English (Canada)
 <td>82
 <td>en-CA
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Dzongkha
@@ -407,23 +474,27 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>dz-BT
 <td>x-mac-tibetan
 <td>
+<td>Yes
 <tr>
 <td>Armenian
 <td>84
 <td>hy-AM
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Armenian">x-mac-armenian</a>
 <td>
+<td>Yes
 <tr>
 <td>Georgian
 <td>85
 <td>ka-GE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Georgian">x-mac-georgian</a>
 <td>
+<td>Yes
 <tr>
 <td>Spanish (Latin America)
 <td>86
 <td>es-419
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Tongan
@@ -431,11 +502,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>to-TO
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>French (World)
 <td>91
 <td>fr-001
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>German (Austria)
@@ -443,11 +516,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>de-AT
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Gujarati (India)
 <td>94
 <td>gu-IN
 <td><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/GUJARATI.TXT">x-mac-gujarati</a>
+<td>
 <td>
 <tr>
 <td>Punjabi
@@ -455,23 +530,27 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>pa
 <td><a href="https://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/GURMUKHI.TXT">x-mac-gurmukhi</a>
 <td>
+<td>
 <tr>
 <td>Urdu (India)
 <td>96
 <td>ur-IN
 <td><a href="https://en.wikipedia.org/wiki/MacArabic_encoding">x-mac-arabic</a>
 <td>
+<td>Yes
 <tr>
 <td>Vietnamese
 <td>97
 <td>vi-VN
 <td>x-mac-vietnamese
 <td>
+<td>Yes
 <tr>
 <td>French (Belgium)
 <td>98
 <td>fr-BE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Uzbek
@@ -479,11 +558,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>uz-UZ
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Cyrillic_encoding">x-mac-cyrillic</a>
 <td>
+<td>
 <tr>
 <td>English (Singapore)
 <td>100
 <td>en-SG
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Norwegian Nynorsk
@@ -491,11 +572,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>nn-NO
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Afrikaans (South Africa)
 <td>102
 <td>af-ZA
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 <tr>
 <td>Esperanto
@@ -503,11 +586,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>eo
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>Marathi (India)
 <td>104
 <td>mr-IN
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Devanagari_encoding">x-mac-devanagari</a>
+<td>
 <td>
 <tr>
 <td>Tibetan
@@ -515,11 +600,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>bo
 <td>x-mac-tibetan
 <td>
+<td>Yes
 <tr>
 <td>Nepali
 <td>106
 <td>ne-NP
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Devanagari_encoding">x-mac-devanagari</a>
+<td>
 <td>
 <tr>
 <td>Kalaallisut
@@ -527,11 +614,13 @@ The “predefined labels” column indicates whether a default set of [labels](L
 <td>kl
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
 <td>
+<td>
 <tr>
 <td>English (Ireland)
 <td>108
 <td>en-IE
 <td><a href="https://en.wikipedia.org/wiki/Mac_OS_Roman">macintosh</a>
+<td>
 <td>
 </table>
 
