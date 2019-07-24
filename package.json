@@ -66,9 +66,9 @@
 		"read-xml": "^3.0.0",
 		"resourceforkjs": "^0.1.0",
 		"rimraf": "^2.6.3",
-		"ts-node": "^8.1.0",
+		"ts-node": "^8.3.0",
 		"tslint": "^5.15.0",
-		"typescript": "^3.3.4000"
+		"typescript": "^3.5.3"
 	},
 	"engines": {
 		"node": ">=6.5"
