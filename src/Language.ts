@@ -128,14 +128,14 @@ namespace indexByLanguage {
 
 function indexByLanguage<T extends Localization>(
 	objects: Iterable<T>,
-	{}?: indexByLanguage.Options<T, T> & {
+	options?: indexByLanguage.Options<T, T> & {
 		map?: never;
 	}
 ): Map<number, T>;
 
 function indexByLanguage<T extends Localization, U>(
 	objects: Iterable<T>,
-	{}: indexByLanguage.Options<T, U> & {
+	options: indexByLanguage.Options<T, U> & {
 		map(object: T, lang: Language): U;
 	}
 ): Map<number, Exclude<U, undefined>>;
