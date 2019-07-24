@@ -71,7 +71,7 @@
 		"typescript": "^3.5.3"
 	},
 	"engines": {
-		"node": ">=6.5"
+		"node": ">=8"
 	},
 	"os": [
 		"darwin"
