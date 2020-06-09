@@ -7,5 +7,5 @@
 <b>Signature:</b>
 
 ```typescript
-names: ReadonlyArray<"message" | "languageName" | "agree" | "disagree" | "print" | "save">
+names: readonly ("message" | "languageName" | "agree" | "disagree" | "print" | "save")[]
 ```
