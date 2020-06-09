@@ -62,7 +62,7 @@
 		"chai-bytes": "^0.1.2",
 		"execa": "^1.0.0",
 		"minimist": "^1.2.0",
-		"mocha": "^6.1.4",
+		"mocha": "^7.2.0",
 		"read-xml": "^3.0.0",
 		"resourceforkjs": "^0.1.0",
 		"rimraf": "^2.6.3",
