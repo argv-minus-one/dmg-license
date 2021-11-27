@@ -38,7 +38,6 @@
 		"@types/plist": "^3.0.1",
 		"@types/verror": "^1.10.3",
 		"ajv": "^6.10.0",
-		"cli-truncate": "^1.1.0",
 		"crc": "^3.8.0",
 		"iconv-corefoundation": "^1.1.6",
 		"plist": "^3.0.1",
