@@ -120,8 +120,6 @@ async function main(resourcesFile: string, output: NodeJS.WritableStream, onNonF
 	await promisify(output.write.bind(output))(JSON.stringify(data, null, 2));
 }
 
-// tslint:disable: no-console
-
 main(
 	process.env.SLAResources || "/Volumes/SLAs_for_UDIFs_1.0/SLAResources",
 	process.stdout,

@@ -5,9 +5,6 @@
 	"moduleResolution": "node",
 	"resolveJsonModule": true,
 	"strict": true,
-	"plugins": [
-		{"name": "typescript-tslint-plugin"}
-	],
 	"outDir": "lib",
 	"rootDir": "src",
 	"declaration": true,

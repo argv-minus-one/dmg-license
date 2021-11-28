@@ -8,7 +8,6 @@ const ajv = new Ajv({
 	jsonPointers: true
 });
 
-// tslint:disable-next-line: no-var-requires
 const validator = ajv.compile(require("../schema.json"));
 
 export class BadJSONLicenseSpecError extends PrettyVError {}

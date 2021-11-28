@@ -148,7 +148,6 @@ export default async function LanguageNames<T>(f: (query: (languageTag: string) 
 			}
 		}
 
-		// tslint:disable-next-line: no-shadowed-variable // bogus warning
 		const result = await f(query);
 		await j.end();
 

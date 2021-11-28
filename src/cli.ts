@@ -7,7 +7,6 @@ import { BadJSONLicenseSpecError } from "./specFromJSON";
 
 const { stderr, stdout } = process;
 
-// tslint:disable-next-line: no-var-requires
 const pkg: { name: string, version: string } = require("../package.json");
 
 let showedHelp = false;

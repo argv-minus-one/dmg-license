@@ -9,8 +9,6 @@ async function* readTSV(
 ): AsyncIterableIterator<{ lineNum: number, cells: string[] }> {
 	let lineNum = 0;
 
-	// No idea why this TSLint rule triggers here. All Node readable streams *are* async iterable.
-	// tslint:disable-next-line:await-promise
 	for await (const line of Readline.createInterface({ input, terminal: false })) {
 		lineNum++;
 

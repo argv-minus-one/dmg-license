@@ -1,5 +1,3 @@
-// tslint:disable: no-console
-
 import * as FS from "fs";
 import { NotRepresentableError } from "iconv-corefoundation";
 import * as Path from "path";
