@@ -2,6 +2,8 @@
 
 A TypeScript/JavaScript library and command-line tool for attaching license agreements to macOS `.dmg` files, which the user must accept before mounting the disk image. Doing this correctly is surprisingly complicated, so this package is here to automate it.
 
+**Warning:** Attaching license agreements to disk images may become impossible in future versions of macOS. It is done using the `hdiutil udifrez` command, which is deprecated as of macOS 12 with no apparent replacement. See [issue #11](https://github.com/argv-minus-one/dmg-license/issues/11) for details.
+
 ## Contents
 
 * [License](#license)
